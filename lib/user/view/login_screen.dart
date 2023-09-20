@@ -1,18 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gym/common/component/layout/default_layout.dart';
 import 'package:gym/common/const/colors.dart';
 import 'package:gym/membership/views/membership_screen.dart';
+import 'package:gym/user/provider/user_me_provider.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   static String get routeName => 'login';
 
   const LoginScreen({super.key});
 
   @override
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends ConsumerState<LoginScreen> {
+  String loginid = '';
+  String passwd = '';
+
+  @override
   Widget build(BuildContext context) {
+    final state = ref.watch(userMeProvider);
+
     return DefalutLayout(
       child: SafeArea(
         top: true,
@@ -75,91 +87,49 @@ class LoginScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 30),
-                      Container(
+                      SizedBox(
                         width: 285,
                         height: 40,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 16),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color(0xFFBDBDBD),
-                            ),
-                          ),
-                        ),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: SizedBox(
-                                height: 16,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'ID',
-                                      style: TextStyle(
-                                        color: Color(0xFFBDBDBD),
-                                        fontSize: 12,
-                                        // fontFamily: 'Noto Sans KR',
-                                        fontWeight: FontWeight.w400,
-                                        height: 0.11,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                        child: TextField(
+                          onChanged: (String value) {
+                            loginid = value;
+                          },
+                          decoration: const InputDecoration(
+                            border: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0xFFBDBDBD),
                               ),
                             ),
-                          ],
+                            hintText: "ID",
+                            hintStyle: TextStyle(
+                              color: Color(0xFFBDBDBD),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 12),
-                      Container(
+                      SizedBox(
                         width: 285,
                         height: 40,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 16),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          border: Border(
-                            bottom: BorderSide(
-                              color: Color(0xFFBDBDBD),
-                            ),
-                          ),
-                        ),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: SizedBox(
-                                height: 16,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'PASSWORD',
-                                      style: TextStyle(
-                                        color: Color(0xFFBDBDBD),
-                                        fontSize: 12,
-                                        // fontFamily: 'Noto Sans KR',
-                                        fontWeight: FontWeight.w400,
-                                        height: 0.11,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                        child: TextField(
+                          onChanged: (String value) {
+                            passwd = value;
+                          },
+                          decoration: const InputDecoration(
+                            border: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Color(0xFFBDBDBD),
                               ),
                             ),
-                          ],
+                            hintText: "PASSWORD",
+                            hintStyle: TextStyle(
+                              color: Color(0xFFBDBDBD),
+                              fontSize: 12,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
                         ),
                       ),
                       const SizedBox(height: 32),
@@ -167,8 +137,12 @@ class LoginScreen extends StatelessWidget {
                         width: 285,
                         height: 48,
                         child: ElevatedButton(
-                          onPressed: () {
-                            context.goNamed(MembershipScreen.routeName);
+                          onPressed: () async {
+                            // context.goNamed(MembershipScreen.routeName);
+                            ref.read(userMeProvider.notifier).login(
+                                  loginid: loginid,
+                                  passwd: passwd,
+                                );
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor: GREY_900_COLOR),

@@ -9,8 +9,8 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: provider.routes,
     initialLocation: '/',
     refreshListenable: provider,
-    // redirect: (context, state) {
-    //   return provider.redirectLogic(state);
-    // },
+    redirect: (context, state) {
+      return provider.redirectLogic(state);
+    },
   );
 });
