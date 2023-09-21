@@ -86,7 +86,6 @@ class AuthProvider extends ChangeNotifier {
     }
 
     if (user is UserModelError) {
-      print("aaa");
       return !logginIn ? '/' : null;
     }
 

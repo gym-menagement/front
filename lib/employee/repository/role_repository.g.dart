@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user_me_repository.dart';
+part of 'role_repository.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'user_me_repository.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers
 
-class _UserMeRepository implements UserMeRepository {
-  _UserMeRepository(
+class _RoleRepository<T> implements RoleRepository<T> {
+  _RoleRepository(
     this._dio, {
     this.baseUrl,
   });
@@ -19,14 +19,17 @@ class _UserMeRepository implements UserMeRepository {
   String? baseUrl;
 
   @override
-  Future<UserMeModel> getMe() async {
+  Future<ModelWithItems<RoleModel>> getRole(
+      {roleParams = const RoleParams()}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(roleParams?.toJson() ?? <String, dynamic>{});
+    queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
-    const Map<String, dynamic>? _data = null;
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<UserMeModel>(Options(
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ModelWithItems<RoleModel>>(Options(
       method: 'GET',
       headers: _headers,
       extra: _extra,
@@ -38,7 +41,10 @@ class _UserMeRepository implements UserMeRepository {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = UserMeModel.fromJson(_result.data!);
+    final value = ModelWithItems<RoleModel>.fromJson(
+      _result.data!,
+      (json) => RoleModel.fromJson(json as Map<String, dynamic>),
+    );
     return value;
   }
 

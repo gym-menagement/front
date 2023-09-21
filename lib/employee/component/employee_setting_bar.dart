@@ -62,13 +62,11 @@ class EmployeeSettingBar extends StatelessWidget {
                     borderColor: PRIMARY_COLOR,
                     name: 'ALL',
                   ),
-                  SizedBox(width: 6),
                   RoundButton(
                     textColor: PRIMARY_COLOR,
                     borderColor: PRIMARY_COLOR,
                     name: '트레이너',
                   ),
-                  SizedBox(width: 6),
                   SizedBox(width: 6),
                   RoundButton(
                     textColor: PRIMARY_COLOR,

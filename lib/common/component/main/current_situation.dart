@@ -3,6 +3,7 @@ import 'package:gym/common/component/highlighted_text.dart';
 import 'package:gym/common/const/colors.dart';
 import 'package:gym/common/component/main/member_card.dart';
 import 'package:gym/membership/component/membership_list_card.dart';
+import 'package:intl/intl.dart';
 
 class CurrentSituation extends StatelessWidget {
   const CurrentSituation({
@@ -11,6 +12,8 @@ class CurrentSituation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DateTime dt = DateTime.now();
+
     return Container(
       width: 368,
       height: double.infinity,
@@ -32,17 +35,17 @@ class CurrentSituation extends StatelessWidget {
           direction: Axis.horizontal,
           alignment: WrapAlignment.center,
           children: [
-            const Column(
+            Column(
               children: [
                 HighLightedText(
-                  data: "2023.07.24",
-                  color: Color(0xFFE9EEFF),
+                  data: DateFormat('yyyy.MM.dd').format(dt),
+                  color: const Color(0xFFE9EEFF),
                   fontSize: 22.0,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
-                MemberCard(),
+                const MemberCard(),
               ],
             ),
             const SizedBox(

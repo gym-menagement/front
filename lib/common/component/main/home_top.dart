@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gym/common/component/unit/round_button.dart';
 import 'package:gym/common/const/colors.dart';
+import 'package:gym/user/model/user_me_model.dart';
+import 'package:gym/user/model/user_model.dart';
+import 'package:gym/user/provider/user_me_provider.dart';
 
-class HomeTop extends StatelessWidget {
+class HomeTop extends ConsumerWidget {
   final String title;
   final String subTitle;
   final VoidCallback? searchFunc;
@@ -20,7 +24,11 @@ class HomeTop extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(userMeProvider);
+
+    final user = state as UserModel;
+
     return SizedBox(
       height: 80,
       width: double.infinity,
@@ -140,21 +148,21 @@ class HomeTop extends StatelessWidget {
                       ),
                       const SizedBox(width: 8),
                       Container(
-                        child: const Column(
+                        child: Column(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '김길동',
-                              style: TextStyle(
+                              user.name,
+                              style: const TextStyle(
                                 color: GREY_900_COLOR,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 height: 0,
                               ),
                             ),
-                            Text(
+                            const Text(
                               'Manager',
                               style: TextStyle(
                                 color: GREY_500_COLOR,

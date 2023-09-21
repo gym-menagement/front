@@ -31,7 +31,7 @@ class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
     required this.repository,
     required this.storage,
   }) : super(UserModelLoading()) {
-    // getMe();
+    getMe();
   }
 
   Future<void> getMe() async {
@@ -45,7 +45,6 @@ class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
     final res = await repository.getMe();
 
     state = res.item;
-    // state = UserModelLoading();
   }
 
   Future<UserModelBase> login({
@@ -64,13 +63,10 @@ class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
 
       final userRes = await repository.getMe();
 
-      // return UserModelLoading();
-
       state = userRes.item;
 
       return userRes.item;
     } catch (e) {
-      print(e);
       state = UserModelError(message: '로그인에 실패했습니다.');
 
       return Future.value(state);
