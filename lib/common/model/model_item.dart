@@ -18,16 +18,16 @@ class ModelWithItemLoading extends ModelWithItemBase {}
   genericArgumentFactories: true,
 )
 class ModelWithItem<T> extends ModelWithItemBase {
-  final double t;
+  // final double t;
   final String code;
   final T item;
-  final int total;
+  // final int total;
 
   ModelWithItem({
-    required this.t,
+    // required this.t,
     required this.code,
     required this.item,
-    required this.total,
+    // required this.total,
   });
 
   factory ModelWithItem.fromJson(

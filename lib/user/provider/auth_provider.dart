@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:gym/employee/views/employee_screen.dart';
 import 'package:gym/helth/views/helth_screen.dart';
 import 'package:gym/membership/views/membership_screen.dart';
-import 'package:gym/user/model/user_me_model.dart';
 import 'package:gym/user/model/user_model.dart';
 import 'package:gym/user/provider/user_me_provider.dart';
 import 'package:gym/user/view/login_screen.dart';

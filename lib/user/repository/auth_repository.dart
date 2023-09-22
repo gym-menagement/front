@@ -1,14 +1,13 @@
 import 'package:gym/common/const/data.dart';
 import 'package:gym/common/dio/dio.dart';
 import 'package:gym/common/model/login_response.dart';
-import 'package:gym/common/utils/data_utils.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final AuthRepositoryProvider = Provider<AuthRepository>((ref) {
   final dio = ref.watch(dioProvider);
 
-  return AuthRepository(baseUrl: 'http://$ip/', dio: dio);
+  return AuthRepository(baseUrl: 'http://$ip', dio: dio);
 });
 
 class AuthRepository {
@@ -35,16 +34,4 @@ class AuthRepository {
 
     return LoginResponse.fromJson(res.data);
   }
-
-  // Future<TokenResponse> tokem() async {
-  //   final res = await dio.post(
-  //     '$baseUrl/token',
-  //     options: Options(
-  //       headers: {
-  //         'refreshToken': 'true',
-  //       },
-  //     ),
-  //   );
-  //   return TokenResponse.fromJson(res.data);
-  // }
 }

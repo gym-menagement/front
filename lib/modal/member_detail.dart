@@ -5,7 +5,6 @@ import 'package:gym/common/component/dialog/single_dialog.dart';
 import 'package:gym/common/const/colors.dart';
 import 'package:gym/helth/component/helth_card.dart';
 import 'package:gym/membership/component/use/member_info_card.dart';
-import 'package:gym/membership/component/use/use_content_card.dart';
 import 'package:gym/membership/component/use/use_content_info.dart';
 import 'package:gym/modal/ticket_history.dart';
 

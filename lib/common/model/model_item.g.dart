@@ -11,10 +11,8 @@ ModelWithItem<T> _$ModelWithItemFromJson<T>(
   T Function(Object? json) fromJsonT,
 ) =>
     ModelWithItem<T>(
-      t: (json['t'] as num).toDouble(),
       code: json['code'] as String,
       item: fromJsonT(json['item']),
-      total: json['total'] as int,
     );
 
 Map<String, dynamic> _$ModelWithItemToJson<T>(
@@ -22,8 +20,6 @@ Map<String, dynamic> _$ModelWithItemToJson<T>(
   Object? Function(T value) toJsonT,
 ) =>
     <String, dynamic>{
-      't': instance.t,
       'code': instance.code,
       'item': toJsonT(instance.item),
-      'total': instance.total,
     };

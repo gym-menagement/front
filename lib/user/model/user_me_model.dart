@@ -1,4 +1,3 @@
-import 'package:gym/common/utils/data_utils.dart';
 import 'package:gym/user/model/user_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 

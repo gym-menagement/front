@@ -1,4 +1,3 @@
-import 'package:gym/common/model/model_items.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'role_model.g.dart';
@@ -9,7 +8,7 @@ class RoleModel {
   final int gym;
   final int role;
   final String name;
-  final DateTime date;
+  final String date;
 
   RoleModel({
     required this.id,

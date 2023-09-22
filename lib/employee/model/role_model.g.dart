@@ -11,7 +11,7 @@ RoleModel _$RoleModelFromJson(Map<String, dynamic> json) => RoleModel(
       gym: json['gym'] as int,
       role: json['role'] as int,
       name: json['name'] as String,
-      date: DateTime.parse(json['date'] as String),
+      date: json['date'] as String,
     );
 
 Map<String, dynamic> _$RoleModelToJson(RoleModel instance) => <String, dynamic>{
@@ -19,5 +19,5 @@ Map<String, dynamic> _$RoleModelToJson(RoleModel instance) => <String, dynamic>{
       'gym': instance.gym,
       'role': instance.role,
       'name': instance.name,
-      'date': instance.date.toIso8601String(),
+      'date': instance.date,
     };

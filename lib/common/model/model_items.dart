@@ -18,17 +18,31 @@ class ModelWithItemsLoading extends ModelWithItemsBase {}
   genericArgumentFactories: true,
 )
 class ModelWithItems<T> extends ModelWithItemsBase {
-  final double t;
+  // final double t;
   final String code;
   final List<T> items;
   final int total;
 
   ModelWithItems({
-    required this.t,
+    // required this.t,
     required this.code,
     required this.items,
     required this.total,
   });
+
+  ModelWithItems copyWith({
+    // double? t,
+    String? code,
+    List<T>? items,
+    int? total,
+  }) {
+    return ModelWithItems(
+      // t: t ?? this.t,
+      code: code ?? this.code,
+      items: items ?? this.items,
+      total: total ?? this.total,
+    );
+  }
 
   factory ModelWithItems.fromJson(
           Map<String, dynamic> json, T Function(Object? json) fromJsonT) =>

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gym/common/component/unit/round_button.dart';
 import 'package:gym/common/const/colors.dart';
+import 'package:gym/employee/provider/role_provider.dart';
 
-class EmployeeSettingBar extends StatelessWidget {
-  const EmployeeSettingBar({
-    super.key,
-  });
+class EmployeeSettingBar extends ConsumerWidget {
+  const EmployeeSettingBar({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(roleProvider);
+
     return SizedBox(
       width: double.infinity,
       height: 28,
@@ -52,33 +54,25 @@ class EmployeeSettingBar extends StatelessWidget {
                 ],
               ),
               const SizedBox(width: 16),
-              const Row(
+              Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  RoundButton(
+                  const RoundButton(
                     colors: PRIMARY_COLOR,
                     borderColor: PRIMARY_COLOR,
                     name: 'ALL',
                   ),
-                  RoundButton(
-                    textColor: PRIMARY_COLOR,
-                    borderColor: PRIMARY_COLOR,
-                    name: '트레이너',
-                  ),
-                  SizedBox(width: 6),
-                  RoundButton(
-                    textColor: PRIMARY_COLOR,
-                    borderColor: PRIMARY_COLOR,
-                    name: 'GX강사',
-                  ),
-                  SizedBox(width: 6),
-                  RoundButton(
-                    textColor: PRIMARY_COLOR,
-                    borderColor: PRIMARY_COLOR,
-                    name: '일반관리',
-                  ),
+                  for (int i = 0; i < state.length; i++)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: RoundButton(
+                        textColor: PRIMARY_COLOR,
+                        borderColor: PRIMARY_COLOR,
+                        name: state[i].name,
+                      ),
+                    ),
                 ],
               ),
             ],
