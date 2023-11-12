@@ -10,5 +10,5 @@ const localIp = '127.0.0.1:9000/api';
 const serverIp = '141.164.56.77:9004/api';
 
 // final ip = Platform.isIOS ? simulatorIp : emulatorIp;
-const local = true;
+const local = false;
 const ip = local ? localIp : serverIp;

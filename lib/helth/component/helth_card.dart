@@ -50,7 +50,7 @@ class HelthCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            width: 85.0,
+            width: 70.0,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -67,7 +67,7 @@ class HelthCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (discountPer != null)
+                if (discountPer != 0)
                   Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -110,7 +110,7 @@ class HelthCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      if (discountPer != null)
+                      if (discountPer != 0)
                         Text(
                           '₩${numberUnit(cost)}',
                           style: const TextStyle(
@@ -121,7 +121,7 @@ class HelthCard extends StatelessWidget {
                           ),
                         ),
                       Text(
-                        discountPer != null
+                        discountPer != 0
                             ? '₩${numberUnit(discountAmount(cost, discountPer))}'
                             : '₩${numberUnit(cost)}',
                         style: const TextStyle(
@@ -134,8 +134,8 @@ class HelthCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                if (note != null) const SizedBox(height: 6),
-                if (note != null)
+                if (note != "") const SizedBox(height: 6),
+                if (note != "")
                   Text(
                     note!,
                     style: const TextStyle(

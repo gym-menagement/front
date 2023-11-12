@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gym/common/component/dialog/action_action.dart';
 import 'package:gym/common/component/dialog/action_content.dart';
 import 'package:gym/common/component/dialog/action_dialog.dart';
@@ -8,12 +9,25 @@ import 'package:gym/employee/component/employee_add_card.dart';
 import 'package:gym/employee/component/employee_card.dart';
 import 'package:gym/employee/component/employee_setting_bar.dart';
 import 'package:gym/employee/modal/member_list.dart';
+import 'package:gym/params/user_params.dart';
+import 'package:gym/provider/user_provider.dart';
+import 'package:gym/repository/user_repository.dart';
+import 'package:gym/util/util.dart';
 
-class EmployeeHome extends StatelessWidget {
+class EmployeeHome extends ConsumerStatefulWidget {
   const EmployeeHome({super.key});
 
   @override
+  ConsumerState<EmployeeHome> createState() => _EmployeeHomeState();
+}
+
+class _EmployeeHomeState extends ConsumerState<EmployeeHome> {
+  String employeeName = '';
+
+  @override
   Widget build(BuildContext context) {
+    final state = ref.watch(userProvider);
+
     return Container(
       color: WHITE_COLOR,
       child: Column(
@@ -21,7 +35,14 @@ class EmployeeHome extends StatelessWidget {
           HomeTop(
             title: 'Employee',
             subTitle: '직원관리',
-            searchFunc: () {},
+            onChanged: (String value) {
+              employeeName = value;
+            },
+            searchFunc: () {
+              ref
+                  .read(userProvider.notifier)
+                  .getUser(UserParams(name: employeeName));
+            },
           ),
           Padding(
             padding: const EdgeInsets.all(24),
@@ -63,18 +84,13 @@ class EmployeeHome extends StatelessWidget {
                             // );
                           },
                         ),
-                        const EmployeeCard(
-                          name: '박땡땡',
-                          startDate: '2022.12.06',
-                          phoneNum: '010-2755-7138',
-                          working: true,
-                        ),
-                        const EmployeeCard(
-                          name: '박땡땡',
-                          startDate: '2022.12.06',
-                          phoneNum: '010-2755-7138',
-                          working: false,
-                        ),
+                        for (int i = 0; i < state.length; i++)
+                          EmployeeCard(
+                            name: state[i].name,
+                            startDate: yearMonthDay(state[i].startday),
+                            phoneNum: phonenumberUnit(state[i].phonenum),
+                            working: true,
+                          ),
                       ],
                     ),
                   ),

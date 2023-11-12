@@ -2,11 +2,10 @@ import 'package:gym/common/const/data.dart';
 import 'package:gym/common/dio/dio.dart';
 import 'package:gym/common/model/model_item.dart';
 import 'package:gym/common/model/model_items.dart';
-import 'package:gym/user/model/user_me_model.dart';
 import 'package:dio/dio.dart' hide Headers;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gym/user/model/user_model.dart';
-import 'package:gym/user/model/user_params.dart';
+import 'package:gym/params/user_params.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'user_me_repository.g.dart';

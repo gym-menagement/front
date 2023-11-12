@@ -3,22 +3,39 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gym/common/component/unit/round_button.dart';
 import 'package:gym/common/const/colors.dart';
-import 'package:gym/employee/provider/role_provider.dart';
+import 'package:gym/params/user_params.dart';
+import 'package:gym/provider/role_provider.dart';
+import 'package:gym/provider/user_provider.dart';
 
-class EmployeeSettingBar extends ConsumerWidget {
+class EmployeeSettingBar extends ConsumerStatefulWidget {
   const EmployeeSettingBar({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<EmployeeSettingBar> createState() => _EmployeeSettingBarState();
+}
+
+class _EmployeeSettingBarState extends ConsumerState<EmployeeSettingBar> {
+  int role = 0;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void tabRole(int num) {
+    setState(() {
+      role = num;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(roleProvider);
 
     return SizedBox(
       width: double.infinity,
       height: 28,
       child: Wrap(
-        // mainAxisSize: MainAxisSize.min,
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        // crossAxisAlignment: CrossAxisAlignment.center,
         direction: Axis.vertical,
         alignment: WrapAlignment.center,
         runAlignment: WrapAlignment.spaceBetween,
@@ -59,18 +76,34 @@ class EmployeeSettingBar extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const RoundButton(
-                    colors: PRIMARY_COLOR,
+                  RoundButton(
+                    colors: role == 0 ? PRIMARY_COLOR : WHITE_COLOR,
+                    textColor: role == 0 ? WHITE_COLOR : PRIMARY_COLOR,
                     borderColor: PRIMARY_COLOR,
                     name: 'ALL',
+                    clickFunc: () {
+                      ref
+                          .read(userProvider.notifier)
+                          .getUser(const UserParams());
+                      tabRole(0);
+                    },
                   ),
                   for (int i = 0; i < state.length; i++)
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: RoundButton(
-                        textColor: PRIMARY_COLOR,
+                        colors:
+                            role == state[i].role ? PRIMARY_COLOR : WHITE_COLOR,
+                        textColor:
+                            role == state[i].role ? WHITE_COLOR : PRIMARY_COLOR,
                         borderColor: PRIMARY_COLOR,
                         name: state[i].name,
+                        clickFunc: () {
+                          ref
+                              .read(userProvider.notifier)
+                              .getUser(UserParams(role: state[i].role));
+                          tabRole(state[i].role);
+                        },
                       ),
                     ),
                 ],

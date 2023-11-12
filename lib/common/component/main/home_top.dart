@@ -13,6 +13,7 @@ class HomeTop extends ConsumerWidget {
   final VoidCallback? searchFunc;
   final String? buttonName;
   final VoidCallback? buttonFunc;
+  final ValueChanged<String>? onChanged;
 
   const HomeTop({
     super.key,
@@ -21,6 +22,7 @@ class HomeTop extends ConsumerWidget {
     this.searchFunc,
     this.buttonName,
     this.buttonFunc,
+    this.onChanged,
   });
 
   @override
@@ -33,7 +35,7 @@ class HomeTop extends ConsumerWidget {
       height: 80,
       width: double.infinity,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+        padding: const EdgeInsets.fromLTRB(24.0, 16.0, 24.0, 16.0),
         child: Wrap(
           direction: Axis.vertical,
           alignment: WrapAlignment.center,
@@ -74,6 +76,7 @@ class HomeTop extends ConsumerWidget {
                     width: 200,
                     height: 40,
                     child: TextField(
+                      onChanged: onChanged,
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(
                           borderSide: BorderSide(
@@ -90,6 +93,7 @@ class HomeTop extends ConsumerWidget {
                           // height: 0.11,
                         ),
                         suffixIcon: GestureDetector(
+                          onTap: searchFunc,
                           child: SvgPicture.asset(
                             'asset/svg/icon/search.svg',
                             color: GREY_500_COLOR,
@@ -97,7 +101,6 @@ class HomeTop extends ConsumerWidget {
                             height: 24,
                             fit: BoxFit.scaleDown,
                           ),
-                          onTap: () {},
                         ),
                       ),
                     ),
@@ -107,18 +110,18 @@ class HomeTop extends ConsumerWidget {
                     width: 8,
                   ),
                 if (buttonFunc != null)
-                  SizedBox(
-                    width: 110,
-                    height: 40,
-                    child: InkWell(
-                      onTap: buttonFunc,
-                      child: const RoundButton(
+                  InkWell(
+                    onTap: buttonFunc,
+                    child: SizedBox(
+                      // width: 124,
+                      height: 40,
+                      child: RoundButton(
                         borderColor: SUB01_COLOR,
                         borderWidth: 0,
                         colors: SUB01_COLOR,
                         horizontal: 28,
                         vertical: 10,
-                        name: "+ 회원등록",
+                        name: buttonName!,
                         fontWeight: FontWeight.w700,
                         fontSize: 12,
                       ),

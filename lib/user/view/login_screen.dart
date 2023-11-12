@@ -16,8 +16,8 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  String loginid = '';
-  String passwd = '';
+  String loginid = 'admin1';
+  String passwd = 'admin1';
 
   @override
   Widget build(BuildContext context) {

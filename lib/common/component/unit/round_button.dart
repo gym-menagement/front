@@ -11,6 +11,7 @@ class RoundButton extends StatelessWidget {
   final FontWeight fontWeight;
   final String name;
   final double borderWidth;
+  final VoidCallback? clickFunc;
 
   const RoundButton({
     super.key,
@@ -23,36 +24,41 @@ class RoundButton extends StatelessWidget {
     this.fontWeight = FontWeight.w500,
     required this.name,
     this.borderWidth = 1.0,
+    this.clickFunc,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: horizontal, vertical: vertical),
-      decoration: ShapeDecoration(
-        color: colors,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(
-            width: borderWidth,
-            color: borderColor,
-          ),
-          borderRadius: BorderRadius.circular(100),
-        ),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            name,
-            style: TextStyle(
-              color: textColor,
-              fontSize: fontSize,
-              fontWeight: fontWeight,
+    return InkWell(
+      onTap: clickFunc,
+      child: Container(
+        padding:
+            EdgeInsets.symmetric(horizontal: horizontal, vertical: vertical),
+        decoration: ShapeDecoration(
+          color: colors,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(
+              width: borderWidth,
+              color: borderColor,
             ),
+            borderRadius: BorderRadius.circular(100),
           ),
-        ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              name,
+              style: TextStyle(
+                color: textColor,
+                fontSize: fontSize,
+                fontWeight: fontWeight,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
