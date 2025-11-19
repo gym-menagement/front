@@ -17,7 +17,7 @@
     "test:e2e:webkit": "playwright test --project=webkit",
     "test:e2e:mobile": "playwright test --project='Mobile Chrome' --project='Mobile Safari'",
     "test:e2e:report": "playwright show-report",
-    "test:e2e:codegen": "playwright codegen http://localhost:5173"
+    "test:e2e:codegen": "playwright codegen http://localhost:9004"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.10",

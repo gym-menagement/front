@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, Input, Card, Badge } from '../components/ui';
+import { Button, Input, Card, Badge, Carousel, Navbar, Footer, Hero } from '../components/ui';
 import { theme } from '../theme';
 
 const ComponentsDemo = () => {
@@ -348,6 +348,257 @@ const ComponentsDemo = () => {
             </div>
           </Card>
         </div>
+
+        {/* Image Cards */}
+        <h3 style={{ ...sectionTitleStyles, fontSize: theme.typography.fontSize.xl, marginTop: theme.spacing[8], marginBottom: theme.spacing[6] }}>
+          Image Cards
+        </h3>
+        <div style={gridStyles}>
+          <Card padding="none" hoverable>
+            <div style={{
+              width: '100%',
+              height: '200px',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              borderTopLeftRadius: theme.borderRadius.xl,
+              borderTopRightRadius: theme.borderRadius.xl,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontSize: theme.typography.fontSize['2xl'],
+              fontWeight: theme.typography.fontWeight.semibold,
+            }}>
+              Image
+            </div>
+            <div style={{ padding: theme.spacing[6] }}>
+              <h3 style={{ ...demoTitleStyles, marginBottom: theme.spacing[2] }}>
+                Card with Image
+              </h3>
+              <p style={{ color: theme.colors.text.secondary, lineHeight: theme.typography.lineHeight.relaxed, marginBottom: theme.spacing[4] }}>
+                Cards can include images at the top with content below.
+              </p>
+              <Button size="sm" variant="primary">Learn More</Button>
+            </div>
+          </Card>
+
+          <Card padding="none" hoverable>
+            <div style={{
+              width: '100%',
+              height: '200px',
+              background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+              borderTopLeftRadius: theme.borderRadius.xl,
+              borderTopRightRadius: theme.borderRadius.xl,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontSize: theme.typography.fontSize['2xl'],
+              fontWeight: theme.typography.fontWeight.semibold,
+            }}>
+              Image
+            </div>
+            <div style={{ padding: theme.spacing[6] }}>
+              <div style={{ display: 'flex', gap: theme.spacing[2], marginBottom: theme.spacing[2] }}>
+                <Badge variant="success">Featured</Badge>
+                <Badge variant="info">New</Badge>
+              </div>
+              <h3 style={{ ...demoTitleStyles, marginBottom: theme.spacing[2] }}>
+                Product Card
+              </h3>
+              <p style={{ color: theme.colors.text.secondary, lineHeight: theme.typography.lineHeight.relaxed, marginBottom: theme.spacing[4] }}>
+                Perfect for showcasing products with images and badges.
+              </p>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: theme.typography.fontSize.xl, fontWeight: theme.typography.fontWeight.bold, color: theme.colors.brand.primary }}>
+                  $99
+                </span>
+                <Button size="sm" variant="secondary">Add to Cart</Button>
+              </div>
+            </div>
+          </Card>
+
+          <Card padding="none" clickable>
+            <div style={{
+              width: '100%',
+              height: '200px',
+              background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+              borderTopLeftRadius: theme.borderRadius.xl,
+              borderTopRightRadius: theme.borderRadius.xl,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontSize: theme.typography.fontSize['2xl'],
+              fontWeight: theme.typography.fontWeight.semibold,
+            }}>
+              Image
+            </div>
+            <div style={{ padding: theme.spacing[6] }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing[3], marginBottom: theme.spacing[3] }}>
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: theme.borderRadius.full,
+                  background: theme.colors.background.tertiary,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: theme.typography.fontSize.lg,
+                  fontWeight: theme.typography.fontWeight.semibold,
+                  color: theme.colors.text.secondary,
+                }}>
+                  JD
+                </div>
+                <div>
+                  <h4 style={{ fontSize: theme.typography.fontSize.base, fontWeight: theme.typography.fontWeight.semibold, color: theme.colors.text.primary }}>
+                    John Doe
+                  </h4>
+                  <p style={{ fontSize: theme.typography.fontSize.sm, color: theme.colors.text.tertiary }}>
+                    2 hours ago
+                  </p>
+                </div>
+              </div>
+              <h3 style={{ ...demoTitleStyles, marginBottom: theme.spacing[2] }}>
+                Blog Post Card
+              </h3>
+              <p style={{ color: theme.colors.text.secondary, lineHeight: theme.typography.lineHeight.relaxed }}>
+                Ideal for blog posts with author information and timestamps.
+              </p>
+            </div>
+          </Card>
+        </div>
+      </section>
+
+      {/* Carousel Section */}
+      <section style={sectionStyles}>
+        <h2 style={sectionTitleStyles}>Carousel</h2>
+        <p style={sectionDescStyles}>
+          이미지나 콘텐츠를 슬라이드 형태로 보여주는 캐러셀 컴포넌트입니다.
+        </p>
+
+        <div style={{ marginBottom: theme.spacing[8] }}>
+          <h3 style={{ ...demoTitleStyles, marginBottom: theme.spacing[4] }}>
+            Auto-play Carousel
+          </h3>
+          <Carousel autoPlay autoPlayInterval={3000}>
+            <div style={{
+              width: '100%',
+              height: '400px',
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontSize: theme.typography.fontSize['4xl'],
+              fontWeight: theme.typography.fontWeight.bold,
+            }}>
+              Slide 1
+            </div>
+            <div style={{
+              width: '100%',
+              height: '400px',
+              background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontSize: theme.typography.fontSize['4xl'],
+              fontWeight: theme.typography.fontWeight.bold,
+            }}>
+              Slide 2
+            </div>
+            <div style={{
+              width: '100%',
+              height: '400px',
+              background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontSize: theme.typography.fontSize['4xl'],
+              fontWeight: theme.typography.fontWeight.bold,
+            }}>
+              Slide 3
+            </div>
+            <div style={{
+              width: '100%',
+              height: '400px',
+              background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'white',
+              fontSize: theme.typography.fontSize['4xl'],
+              fontWeight: theme.typography.fontWeight.bold,
+            }}>
+              Slide 4
+            </div>
+          </Carousel>
+          <div style={codeBoxStyles}>
+            {'<Carousel autoPlay autoPlayInterval={3000}>...</Carousel>'}
+          </div>
+        </div>
+
+        <div style={{ marginBottom: theme.spacing[8] }}>
+          <h3 style={{ ...demoTitleStyles, marginBottom: theme.spacing[4] }}>
+            Content Carousel with Cards
+          </h3>
+          <Carousel showDots showArrows>
+            <div style={{ padding: theme.spacing[8], background: theme.colors.background.secondary }}>
+              <Card variant="elevated" style={{ maxWidth: '600px', margin: '0 auto' }}>
+                <Badge variant="info" style={{ marginBottom: theme.spacing[3] }}>Feature 1</Badge>
+                <h3 style={{ fontSize: theme.typography.fontSize['3xl'], fontWeight: theme.typography.fontWeight.bold, marginBottom: theme.spacing[4], color: theme.colors.text.primary }}>
+                  Amazing Feature
+                </h3>
+                <p style={{ fontSize: theme.typography.fontSize.lg, color: theme.colors.text.secondary, lineHeight: theme.typography.lineHeight.relaxed }}>
+                  This is the first feature of our product. It provides incredible value and helps you achieve your goals faster.
+                </p>
+              </Card>
+            </div>
+            <div style={{ padding: theme.spacing[8], background: theme.colors.background.secondary }}>
+              <Card variant="elevated" style={{ maxWidth: '600px', margin: '0 auto' }}>
+                <Badge variant="success" style={{ marginBottom: theme.spacing[3] }}>Feature 2</Badge>
+                <h3 style={{ fontSize: theme.typography.fontSize['3xl'], fontWeight: theme.typography.fontWeight.bold, marginBottom: theme.spacing[4], color: theme.colors.text.primary }}>
+                  Powerful Integration
+                </h3>
+                <p style={{ fontSize: theme.typography.fontSize.lg, color: theme.colors.text.secondary, lineHeight: theme.typography.lineHeight.relaxed }}>
+                  Seamlessly integrate with your existing tools and workflows. Save time and boost productivity.
+                </p>
+              </Card>
+            </div>
+            <div style={{ padding: theme.spacing[8], background: theme.colors.background.secondary }}>
+              <Card variant="elevated" style={{ maxWidth: '600px', margin: '0 auto' }}>
+                <Badge variant="warning" style={{ marginBottom: theme.spacing[3] }}>Feature 3</Badge>
+                <h3 style={{ fontSize: theme.typography.fontSize['3xl'], fontWeight: theme.typography.fontWeight.bold, marginBottom: theme.spacing[4], color: theme.colors.text.primary }}>
+                  Real-time Analytics
+                </h3>
+                <p style={{ fontSize: theme.typography.fontSize.lg, color: theme.colors.text.secondary, lineHeight: theme.typography.lineHeight.relaxed }}>
+                  Track your performance with real-time analytics and insights. Make data-driven decisions.
+                </p>
+              </Card>
+            </div>
+          </Carousel>
+          <div style={codeBoxStyles}>
+            {'<Carousel showDots showArrows>...</Carousel>'}
+          </div>
+        </div>
+
+        <div style={{ marginBottom: theme.spacing[8] }}>
+          <h3 style={{ ...demoTitleStyles, marginBottom: theme.spacing[4] }}>
+            Carousel Options
+          </h3>
+          <div style={demoBoxStyles}>
+            <div style={demoContentStyles}>
+              <div style={{ fontSize: theme.typography.fontSize.sm, color: theme.colors.text.secondary, lineHeight: theme.typography.lineHeight.relaxed }}>
+                <p style={{ marginBottom: theme.spacing[2] }}><strong>autoPlay</strong>: Enable automatic slide transitions</p>
+                <p style={{ marginBottom: theme.spacing[2] }}><strong>autoPlayInterval</strong>: Time between slides in milliseconds (default: 3000)</p>
+                <p style={{ marginBottom: theme.spacing[2] }}><strong>showDots</strong>: Show navigation dots (default: true)</p>
+                <p style={{ marginBottom: theme.spacing[2] }}><strong>showArrows</strong>: Show navigation arrows (default: true)</p>
+                <p><strong>infinite</strong>: Enable infinite loop (default: true)</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Badges Section */}
@@ -480,6 +731,251 @@ const ComponentsDemo = () => {
             ))}
           </div>
         </Card>
+      </section>
+
+      {/* Hero Section */}
+      <section style={sectionStyles}>
+        <h2 style={sectionTitleStyles}>Hero</h2>
+        <p style={sectionDescStyles}>
+          페이지 상단에 사용되는 히어로 섹션 컴포넌트입니다.
+        </p>
+
+        <div style={{ marginBottom: theme.spacing[8] }}>
+          <h3 style={{ ...demoTitleStyles, marginBottom: theme.spacing[4] }}>
+            Center Aligned Hero
+          </h3>
+          <Hero
+            subtitle="NEW FEATURE"
+            title="Build amazing products with Linear Design System"
+            description="A modern, reusable component library inspired by Linear.app. Create beautiful user interfaces with ease."
+            alignment="center"
+            size="lg"
+            actions={
+              <>
+                <Button variant="primary" size="lg">Get Started</Button>
+                <Button variant="secondary" size="lg">Learn More</Button>
+              </>
+            }
+          />
+          <div style={codeBoxStyles}>
+            {'<Hero title="..." description="..." actions={<Button>...</Button>} />'}
+          </div>
+        </div>
+
+        <div style={{ marginBottom: theme.spacing[8] }}>
+          <h3 style={{ ...demoTitleStyles, marginBottom: theme.spacing[4] }}>
+            Left Aligned Hero with Image
+          </h3>
+          <Hero
+            subtitle="WELCOME"
+            title="Modern Design System"
+            description="Build faster with pre-built components that follow best practices."
+            alignment="left"
+            size="md"
+            actions={
+              <>
+                <Button variant="primary">Start Building</Button>
+                <Button variant="ghost">View Docs</Button>
+              </>
+            }
+            image={
+              <div style={{
+                width: '100%',
+                height: '400px',
+                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                borderRadius: theme.borderRadius.xl,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'white',
+                fontSize: theme.typography.fontSize['2xl'],
+                fontWeight: theme.typography.fontWeight.bold,
+              }}>
+                Hero Image
+              </div>
+            }
+          />
+          <div style={codeBoxStyles}>
+            {'<Hero alignment="left" image={<img src="..." />} />'}
+          </div>
+        </div>
+
+        <div style={{ marginBottom: theme.spacing[8] }}>
+          <h3 style={{ ...demoTitleStyles, marginBottom: theme.spacing[4] }}>
+            Hero with Background & Overlay
+          </h3>
+          <Hero
+            title="Create Something Amazing"
+            description="Join thousands of developers building the future with our design system"
+            alignment="center"
+            size="xl"
+            background="linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)"
+            overlay
+            actions={
+              <>
+                <Button variant="primary" size="lg">Get Started Free</Button>
+                <Button variant="ghost" size="lg" style={{ color: 'white', borderColor: 'white' }}>Watch Demo</Button>
+              </>
+            }
+          />
+          <div style={codeBoxStyles}>
+            {'<Hero background="..." overlay actions={...} />'}
+          </div>
+        </div>
+      </section>
+
+      {/* Navbar Section */}
+      <section style={sectionStyles}>
+        <h2 style={sectionTitleStyles}>Navbar</h2>
+        <p style={sectionDescStyles}>
+          반응형 네비게이션 바 컴포넌트입니다.
+        </p>
+
+        <div style={{ marginBottom: theme.spacing[8] }}>
+          <h3 style={{ ...demoTitleStyles, marginBottom: theme.spacing[4] }}>
+            Basic Navbar
+          </h3>
+          <Card padding="none">
+            <Navbar
+              logo={<span style={{ fontWeight: theme.typography.fontWeight.bold }}>Logo</span>}
+              leftItems={
+                <>
+                  <Button variant="ghost" size="sm">Features</Button>
+                  <Button variant="ghost" size="sm">Pricing</Button>
+                  <Button variant="ghost" size="sm">About</Button>
+                </>
+              }
+              rightItems={
+                <>
+                  <Button variant="ghost" size="sm">Sign In</Button>
+                  <Button variant="primary" size="sm">Sign Up</Button>
+                </>
+              }
+            />
+          </Card>
+          <div style={codeBoxStyles}>
+            {'<Navbar logo={...} leftItems={...} rightItems={...} />'}
+          </div>
+        </div>
+
+        <div style={{ marginBottom: theme.spacing[8] }}>
+          <h3 style={{ ...demoTitleStyles, marginBottom: theme.spacing[4] }}>
+            Transparent Navbar
+          </h3>
+          <Card padding="none" style={{ background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', minHeight: '200px' }}>
+            <Navbar
+              logo={<span style={{ fontWeight: theme.typography.fontWeight.bold, color: 'white' }}>Logo</span>}
+              leftItems={
+                <>
+                  <Button variant="ghost" size="sm" style={{ color: 'white' }}>Home</Button>
+                  <Button variant="ghost" size="sm" style={{ color: 'white' }}>Products</Button>
+                  <Button variant="ghost" size="sm" style={{ color: 'white' }}>Contact</Button>
+                </>
+              }
+              rightItems={
+                <Button variant="secondary" size="sm">Get Started</Button>
+              }
+              transparent
+              bordered={false}
+              sticky={false}
+            />
+            <div style={{ padding: theme.spacing[12], color: 'white', textAlign: 'center' }}>
+              <h2 style={{ fontSize: theme.typography.fontSize['3xl'], fontWeight: theme.typography.fontWeight.bold }}>
+                Content Below Navbar
+              </h2>
+            </div>
+          </Card>
+          <div style={codeBoxStyles}>
+            {'<Navbar transparent bordered={false} />'}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer Section */}
+      <section style={sectionStyles}>
+        <h2 style={sectionTitleStyles}>Footer</h2>
+        <p style={sectionDescStyles}>
+          페이지 하단에 사용되는 푸터 컴포넌트입니다.
+        </p>
+
+        <div style={{ marginBottom: theme.spacing[8] }}>
+          <h3 style={{ ...demoTitleStyles, marginBottom: theme.spacing[4] }}>
+            Complete Footer
+          </h3>
+          <Card padding="none">
+            <Footer
+              logo={<span style={{ fontWeight: theme.typography.fontWeight.bold, fontSize: theme.typography.fontSize.xl }}>Logo</span>}
+              description="Building the future of design systems with modern, reusable components."
+              columns={[
+                {
+                  title: 'Product',
+                  links: [
+                    { label: 'Features', href: '#' },
+                    { label: 'Pricing', href: '#' },
+                    { label: 'Security', href: '#' },
+                    { label: 'Roadmap', href: '#' },
+                  ],
+                },
+                {
+                  title: 'Company',
+                  links: [
+                    { label: 'About', href: '#' },
+                    { label: 'Blog', href: '#' },
+                    { label: 'Careers', href: '#' },
+                    { label: 'Contact', href: '#' },
+                  ],
+                },
+                {
+                  title: 'Resources',
+                  links: [
+                    { label: 'Documentation', href: '#' },
+                    { label: 'Help Center', href: '#' },
+                    { label: 'Community', href: '#' },
+                    { label: 'Updates', href: '#' },
+                  ],
+                },
+              ]}
+              socialLinks={
+                <div style={{ display: 'flex', gap: theme.spacing[3] }}>
+                  <Button variant="ghost" size="sm">Twitter</Button>
+                  <Button variant="ghost" size="sm">GitHub</Button>
+                  <Button variant="ghost" size="sm">LinkedIn</Button>
+                </div>
+              }
+              copyright="© 2025 Linear Design System. All rights reserved."
+              bottomLinks={
+                <>
+                  <a href="#" style={{ fontSize: theme.typography.fontSize.sm, color: theme.colors.text.secondary, textDecoration: 'none' }}>Privacy Policy</a>
+                  <a href="#" style={{ fontSize: theme.typography.fontSize.sm, color: theme.colors.text.secondary, textDecoration: 'none' }}>Terms of Service</a>
+                  <a href="#" style={{ fontSize: theme.typography.fontSize.sm, color: theme.colors.text.secondary, textDecoration: 'none' }}>Cookie Policy</a>
+                </>
+              }
+            />
+          </Card>
+          <div style={codeBoxStyles}>
+            {'<Footer logo={...} columns={...} copyright="..." />'}
+          </div>
+        </div>
+
+        <div style={{ marginBottom: theme.spacing[8] }}>
+          <h3 style={{ ...demoTitleStyles, marginBottom: theme.spacing[4] }}>
+            Simple Footer
+          </h3>
+          <Card padding="none">
+            <Footer
+              copyright="© 2025 Your Company. All rights reserved."
+              bottomLinks={
+                <>
+                  <a href="#" style={{ fontSize: theme.typography.fontSize.sm, color: theme.colors.text.secondary, textDecoration: 'none' }}>Privacy</a>
+                  <a href="#" style={{ fontSize: theme.typography.fontSize.sm, color: theme.colors.text.secondary, textDecoration: 'none' }}>Terms</a>
+                </>
+              }
+            />
+          </Card>
+          <div style={codeBoxStyles}>
+            {'<Footer copyright="..." bottomLinks={...} />'}
+          </div>
+        </div>
       </section>
     </div>
   );

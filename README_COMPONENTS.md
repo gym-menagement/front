@@ -11,11 +11,15 @@ src/
 │   └── index.ts       # 테마 export
 ├── components/
 │   └── ui/            # 재사용 가능한 UI 컴포넌트
-│       ├── Button.tsx # 버튼 컴포넌트
-│       ├── Input.tsx  # 입력 컴포넌트
-│       ├── Card.tsx   # 카드 컴포넌트
-│       ├── Badge.tsx  # 배지 컴포넌트
-│       └── index.ts   # 컴포넌트 export
+│       ├── Button.tsx   # 버튼 컴포넌트
+│       ├── Input.tsx    # 입력 컴포넌트
+│       ├── Card.tsx     # 카드 컴포넌트
+│       ├── Badge.tsx    # 배지 컴포넌트
+│       ├── Carousel.tsx # 캐러셀 컴포넌트
+│       ├── Navbar.tsx   # 네비게이션 바 컴포넌트
+│       ├── Footer.tsx   # 푸터 컴포넌트
+│       ├── Hero.tsx     # 히어로 섹션 컴포넌트
+│       └── index.ts     # 컴포넌트 export
 ├── pages/
 │   └── ComponentsDemo.tsx  # 컴포넌트 데모 페이지
 ├── index.css          # 전역 스타일 및 CSS 변수
@@ -25,6 +29,7 @@ src/
 ## 사용 가능한 컴포넌트
 
 ### Button
+
 다양한 스타일과 크기를 지원하는 버튼 컴포넌트
 
 ```tsx
@@ -51,6 +56,7 @@ import { Button } from './components/ui';
 ```
 
 **Props:**
+
 - `variant`: 'primary' | 'secondary' | 'ghost' | 'danger'
 - `size`: 'sm' | 'md' | 'lg'
 - `fullWidth`: boolean
@@ -59,6 +65,7 @@ import { Button } from './components/ui';
 - `leftIcon`, `rightIcon`: React.ReactNode
 
 ### Input
+
 레이블, 에러 메시지, 아이콘 등을 지원하는 입력 컴포넌트
 
 ```tsx
@@ -87,6 +94,7 @@ import { Input } from './components/ui';
 ```
 
 **Props:**
+
 - `label`: string
 - `error`: string
 - `helperText`: string
@@ -96,6 +104,7 @@ import { Input } from './components/ui';
 - 모든 HTML input 속성 지원
 
 ### Card
+
 다양한 스타일과 인터랙션을 지원하는 카드 컴포넌트
 
 ```tsx
@@ -115,15 +124,65 @@ import { Card } from './components/ui';
 // Interactive
 <Card hoverable>Hoverable Card</Card>
 <Card clickable onClick={handleClick}>Clickable Card</Card>
+
+// With Image
+<Card padding="none" hoverable>
+  <img src="image.jpg" alt="Card image" />
+  <div style={{ padding: '1.5rem' }}>
+    <h3>Card Title</h3>
+    <p>Card description</p>
+  </div>
+</Card>
 ```
 
 **Props:**
+
 - `variant`: 'default' | 'elevated' | 'outlined' | 'ghost'
 - `padding`: 'none' | 'sm' | 'md' | 'lg' | 'xl'
 - `hoverable`: boolean
 - `clickable`: boolean
 
+### Carousel
+
+이미지나 콘텐츠를 슬라이드 형태로 보여주는 캐러셀 컴포넌트
+
+```tsx
+import { Carousel } from './components/ui';
+
+// Basic Carousel
+<Carousel>
+  <div>Slide 1</div>
+  <div>Slide 2</div>
+  <div>Slide 3</div>
+</Carousel>
+
+// Auto-play
+<Carousel autoPlay autoPlayInterval={3000}>
+  <div>Slide 1</div>
+  <div>Slide 2</div>
+</Carousel>
+
+// Custom options
+<Carousel
+  showDots={true}
+  showArrows={true}
+  infinite={true}
+>
+  <div>Slide 1</div>
+  <div>Slide 2</div>
+</Carousel>
+```
+
+**Props:**
+
+- `autoPlay`: boolean - 자동 슬라이드 전환
+- `autoPlayInterval`: number - 슬라이드 전환 간격(ms) (기본값: 3000)
+- `showDots`: boolean - 네비게이션 점 표시 (기본값: true)
+- `showArrows`: boolean - 네비게이션 화살표 표시 (기본값: true)
+- `infinite`: boolean - 무한 루프 활성화 (기본값: true)
+
 ### Badge
+
 상태나 카테고리를 표시하는 배지 컴포넌트
 
 ```tsx
@@ -149,6 +208,163 @@ import { Badge } from './components/ui';
 - `variant`: 'default' | 'success' | 'warning' | 'error' | 'info'
 - `size`: 'sm' | 'md' | 'lg'
 - `dot`: boolean
+
+### Hero
+페이지 상단에 사용되는 히어로 섹션 컴포넌트
+
+```tsx
+import { Hero } from './components/ui';
+
+// Center aligned
+<Hero
+  title="Welcome to Our Product"
+  description="Build amazing things with our platform"
+  alignment="center"
+  actions={<Button>Get Started</Button>}
+/>
+
+// With image
+<Hero
+  title="Modern Design System"
+  description="Build faster with pre-built components"
+  alignment="left"
+  image={<img src="hero.jpg" />}
+  actions={
+    <>
+      <Button variant="primary">Start Building</Button>
+      <Button variant="ghost">Learn More</Button>
+    </>
+  }
+/>
+
+// With background overlay
+<Hero
+  title="Create Something Amazing"
+  background="url(bg.jpg)"
+  overlay
+  size="xl"
+  actions={<Button>Get Started Free</Button>}
+/>
+```
+
+**Props:**
+- `title`: string (required)
+- `subtitle`: string
+- `description`: string
+- `actions`: React.ReactNode
+- `image`: React.ReactNode
+- `alignment`: 'left' | 'center' (기본값: 'center')
+- `size`: 'md' | 'lg' | 'xl' (기본값: 'lg')
+- `background`: string - CSS background 값
+- `overlay`: boolean - 배경에 어두운 오버레이 추가
+
+### Navbar
+반응형 네비게이션 바 컴포넌트
+
+```tsx
+import { Navbar } from './components/ui';
+
+// Basic navbar
+<Navbar
+  logo={<span>Logo</span>}
+  leftItems={
+    <>
+      <Button variant="ghost">Features</Button>
+      <Button variant="ghost">Pricing</Button>
+    </>
+  }
+  rightItems={
+    <>
+      <Button variant="ghost">Sign In</Button>
+      <Button variant="primary">Sign Up</Button>
+    </>
+  }
+/>
+
+// Transparent navbar
+<Navbar
+  logo={<span>Logo</span>}
+  leftItems={...}
+  rightItems={...}
+  transparent
+  bordered={false}
+/>
+```
+
+**Props:**
+- `logo`: React.ReactNode
+- `leftItems`: React.ReactNode
+- `rightItems`: React.ReactNode
+- `sticky`: boolean - 스크롤 시 상단 고정 (기본값: true)
+- `transparent`: boolean - 투명 배경
+- `bordered`: boolean - 하단 테두리 (기본값: true)
+
+**특징:**
+- 모바일 반응형 (768px 이하에서 햄버거 메뉴)
+- Sticky 포지셔닝 지원
+- Backdrop blur 효과
+
+### Footer
+페이지 하단에 사용되는 푸터 컴포넌트
+
+```tsx
+import { Footer } from './components/ui';
+
+// Complete footer
+<Footer
+  logo={<span>Logo</span>}
+  description="Building the future of design systems"
+  columns={[
+    {
+      title: 'Product',
+      links: [
+        { label: 'Features', href: '#' },
+        { label: 'Pricing', href: '#' },
+      ],
+    },
+    {
+      title: 'Company',
+      links: [
+        { label: 'About', href: '#' },
+        { label: 'Careers', href: '#' },
+      ],
+    },
+  ]}
+  socialLinks={<div>Social icons...</div>}
+  copyright="© 2025 Company Name"
+  bottomLinks={
+    <>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </>
+  }
+/>
+
+// Simple footer
+<Footer
+  copyright="© 2025 Company"
+  bottomLinks={<a href="#">Privacy</a>}
+/>
+```
+
+**Props:**
+- `logo`: React.ReactNode
+- `description`: string
+- `columns`: FooterColumn[] - 링크 컬럼 배열
+- `socialLinks`: React.ReactNode
+- `copyright`: string
+- `bottomLinks`: React.ReactNode
+
+**FooterColumn 타입:**
+```tsx
+interface FooterColumn {
+  title: string;
+  links: Array<{
+    label: string;
+    href: string;
+  }>;
+}
+```
 
 ## 테마 사용하기
 
