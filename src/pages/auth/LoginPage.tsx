@@ -43,13 +43,13 @@ const LoginPage = () => {
           window.location.href = '/admin/dashboard';
           break;
         case 3:
-          window.location.href = '/trainer/dashboard';
+          window.location.href = '/admin/dashboard';
           break;
         case 4:
-          window.location.href = '/staff/dashboard';
+          window.location.href = '/admin/dashboard';
           break;
         case 5:
-          window.location.href = '/member/dashboard';
+          window.location.href = '/admin/dashboard';
           break;
         default:
         // window.location.href = '/';

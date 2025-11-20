@@ -15,8 +15,11 @@ import GymList from './pages/gym/GymList';
 // Trainer Pages (to be created)
 // import TrainerDashboard from './pages/trainer/Dashboard';
 
-// Admin Pages (to be created)
-// import AdminDashboard from './pages/admin/Dashboard';
+// Admin Pages
+import AdminDashboard from './pages/admin/AdminDashboard';
+import MemberManagement from './pages/admin/MemberManagement';
+import TrainerManagement from './pages/admin/TrainerManagement';
+import MembershipManagement from './pages/admin/MembershipManagement';
 
 // Demo Page (keep for component showcase)
 import ComponentsDemo from './pages/ComponentsDemo';
@@ -103,7 +106,31 @@ function App() {
           path="/admin/dashboard"
           element={
             <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <div>Admin Dashboard (To be implemented)</div>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/members"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <MemberManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/trainers"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <TrainerManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/memberships"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <MembershipManagement />
             </ProtectedRoute>
           }
         />
