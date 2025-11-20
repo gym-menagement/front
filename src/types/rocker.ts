@@ -1,15 +1,11 @@
 // Auto-generated TypeScript types for Rocker
 // Generated from table: rocker
 
-// Available type
-export type Available = 1 | 2;
-
-// Main entity interface
 export interface Rocker {
-  id: string;
-  group: string;
+  id: number;
+  group: number;
   name: string;
-  available: string;
+  available: number;
   date: string;
 }
 
@@ -21,10 +17,10 @@ export type UpdateRockerRequest = Partial<Omit<Rocker, 'id'>>;
 
 // Search params type
 export interface RockerSearchParams {
-  id?: string;
-  group?: string;
+  id?: number;
+  group?: number;
   name?: string;
-  available?: string;
+  available?: number;
   date?: string;
   page?: number;
   limit?: number;

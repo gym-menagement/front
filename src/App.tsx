@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
 import { isAuthenticatedAtom, userAtom } from './store/auth';
+import { User as UserModel } from './models';
 
 // Auth Pages
 import LoginPage from './pages/auth/LoginPage';
@@ -26,7 +27,7 @@ const ProtectedRoute = ({
   requiredRole,
 }: {
   children: React.ReactNode;
-  requiredRole?: string;
+  requiredRole?: number;
 }) => {
   const isAuthenticated = useAtomValue(isAuthenticatedAtom);
   const user = useAtomValue(userAtom);
@@ -46,7 +47,7 @@ const ProtectedRoute = ({
   }
 
   // Check if user has required role
-  if (requiredRole && user.role !== requiredRole) {
+  if (requiredRole !== undefined && user.role !== requiredRole) {
     return <Navigate to="/login" replace />;
   }
 
@@ -65,7 +66,7 @@ function App() {
         <Route
           path="/member/dashboard"
           element={
-            <ProtectedRoute requiredRole="MEMBER">
+            <ProtectedRoute requiredRole={UserModel.role.MEMBER}>
               <MemberDashboard />
             </ProtectedRoute>
           }
@@ -73,7 +74,7 @@ function App() {
         <Route
           path="/member/gyms"
           element={
-            <ProtectedRoute requiredRole="MEMBER">
+            <ProtectedRoute requiredRole={UserModel.role.MEMBER}>
               <GymList />
             </ProtectedRoute>
           }
@@ -81,7 +82,7 @@ function App() {
         <Route
           path="/gym/:gymId"
           element={
-            <ProtectedRoute requiredRole="MEMBER">
+            <ProtectedRoute requiredRole={UserModel.role.MEMBER}>
               <div>Gym Details (To be implemented)</div>
             </ProtectedRoute>
           }
@@ -91,7 +92,7 @@ function App() {
         <Route
           path="/trainer/dashboard"
           element={
-            <ProtectedRoute requiredRole="TRAINER">
+            <ProtectedRoute requiredRole={UserModel.role.TRAINER}>
               <div>Trainer Dashboard (To be implemented)</div>
             </ProtectedRoute>
           }
@@ -101,7 +102,7 @@ function App() {
         <Route
           path="/admin/dashboard"
           element={
-            <ProtectedRoute requiredRole="ADMIN">
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
               <div>Admin Dashboard (To be implemented)</div>
             </ProtectedRoute>
           }

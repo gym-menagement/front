@@ -1,13 +1,12 @@
 // Auto-generated TypeScript types for Payment
 // Generated from table: payment
 
-// Main entity interface
 export interface Payment {
-  id: string;
-  gym: string;
-  order: string;
-  membership: string;
-  cost: string;
+  id: number;
+  gym: number;
+  order: number;
+  membership: number;
+  cost: number;
   date: string;
 }
 
@@ -19,11 +18,11 @@ export type UpdatePaymentRequest = Partial<Omit<Payment, 'id'>>;
 
 // Search params type
 export interface PaymentSearchParams {
-  id?: string;
-  gym?: string;
-  order?: string;
-  membership?: string;
-  cost?: string;
+  id?: number;
+  gym?: number;
+  order?: number;
+  membership?: number;
+  cost?: number;
   date?: string;
   page?: number;
   limit?: number;

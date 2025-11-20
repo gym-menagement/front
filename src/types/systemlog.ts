@@ -1,18 +1,11 @@
 // Auto-generated TypeScript types for Systemlog
 // Generated from table: systemlog
 
-// Type type
-export type Type = 1 | 2;
-
-// Result type
-export type Result = 1 | 2;
-
-// Main entity interface
 export interface Systemlog {
-  id: string;
-  type: string;
+  id: number;
+  type: number;
   content: string;
-  result: string;
+  result: number;
   date: string;
 }
 
@@ -24,10 +17,10 @@ export type UpdateSystemlogRequest = Partial<Omit<Systemlog, 'id'>>;
 
 // Search params type
 export interface SystemlogSearchParams {
-  id?: string;
-  type?: string;
+  id?: number;
+  type?: number;
   content?: string;
-  result?: string;
+  result?: number;
   date?: string;
   page?: number;
   limit?: number;

@@ -1,20 +1,13 @@
 // Auto-generated TypeScript types for Alarm
 // Generated from table: alarm
 
-// Type type
-export type Type = 1 | 2 | 3 | 4;
-
-// Status type
-export type Status = 1 | 2 | 3;
-
-// Main entity interface
 export interface Alarm {
-  id: string;
+  id: number;
   title: string;
   content: string;
-  type: string;
-  status: string;
-  user: string;
+  type: number;
+  status: number;
+  user: number;
   date: string;
 }
 
@@ -26,12 +19,12 @@ export type UpdateAlarmRequest = Partial<Omit<Alarm, 'id'>>;
 
 // Search params type
 export interface AlarmSearchParams {
-  id?: string;
+  id?: number;
   title?: string;
   content?: string;
-  type?: string;
-  status?: string;
-  user?: string;
+  type?: number;
+  status?: number;
+  user?: number;
   date?: string;
   page?: number;
   limit?: number;

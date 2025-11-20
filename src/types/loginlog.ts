@@ -1,12 +1,11 @@
 // Auto-generated TypeScript types for Loginlog
 // Generated from table: loginlog
 
-// Main entity interface
 export interface Loginlog {
-  id: string;
+  id: number;
   ip: string;
-  ipvalue: string;
-  user: string;
+  ipvalue: number;
+  user: number;
   date: string;
 }
 
@@ -18,10 +17,10 @@ export type UpdateLoginlogRequest = Partial<Omit<Loginlog, 'id'>>;
 
 // Search params type
 export interface LoginlogSearchParams {
-  id?: string;
+  id?: number;
   ip?: string;
-  ipvalue?: string;
-  user?: string;
+  ipvalue?: number;
+  user?: number;
   date?: string;
   page?: number;
   limit?: number;

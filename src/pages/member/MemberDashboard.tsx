@@ -2,13 +2,17 @@ import { useState, useEffect } from 'react';
 import { useAtomValue } from 'jotai';
 import { userAtom } from '../../store/auth';
 import { Card, Button, Badge } from '../../components/ui';
-import { get } from '../../services/api';
+import {
+  Membership as MembershipModel,
+  Attendance as AttendanceModel,
+  MemberQR as MemberQRModel,
+  PTReservation as PTReservationModel,
+} from '../../models';
 import type {
   Membership,
   Attendance,
   MemberQR,
   PTReservation,
-  ApiResponse,
 } from '../../types';
 import { QRCodeSVG } from 'qrcode.react';
 
@@ -31,30 +35,34 @@ const MemberDashboard = () => {
       setLoading(true);
 
       // Load active memberships
-      const membershipRes = await get<ApiResponse<Membership>>(
-        `/membership/search/userId?userId=${user.u_id}&page=0&pageSize=10`
-      );
-      setMemberships(membershipRes.data.items || []);
+      const memberships = await MembershipModel.searchByUserId(user.id, {
+        page: 0,
+        pageSize: 10,
+      });
+      setMemberships(memberships);
 
       // Load recent attendance (last 7 days)
-      const attendanceRes = await get<ApiResponse<Attendance>>(
-        `/attendance/search/userId?userId=${user.u_id}&page=0&pageSize=7`
-      );
-      setRecentAttendance(attendanceRes.data.items || []);
+      const attendance = await AttendanceModel.searchByUserId(user.id, {
+        page: 0,
+        pageSize: 7,
+      });
+      setRecentAttendance(attendance);
 
       // Load QR code
-      const qrRes = await get<ApiResponse<MemberQR>>(
-        `/memberqr/search/userId?userId=${user.u_id}&page=0&pageSize=1`
-      );
-      if (qrRes.data.items && qrRes.data.items.length > 0) {
-        setQrCode(qrRes.data.items[0]);
+      const qrCodes = await MemberQRModel.searchByUserId(user.id, {
+        page: 0,
+        pageSize: 1,
+      });
+      if (qrCodes && qrCodes.length > 0) {
+        setQrCode(qrCodes[0]);
       }
 
       // Load upcoming PT reservations
-      const ptRes = await get<ApiResponse<PTReservation>>(
-        `/ptreservation/search/userId?userId=${user.u_id}&page=0&pageSize=5`
-      );
-      setUpcomingPT(ptRes.data.items || []);
+      const ptReservations = await PTReservationModel.searchByUserId(user.id, {
+        page: 0,
+        pageSize: 5,
+      });
+      setUpcomingPT(ptReservations);
     } catch (error) {
       console.error('Failed to load dashboard data:', error);
     } finally {
@@ -67,7 +75,7 @@ const MemberDashboard = () => {
       case 'ACTIVE':
         return 'success';
       case 'EXPIRED':
-        return 'danger';
+        return 'error';
       case 'PENDING':
         return 'warning';
       default:
@@ -106,7 +114,7 @@ const MemberDashboard = () => {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            안녕하세요, {user?.u_name}님
+            안녕하세요, {user?.name}님
           </h1>
           <p className="text-gray-600 dark:text-gray-400">
             오늘도 건강한 하루 되세요!
@@ -123,7 +131,7 @@ const MemberDashboard = () => {
                   내 회원권
                 </h2>
                 <Button
-                  variant="outline"
+                  variant="secondary"
                   size="sm"
                   onClick={() => (window.location.href = '/member/memberships')}
                 >
@@ -186,7 +194,7 @@ const MemberDashboard = () => {
                   최근 출석 기록
                 </h2>
                 <Button
-                  variant="outline"
+                  variant="secondary"
                   size="sm"
                   onClick={() => (window.location.href = '/member/attendance')}
                 >
@@ -235,7 +243,7 @@ const MemberDashboard = () => {
                   예정된 PT 세션
                 </h2>
                 <Button
-                  variant="outline"
+                  variant="secondary"
                   size="sm"
                   onClick={() => (window.location.href = '/member/pt')}
                 >
@@ -262,7 +270,7 @@ const MemberDashboard = () => {
                         </div>
                         <div className="text-sm text-gray-600 dark:text-gray-400">
                           {pt.pr_start_time} - {pt.pr_end_time}
-                          {pt.trainer && <> · {pt.trainer.u_name} 트레이너</>}
+                          {pt.trainer && <> · {pt.trainer.name} 트레이너</>}
                         </div>
                       </div>
                       <Badge
@@ -319,7 +327,7 @@ const MemberDashboard = () => {
               </h2>
               <div className="space-y-3">
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   className="w-full justify-start"
                   onClick={() => (window.location.href = '/member/gyms')}
                 >
@@ -339,7 +347,7 @@ const MemberDashboard = () => {
                   체육관 찾기
                 </Button>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   className="w-full justify-start"
                   onClick={() => (window.location.href = '/member/purchase')}
                 >
@@ -359,7 +367,7 @@ const MemberDashboard = () => {
                   회원권 구매
                 </Button>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   className="w-full justify-start"
                   onClick={() => (window.location.href = '/member/lockers')}
                 >
@@ -379,7 +387,7 @@ const MemberDashboard = () => {
                   라커 신청
                 </Button>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   className="w-full justify-start"
                   onClick={() =>
                     (window.location.href = '/member/body-metrics')
@@ -401,7 +409,7 @@ const MemberDashboard = () => {
                   체성분 기록
                 </Button>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   className="w-full justify-start"
                   onClick={() => (window.location.href = '/member/notices')}
                 >
@@ -434,7 +442,7 @@ const MemberDashboard = () => {
                     이름
                   </div>
                   <div className="font-medium text-gray-900 dark:text-white">
-                    {user?.u_name}
+                    {user?.name}
                   </div>
                 </div>
                 <div>
@@ -442,32 +450,32 @@ const MemberDashboard = () => {
                     아이디
                   </div>
                   <div className="font-medium text-gray-900 dark:text-white">
-                    {user?.u_loginid}
+                    {user?.loginid}
                   </div>
                 </div>
-                {user?.u_phone && (
+                {user?.phone && (
                   <div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">
                       전화번호
                     </div>
                     <div className="font-medium text-gray-900 dark:text-white">
-                      {user.u_phone}
+                      {user.phone}
                     </div>
                   </div>
                 )}
-                {user?.u_email && (
+                {user?.email && (
                   <div>
                     <div className="text-sm text-gray-600 dark:text-gray-400">
                       이메일
                     </div>
                     <div className="font-medium text-gray-900 dark:text-white">
-                      {user.u_email}
+                      {user.email}
                     </div>
                   </div>
                 )}
                 <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
                   <Button
-                    variant="outline"
+                    variant="secondary"
                     size="sm"
                     className="w-full"
                     onClick={() => (window.location.href = '/member/profile')}

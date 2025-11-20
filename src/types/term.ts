@@ -1,13 +1,12 @@
 // Auto-generated TypeScript types for Term
 // Generated from table: term
 
-// Main entity interface
 export interface Term {
-  id: string;
-  gym: string;
-  daytype: string;
+  id: number;
+  gym: number;
+  daytype: number;
   name: string;
-  term: string;
+  term: number;
   date: string;
 }
 
@@ -19,11 +18,11 @@ export type UpdateTermRequest = Partial<Omit<Term, 'id'>>;
 
 // Search params type
 export interface TermSearchParams {
-  id?: string;
-  gym?: string;
-  daytype?: string;
+  id?: number;
+  gym?: number;
+  daytype?: number;
   name?: string;
-  term?: string;
+  term?: number;
   date?: string;
   page?: number;
   limit?: number;

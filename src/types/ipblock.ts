@@ -1,23 +1,13 @@
 // Auto-generated TypeScript types for Ipblock
 // Generated from table: ipblock
 
-// Type type
-export type Type = 1 | 2;
-
-// Policy type
-export type Policy = 1 | 2;
-
-// Use type
-export type Use = 1 | 2;
-
-// Main entity interface
 export interface Ipblock {
-  id: string;
+  id: number;
   address: string;
-  type: string;
-  policy: string;
-  use: string;
-  order: string;
+  type: number;
+  policy: number;
+  use: number;
+  order: number;
   date: string;
 }
 
@@ -29,12 +19,12 @@ export type UpdateIpblockRequest = Partial<Omit<Ipblock, 'id'>>;
 
 // Search params type
 export interface IpblockSearchParams {
-  id?: string;
+  id?: number;
   address?: string;
-  type?: string;
-  policy?: string;
-  use?: string;
-  order?: string;
+  type?: number;
+  policy?: number;
+  use?: number;
+  order?: number;
   date?: string;
   page?: number;
   limit?: number;

@@ -1,11 +1,10 @@
 // Auto-generated TypeScript types for Discount
 // Generated from table: discount
 
-// Main entity interface
 export interface Discount {
-  id: string;
+  id: number;
   name: string;
-  discount: string;
+  discount: number;
   date: string;
 }
 
@@ -17,9 +16,9 @@ export type UpdateDiscountRequest = Partial<Omit<Discount, 'id'>>;
 
 // Search params type
 export interface DiscountSearchParams {
-  id?: string;
+  id?: number;
   name?: string;
-  discount?: string;
+  discount?: number;
   date?: string;
   page?: number;
   limit?: number;

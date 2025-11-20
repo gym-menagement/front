@@ -33,7 +33,11 @@ export default class UserModel {
     USE: 1,
     NOTUSE: 2,
   };
-  static readonly uses = ['', '사용', '사용안함'];
+  static readonly uses = [
+    '',
+    '사용',
+    '사용안함',
+  ];
 
   static getUse(value: number): string {
     return this.uses[value] || String(value);
@@ -47,7 +51,14 @@ export default class UserModel {
     GOOGLE: 4,
     APPLE: 5,
   };
-  static readonly types = ['', '일반', '카카오', '네이버', '구글', '애플'];
+  static readonly types = [
+    '',
+    '일반',
+    '카카오',
+    '네이버',
+    '구글',
+    '애플',
+  ];
 
   static getType(value: number): string {
     return this.types[value] || String(value);
@@ -79,7 +90,11 @@ export default class UserModel {
     MALE: 1,
     FEMALE: 2,
   };
-  static readonly sexs = ['', '남성', '여성'];
+  static readonly sexs = [
+    '',
+    '남성',
+    '여성',
+  ];
 
   static getSex(value: number): string {
     return this.sexs[value] || String(value);
@@ -157,9 +172,10 @@ export default class UserModel {
   }
 
   static async searchByTel(tel: string, params?: UserSearchParams) {
-    const res = await get<ApiResponse<User>>(`/user/search/tel?tel=${tel}`, {
-      params,
-    });
+    const res = await get<ApiResponse<User>>(
+      `/user/search/tel?tel=${tel}`,
+      { params }
+    );
     return res.data.items || [];
   }
 }

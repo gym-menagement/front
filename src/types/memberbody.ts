@@ -1,25 +1,24 @@
 // Auto-generated TypeScript types for Memberbody
 // Generated from table: memberbody
 
-// Main entity interface
 export interface Memberbody {
-  id: string;
-  user: string;
-  height: string;
-  weight: string;
-  bodyfat: string;
-  musclemass: string;
-  bmi: string;
-  skeletalmuscle: string;
-  bodywater: string;
-  chest: string;
-  waist: string;
-  hip: string;
-  arm: string;
-  thigh: string;
+  id: number;
+  user: number;
+  height: number;
+  weight: number;
+  bodyfat: number;
+  musclemass: number;
+  bmi: number;
+  skeletalmuscle: number;
+  bodywater: number;
+  chest: number;
+  waist: number;
+  hip: number;
+  arm: number;
+  thigh: number;
   note: string;
   measureddate: string;
-  measuredby: string;
+  measuredby: number;
   date: string;
 }
 
@@ -31,23 +30,23 @@ export type UpdateMemberbodyRequest = Partial<Omit<Memberbody, 'id'>>;
 
 // Search params type
 export interface MemberbodySearchParams {
-  id?: string;
-  user?: string;
-  height?: string;
-  weight?: string;
-  bodyfat?: string;
-  musclemass?: string;
-  bmi?: string;
-  skeletalmuscle?: string;
-  bodywater?: string;
-  chest?: string;
-  waist?: string;
-  hip?: string;
-  arm?: string;
-  thigh?: string;
+  id?: number;
+  user?: number;
+  height?: number;
+  weight?: number;
+  bodyfat?: number;
+  musclemass?: number;
+  bmi?: number;
+  skeletalmuscle?: number;
+  bodywater?: number;
+  chest?: number;
+  waist?: number;
+  hip?: number;
+  arm?: number;
+  thigh?: number;
   note?: string;
   measureddate?: string;
-  measuredby?: string;
+  measuredby?: number;
   date?: string;
   page?: number;
   limit?: number;

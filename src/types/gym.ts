@@ -1,9 +1,8 @@
 // Auto-generated TypeScript types for Gym
 // Generated from table: gym
 
-// Main entity interface
 export interface Gym {
-  id: string;
+  id: number;
   name: string;
   date: string;
 }
@@ -16,7 +15,7 @@ export type UpdateGymRequest = Partial<Omit<Gym, 'id'>>;
 
 // Search params type
 export interface GymSearchParams {
-  id?: string;
+  id?: number;
   name?: string;
   date?: string;
   page?: number;

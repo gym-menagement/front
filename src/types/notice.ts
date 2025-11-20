@@ -1,36 +1,20 @@
 // Auto-generated TypeScript types for Notice
 // Generated from table: notice
 
-// Type type
-export type Type = 1 | 2 | 3;
-
-// Ispopup type
-export type Ispopup = 1 | 2;
-
-// Ispush type
-export type Ispush = 1 | 2;
-
-// Target type
-export type Target = 1 | 2 | 3;
-
-// Status type
-export type Status = 1 | 2;
-
-// Main entity interface
 export interface Notice {
-  id: string;
-  gym: string;
+  id: number;
+  gym: number;
   title: string;
   content: string;
-  type: string;
-  ispopup: string;
-  ispush: string;
-  target: string;
-  viewcount: string;
+  type: number;
+  ispopup: number;
+  ispush: number;
+  target: number;
+  viewcount: number;
   startdate: string;
   enddate: string;
-  status: string;
-  createdby: string;
+  status: number;
+  createdby: number;
   createddate: string;
   updateddate: string;
   date: string;
@@ -44,19 +28,19 @@ export type UpdateNoticeRequest = Partial<Omit<Notice, 'id'>>;
 
 // Search params type
 export interface NoticeSearchParams {
-  id?: string;
-  gym?: string;
+  id?: number;
+  gym?: number;
   title?: string;
   content?: string;
-  type?: string;
-  ispopup?: string;
-  ispush?: string;
-  target?: string;
-  viewcount?: string;
+  type?: number;
+  ispopup?: number;
+  ispush?: number;
+  target?: number;
+  viewcount?: number;
   startdate?: string;
   enddate?: string;
-  status?: string;
-  createdby?: string;
+  status?: number;
+  createdby?: number;
   createddate?: string;
   updateddate?: string;
   date?: string;

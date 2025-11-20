@@ -1,15 +1,14 @@
 // Auto-generated TypeScript types for Usehealth
 // Generated from table: usehealth
 
-// Main entity interface
 export interface Usehealth {
-  id: string;
-  order: string;
-  health: string;
-  user: string;
-  rocker: string;
-  term: string;
-  discount: string;
+  id: number;
+  order: number;
+  health: number;
+  user: number;
+  rocker: number;
+  term: number;
+  discount: number;
   startday: string;
   endday: string;
   date: string;
@@ -23,13 +22,13 @@ export type UpdateUsehealthRequest = Partial<Omit<Usehealth, 'id'>>;
 
 // Search params type
 export interface UsehealthSearchParams {
-  id?: string;
-  order?: string;
-  health?: string;
-  user?: string;
-  rocker?: string;
-  term?: string;
-  discount?: string;
+  id?: number;
+  order?: number;
+  health?: number;
+  user?: number;
+  rocker?: number;
+  term?: number;
+  discount?: number;
   startday?: string;
   endday?: string;
   date?: string;

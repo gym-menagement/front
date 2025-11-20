@@ -1,18 +1,17 @@
 // Auto-generated TypeScript types for Workoutlog
 // Generated from table: workoutlog
 
-// Main entity interface
 export interface Workoutlog {
-  id: string;
-  user: string;
-  attendance: string;
-  health: string;
+  id: number;
+  user: number;
+  attendance: number;
+  health: number;
   exercisename: string;
-  sets: string;
-  reps: string;
-  weight: string;
-  duration: string;
-  calories: string;
+  sets: number;
+  reps: number;
+  weight: number;
+  duration: number;
+  calories: number;
   note: string;
   date: string;
 }
@@ -25,16 +24,16 @@ export type UpdateWorkoutlogRequest = Partial<Omit<Workoutlog, 'id'>>;
 
 // Search params type
 export interface WorkoutlogSearchParams {
-  id?: string;
-  user?: string;
-  attendance?: string;
-  health?: string;
+  id?: number;
+  user?: number;
+  attendance?: number;
+  health?: number;
   exercisename?: string;
-  sets?: string;
-  reps?: string;
-  weight?: string;
-  duration?: string;
-  calories?: string;
+  sets?: number;
+  reps?: number;
+  weight?: number;
+  duration?: number;
+  calories?: number;
   note?: string;
   date?: string;
   page?: number;

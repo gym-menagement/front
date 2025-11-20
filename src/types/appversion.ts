@@ -1,22 +1,15 @@
 // Auto-generated TypeScript types for Appversion
 // Generated from table: appversion
 
-// Forceupdate type
-export type Forceupdate = 1 | 2;
-
-// Status type
-export type Status = 1 | 2;
-
-// Main entity interface
 export interface Appversion {
-  id: string;
+  id: number;
   platform: string;
   version: string;
   minversion: string;
-  forceupdate: string;
+  forceupdate: number;
   updatemessage: string;
   downloadurl: string;
-  status: string;
+  status: number;
   releasedate: string;
   createddate: string;
   date: string;
@@ -30,14 +23,14 @@ export type UpdateAppversionRequest = Partial<Omit<Appversion, 'id'>>;
 
 // Search params type
 export interface AppversionSearchParams {
-  id?: string;
+  id?: number;
   platform?: string;
   version?: string;
   minversion?: string;
-  forceupdate?: string;
+  forceupdate?: number;
   updatemessage?: string;
   downloadurl?: string;
-  status?: string;
+  status?: number;
   releasedate?: string;
   createddate?: string;
   date?: string;

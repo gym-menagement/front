@@ -1,10 +1,9 @@
 // Auto-generated TypeScript types for Order
 // Generated from table: order
 
-// Main entity interface
 export interface Order {
-  id: string;
-  membership: string;
+  id: number;
+  membership: number;
   date: string;
 }
 
@@ -16,8 +15,8 @@ export type UpdateOrderRequest = Partial<Omit<Order, 'id'>>;
 
 // Search params type
 export interface OrderSearchParams {
-  id?: string;
-  membership?: string;
+  id?: number;
+  membership?: number;
   date?: string;
   page?: number;
   limit?: number;

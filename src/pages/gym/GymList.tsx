@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Card, Button, Input, Badge } from '../../components/ui';
-import { get } from '../../services/api';
-import type { Gym, ApiResponse, Status } from '../../types';
+import { Gym as GymModel } from '../../models';
+import type { Gym, Status } from '../../types';
 
 const GymList = () => {
   const [gyms, setGyms] = useState<Gym[]>([]);
@@ -18,14 +18,11 @@ const GymList = () => {
   const loadGyms = async () => {
     try {
       setLoading(true);
-      const response = await get<ApiResponse<Gym>>(
-        `/gym?page=${page}&pageSize=${pageSize}`
-      );
-      setGyms(response.data.items || []);
+      const items = await GymModel.find({ page, pageSize });
+      setGyms(items);
 
       // Calculate total pages from total count
-      const countResponse = await get<{ count: number }>('/gym/count');
-      const totalCount = countResponse.data.count || 0;
+      const totalCount = await GymModel.count();
       setTotalPages(Math.ceil(totalCount / pageSize));
     } catch (error) {
       console.error('Failed to load gyms:', error);
@@ -42,12 +39,8 @@ const GymList = () => {
 
     try {
       setLoading(true);
-      const response = await get<ApiResponse<Gym>>(
-        `/gym/search/name?name=${encodeURIComponent(
-          searchQuery
-        )}&page=0&pageSize=${pageSize}`
-      );
-      setGyms(response.data.items || []);
+      const items = await GymModel.searchByName(searchQuery, { page: 0, pageSize });
+      setGyms(items);
       setPage(0);
     } catch (error) {
       console.error('Failed to search gyms:', error);
@@ -61,20 +54,9 @@ const GymList = () => {
       case 'ACTIVE':
         return 'success';
       case 'INACTIVE':
-        return 'danger';
+        return 'error';
       default:
         return 'default';
-    }
-  };
-
-  const getStatusText = (status: Status) => {
-    switch (status) {
-      case 'ACTIVE':
-        return '운영중';
-      case 'INACTIVE':
-        return '휴업';
-      default:
-        return status;
     }
   };
 
@@ -137,7 +119,7 @@ const GymList = () => {
             </Button>
             {searchQuery && (
               <Button
-                variant="outline"
+                variant="secondary"
                 onClick={() => {
                   setSearchQuery('');
                   loadGyms();
@@ -214,7 +196,7 @@ const GymList = () => {
                         {gym.g_name}
                       </h3>
                       <Badge variant={getStatusColor(gym.g_status)}>
-                        {getStatusText(gym.g_status)}
+                        {GymModel.getStatus(gym.g_status)}
                       </Badge>
                     </div>
 
@@ -291,7 +273,7 @@ const GymList = () => {
                       </Button>
                       {gym.g_status === 'ACTIVE' && (
                         <Button
-                          variant="outline"
+                          variant="secondary"
                           onClick={() =>
                             (window.location.href = `/gym/${gym.g_id}/purchase`)
                           }
@@ -309,7 +291,7 @@ const GymList = () => {
             {totalPages > 1 && (
               <div className="flex items-center justify-center gap-2">
                 <Button
-                  variant="outline"
+                  variant="secondary"
                   onClick={() => setPage(Math.max(0, page - 1))}
                   disabled={page === 0}
                 >
@@ -345,7 +327,7 @@ const GymList = () => {
                     return (
                       <Button
                         key={pageNum}
-                        variant={page === pageNum ? 'default' : 'outline'}
+                        variant={page === pageNum ? 'primary' : 'secondary'}
                         size="sm"
                         onClick={() => setPage(pageNum)}
                       >
@@ -356,7 +338,7 @@ const GymList = () => {
                 </div>
 
                 <Button
-                  variant="outline"
+                  variant="secondary"
                   onClick={() => setPage(Math.min(totalPages - 1, page + 1))}
                   disabled={page === totalPages - 1}
                 >

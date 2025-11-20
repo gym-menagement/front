@@ -1,28 +1,21 @@
 // Auto-generated TypeScript types for Membershipusage
 // Generated from table: membershipusage
 
-// Type type
-export type Type = 1 | 2;
-
-// Status type
-export type Status = 1 | 2 | 3 | 4;
-
-// Main entity interface
 export interface Membershipusage {
-  id: string;
-  membership: string;
-  user: string;
-  type: string;
-  totaldays: string;
-  useddays: string;
-  remainingdays: string;
-  totalcount: string;
-  usedcount: string;
-  remainingcount: string;
+  id: number;
+  membership: number;
+  user: number;
+  type: number;
+  totaldays: number;
+  useddays: number;
+  remainingdays: number;
+  totalcount: number;
+  usedcount: number;
+  remainingcount: number;
   startdate: string;
   enddate: string;
-  status: string;
-  pausedays: string;
+  status: number;
+  pausedays: number;
   lastuseddate: string;
   date: string;
 }
@@ -35,20 +28,20 @@ export type UpdateMembershipusageRequest = Partial<Omit<Membershipusage, 'id'>>;
 
 // Search params type
 export interface MembershipusageSearchParams {
-  id?: string;
-  membership?: string;
-  user?: string;
-  type?: string;
-  totaldays?: string;
-  useddays?: string;
-  remainingdays?: string;
-  totalcount?: string;
-  usedcount?: string;
-  remainingcount?: string;
+  id?: number;
+  membership?: number;
+  user?: number;
+  type?: number;
+  totaldays?: number;
+  useddays?: number;
+  remainingdays?: number;
+  totalcount?: number;
+  usedcount?: number;
+  remainingcount?: number;
   startdate?: string;
   enddate?: string;
-  status?: string;
-  pausedays?: string;
+  status?: number;
+  pausedays?: number;
   lastuseddate?: string;
   date?: string;
   page?: number;

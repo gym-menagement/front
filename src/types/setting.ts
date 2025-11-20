@@ -1,20 +1,16 @@
 // Auto-generated TypeScript types for Setting
 // Generated from table: setting
 
-// Type type
-export type Type = 1 | 2 | 3;
-
-// Main entity interface
 export interface Setting {
-  id: string;
+  id: number;
   category: string;
   name: string;
   key: string;
   value: string;
   remark: string;
-  type: string;
+  type: number;
   data: string;
-  order: string;
+  order: number;
   date: string;
 }
 
@@ -26,15 +22,15 @@ export type UpdateSettingRequest = Partial<Omit<Setting, 'id'>>;
 
 // Search params type
 export interface SettingSearchParams {
-  id?: string;
+  id?: number;
   category?: string;
   name?: string;
   key?: string;
   value?: string;
   remark?: string;
-  type?: string;
+  type?: number;
   data?: string;
-  order?: string;
+  order?: number;
   date?: string;
   page?: number;
   limit?: number;

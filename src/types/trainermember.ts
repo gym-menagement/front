@@ -1,18 +1,14 @@
 // Auto-generated TypeScript types for Trainermember
 // Generated from table: trainermember
 
-// Status type
-export type Status = 1 | 2;
-
-// Main entity interface
 export interface Trainermember {
-  id: string;
-  trainer: string;
-  member: string;
-  gym: string;
+  id: number;
+  trainer: number;
+  member: number;
+  gym: number;
   startdate: string;
   enddate: string;
-  status: string;
+  status: number;
   note: string;
   date: string;
 }
@@ -25,13 +21,13 @@ export type UpdateTrainermemberRequest = Partial<Omit<Trainermember, 'id'>>;
 
 // Search params type
 export interface TrainermemberSearchParams {
-  id?: string;
-  trainer?: string;
-  member?: string;
-  gym?: string;
+  id?: number;
+  trainer?: number;
+  member?: number;
+  gym?: number;
   startdate?: string;
   enddate?: string;
-  status?: string;
+  status?: number;
   note?: string;
   date?: string;
   page?: number;

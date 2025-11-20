@@ -1,13 +1,12 @@
 // Auto-generated TypeScript types for Paymentform
 // Generated from table: paymentform
 
-// Main entity interface
 export interface Paymentform {
-  id: string;
-  gym: string;
-  payment: string;
-  type: string;
-  cost: string;
+  id: number;
+  gym: number;
+  payment: number;
+  type: number;
+  cost: number;
   date: string;
 }
 
@@ -19,11 +18,11 @@ export type UpdatePaymentformRequest = Partial<Omit<Paymentform, 'id'>>;
 
 // Search params type
 export interface PaymentformSearchParams {
-  id?: string;
-  gym?: string;
-  payment?: string;
-  type?: string;
-  cost?: string;
+  id?: number;
+  gym?: number;
+  payment?: number;
+  type?: number;
+  cost?: number;
   date?: string;
   page?: number;
   limit?: number;

@@ -1,13 +1,12 @@
 // Auto-generated TypeScript types for Stop
 // Generated from table: stop
 
-// Main entity interface
 export interface Stop {
-  id: string;
-  usehelth: string;
+  id: number;
+  usehelth: number;
   startday: string;
   endday: string;
-  count: string;
+  count: number;
   date: string;
 }
 
@@ -19,11 +18,11 @@ export type UpdateStopRequest = Partial<Omit<Stop, 'id'>>;
 
 // Search params type
 export interface StopSearchParams {
-  id?: string;
-  usehelth?: string;
+  id?: number;
+  usehelth?: number;
   startday?: string;
   endday?: string;
-  count?: string;
+  count?: number;
   date?: string;
   page?: number;
   limit?: number;

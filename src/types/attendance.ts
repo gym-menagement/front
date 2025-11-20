@@ -1,31 +1,21 @@
 // Auto-generated TypeScript types for Attendance
 // Generated from table: attendance
 
-// Type type
-export type Type = 1 | 2;
-
-// Method type
-export type Method = 1 | 2 | 3;
-
-// Status type
-export type Status = 1 | 2 | 3;
-
-// Main entity interface
 export interface Attendance {
-  id: string;
-  user: string;
-  membership: string;
-  gym: string;
-  type: string;
-  method: string;
+  id: number;
+  user: number;
+  membership: number;
+  gym: number;
+  type: number;
+  method: number;
   checkintime: string;
   checkouttime: string;
-  duration: string;
-  status: string;
+  duration: number;
+  status: number;
   note: string;
   ip: string;
   device: string;
-  createdby: string;
+  createdby: number;
   date: string;
 }
 
@@ -37,20 +27,20 @@ export type UpdateAttendanceRequest = Partial<Omit<Attendance, 'id'>>;
 
 // Search params type
 export interface AttendanceSearchParams {
-  id?: string;
-  user?: string;
-  membership?: string;
-  gym?: string;
-  type?: string;
-  method?: string;
+  id?: number;
+  user?: number;
+  membership?: number;
+  gym?: number;
+  type?: number;
+  method?: number;
   checkintime?: string;
   checkouttime?: string;
-  duration?: string;
-  status?: string;
+  duration?: number;
+  status?: number;
   note?: string;
   ip?: string;
   device?: string;
-  createdby?: string;
+  createdby?: number;
   date?: string;
   page?: number;
   limit?: number;

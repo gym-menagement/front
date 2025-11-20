@@ -1,18 +1,14 @@
 // Auto-generated TypeScript types for Pushtoken
 // Generated from table: pushtoken
 
-// Isactive type
-export type Isactive = 1 | 2;
-
-// Main entity interface
 export interface Pushtoken {
-  id: string;
-  user: string;
+  id: number;
+  user: number;
   token: string;
   devicetype: string;
   deviceid: string;
   appversion: string;
-  isactive: string;
+  isactive: number;
   createddate: string;
   updateddate: string;
   date: string;
@@ -26,13 +22,13 @@ export type UpdatePushtokenRequest = Partial<Omit<Pushtoken, 'id'>>;
 
 // Search params type
 export interface PushtokenSearchParams {
-  id?: string;
-  user?: string;
+  id?: number;
+  user?: number;
   token?: string;
   devicetype?: string;
   deviceid?: string;
   appversion?: string;
-  isactive?: string;
+  isactive?: number;
   createddate?: string;
   updateddate?: string;
   date?: string;

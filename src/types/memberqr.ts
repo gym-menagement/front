@@ -1,20 +1,16 @@
 // Auto-generated TypeScript types for Memberqr
 // Generated from table: memberqr
 
-// Isactive type
-export type Isactive = 1 | 2;
-
-// Main entity interface
 export interface Memberqr {
-  id: string;
-  user: string;
+  id: number;
+  user: number;
   code: string;
   imageurl: string;
-  isactive: string;
+  isactive: number;
   expiredate: string;
   generateddate: string;
   lastuseddate: string;
-  usecount: string;
+  usecount: number;
   date: string;
 }
 
@@ -26,15 +22,15 @@ export type UpdateMemberqrRequest = Partial<Omit<Memberqr, 'id'>>;
 
 // Search params type
 export interface MemberqrSearchParams {
-  id?: string;
-  user?: string;
+  id?: number;
+  user?: number;
   code?: string;
   imageurl?: string;
-  isactive?: string;
+  isactive?: number;
   expiredate?: string;
   generateddate?: string;
   lastuseddate?: string;
-  usecount?: string;
+  usecount?: number;
   date?: string;
   page?: number;
   limit?: number;

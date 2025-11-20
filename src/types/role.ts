@@ -1,11 +1,10 @@
 // Auto-generated TypeScript types for Role
 // Generated from table: role
 
-// Main entity interface
 export interface Role {
-  id: string;
-  gym: string;
-  roleid: string;
+  id: number;
+  gym: number;
+  roleid: number;
   name: string;
   date: string;
 }
@@ -18,9 +17,9 @@ export type UpdateRoleRequest = Partial<Omit<Role, 'id'>>;
 
 // Search params type
 export interface RoleSearchParams {
-  id?: string;
-  gym?: string;
-  roleid?: string;
+  id?: number;
+  gym?: number;
+  roleid?: number;
   name?: string;
   date?: string;
   page?: number;

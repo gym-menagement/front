@@ -1,22 +1,18 @@
 // Auto-generated TypeScript types for Rockerusage
 // Generated from table: rockerusage
 
-// Status type
-export type Status = 1 | 2 | 3;
-
-// Main entity interface
 export interface Rockerusage {
-  id: string;
-  rocker: string;
-  user: string;
-  membership: string;
+  id: number;
+  rocker: number;
+  user: number;
+  membership: number;
   startdate: string;
   enddate: string;
-  status: string;
-  deposit: string;
-  monthlyfee: string;
+  status: number;
+  deposit: number;
+  monthlyfee: number;
   note: string;
-  assignedby: string;
+  assignedby: number;
   assigneddate: string;
   date: string;
 }
@@ -29,17 +25,17 @@ export type UpdateRockerusageRequest = Partial<Omit<Rockerusage, 'id'>>;
 
 // Search params type
 export interface RockerusageSearchParams {
-  id?: string;
-  rocker?: string;
-  user?: string;
-  membership?: string;
+  id?: number;
+  rocker?: number;
+  user?: number;
+  membership?: number;
   startdate?: string;
   enddate?: string;
-  status?: string;
-  deposit?: string;
-  monthlyfee?: string;
+  status?: number;
+  deposit?: number;
+  monthlyfee?: number;
   note?: string;
-  assignedby?: string;
+  assignedby?: number;
   assigneddate?: string;
   date?: string;
   page?: number;

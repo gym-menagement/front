@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useSetAtom } from 'jotai';
 import { Button, Input, Card } from '../../components/ui';
 import { authService } from '../../services/auth.service';
@@ -7,7 +6,6 @@ import { userAtom, isAuthenticatedAtom, tokenAtom } from '../../store/auth';
 import { theme } from '../../theme';
 
 const LoginPage = () => {
-  const navigate = useNavigate();
   const setUser = useSetAtom(userAtom);
   const setIsAuthenticated = useSetAtom(isAuthenticatedAtom);
   const setToken = useSetAtom(tokenAtom);
@@ -36,19 +34,25 @@ const LoginPage = () => {
       setIsAuthenticated(true);
       setToken(response.token);
 
+      console.log('Login successful:', response.user.role);
+
       // Redirect based on user role using window.location to ensure state is fresh
       switch (response.user.role) {
-        case 'ADMIN':
+        case 1:
+        case 2:
           window.location.href = '/admin/dashboard';
           break;
-        case 'TRAINER':
+        case 3:
           window.location.href = '/trainer/dashboard';
           break;
-        case 'MEMBER':
+        case 4:
+          window.location.href = '/staff/dashboard';
+          break;
+        case 5:
           window.location.href = '/member/dashboard';
           break;
         default:
-          window.location.href = '/';
+        // window.location.href = '/';
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : '로그인에 실패했습니다.');

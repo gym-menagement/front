@@ -1,24 +1,8 @@
 // Auto-generated TypeScript types for User
 // Generated from table: user
 
-// Level type
-export type Level = 1 | 2 | 3 | 4 | 5;
-
-// Use type
-export type Use = 1 | 2;
-
-// Type type
-export type Type = 1 | 2 | 3 | 4 | 5;
-
-// Role type
-export type Role = 1 | 2 | 3 | 4 | 5;
-
-// Sex type
-export type Sex = 1 | 2;
-
-// Main entity interface
 export interface User {
-  id: string;
+  id: number;
   loginid: string;
   passwd: string;
   email: string;
@@ -26,13 +10,13 @@ export interface User {
   tel: string;
   address: string;
   image: string;
-  sex: string;
+  sex: number;
   birth: string;
-  type: string;
+  type: number;
   connectid: string;
-  level: string;
-  role: string;
-  use: string;
+  level: number;
+  role: number;
+  use: number;
   logindate: string;
   lastchangepasswddate: string;
   date: string;
@@ -46,7 +30,7 @@ export type UpdateUserRequest = Partial<Omit<User, 'id'>>;
 
 // Search params type
 export interface UserSearchParams {
-  id?: string;
+  id?: number;
   loginid?: string;
   passwd?: string;
   email?: string;
@@ -54,13 +38,13 @@ export interface UserSearchParams {
   tel?: string;
   address?: string;
   image?: string;
-  sex?: string;
+  sex?: number;
   birth?: string;
-  type?: string;
+  type?: number;
   connectid?: string;
-  level?: string;
-  role?: string;
-  use?: string;
+  level?: number;
+  role?: number;
+  use?: number;
   logindate?: string;
   lastchangepasswddate?: string;
   date?: string;

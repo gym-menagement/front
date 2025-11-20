@@ -1,10 +1,9 @@
 // Auto-generated TypeScript types for Daytype
 // Generated from table: daytype
 
-// Main entity interface
 export interface Daytype {
-  id: string;
-  gym: string;
+  id: number;
+  gym: number;
   name: string;
   date: string;
 }
@@ -17,8 +16,8 @@ export type UpdateDaytypeRequest = Partial<Omit<Daytype, 'id'>>;
 
 // Search params type
 export interface DaytypeSearchParams {
-  id?: string;
-  gym?: string;
+  id?: number;
+  gym?: number;
   name?: string;
   date?: string;
   page?: number;

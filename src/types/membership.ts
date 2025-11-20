@@ -1,16 +1,12 @@
 // Auto-generated TypeScript types for Membership
 // Generated from table: membership
 
-// Sex type
-export type Sex = 1 | 2;
-
-// Main entity interface
 export interface Membership {
-  id: string;
-  gym: string;
-  user: string;
+  id: number;
+  gym: number;
+  user: number;
   name: string;
-  sex: string;
+  sex: number;
   birth: string;
   phonenum: string;
   address: string;
@@ -26,11 +22,11 @@ export type UpdateMembershipRequest = Partial<Omit<Membership, 'id'>>;
 
 // Search params type
 export interface MembershipSearchParams {
-  id?: string;
-  gym?: string;
-  user?: string;
+  id?: number;
+  gym?: number;
+  user?: number;
   name?: string;
-  sex?: string;
+  sex?: number;
   birth?: string;
   phonenum?: string;
   address?: string;

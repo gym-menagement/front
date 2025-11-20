@@ -1,10 +1,9 @@
 // Auto-generated TypeScript types for Healthcategory
 // Generated from table: healthcategory
 
-// Main entity interface
 export interface Healthcategory {
-  id: string;
-  gym: string;
+  id: number;
+  gym: number;
   name: string;
   date: string;
 }
@@ -17,8 +16,8 @@ export type UpdateHealthcategoryRequest = Partial<Omit<Healthcategory, 'id'>>;
 
 // Search params type
 export interface HealthcategorySearchParams {
-  id?: string;
-  gym?: string;
+  id?: number;
+  gym?: number;
   name?: string;
   date?: string;
   page?: number;

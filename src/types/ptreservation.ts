@@ -1,20 +1,16 @@
 // Auto-generated TypeScript types for Ptreservation
 // Generated from table: ptreservation
 
-// Status type
-export type Status = 1 | 2 | 3 | 4;
-
-// Main entity interface
 export interface Ptreservation {
-  id: string;
-  trainer: string;
-  member: string;
-  gym: string;
+  id: number;
+  trainer: number;
+  member: number;
+  gym: number;
   reservationdate: string;
   starttime: string;
   endtime: string;
-  duration: string;
-  status: string;
+  duration: number;
+  status: number;
   note: string;
   cancelreason: string;
   createddate: string;
@@ -30,15 +26,15 @@ export type UpdatePtreservationRequest = Partial<Omit<Ptreservation, 'id'>>;
 
 // Search params type
 export interface PtreservationSearchParams {
-  id?: string;
-  trainer?: string;
-  member?: string;
-  gym?: string;
+  id?: number;
+  trainer?: number;
+  member?: number;
+  gym?: number;
   reservationdate?: string;
   starttime?: string;
   endtime?: string;
-  duration?: string;
-  status?: string;
+  duration?: number;
+  status?: number;
   note?: string;
   cancelreason?: string;
   createddate?: string;

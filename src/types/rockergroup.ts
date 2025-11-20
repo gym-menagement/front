@@ -1,10 +1,9 @@
 // Auto-generated TypeScript types for Rockergroup
 // Generated from table: rockergroup
 
-// Main entity interface
 export interface Rockergroup {
-  id: string;
-  gym: string;
+  id: number;
+  gym: number;
   name: string;
   date: string;
 }
@@ -17,8 +16,8 @@ export type UpdateRockergroupRequest = Partial<Omit<Rockergroup, 'id'>>;
 
 // Search params type
 export interface RockergroupSearchParams {
-  id?: string;
-  gym?: string;
+  id?: number;
+  gym?: number;
   name?: string;
   date?: string;
   page?: number;

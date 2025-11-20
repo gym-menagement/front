@@ -1,23 +1,16 @@
 // Auto-generated TypeScript types for Inquiry
 // Generated from table: inquiry
 
-// Type type
-export type Type = 1 | 2 | 3 | 4 | 5;
-
-// Status type
-export type Status = 1 | 2;
-
-// Main entity interface
 export interface Inquiry {
-  id: string;
-  user: string;
-  gym: string;
-  type: string;
+  id: number;
+  user: number;
+  gym: number;
+  type: number;
   title: string;
   content: string;
-  status: string;
+  status: number;
   answer: string;
-  answeredby: string;
+  answeredby: number;
   answereddate: string;
   createddate: string;
   date: string;
@@ -31,15 +24,15 @@ export type UpdateInquiryRequest = Partial<Omit<Inquiry, 'id'>>;
 
 // Search params type
 export interface InquirySearchParams {
-  id?: string;
-  user?: string;
-  gym?: string;
-  type?: string;
+  id?: number;
+  user?: number;
+  gym?: number;
+  type?: number;
   title?: string;
   content?: string;
-  status?: string;
+  status?: number;
   answer?: string;
-  answeredby?: string;
+  answeredby?: number;
   answereddate?: string;
   createddate?: string;
   date?: string;

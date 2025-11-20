@@ -1,15 +1,11 @@
 // Auto-generated TypeScript types for Token
 // Generated from table: token
 
-// Status type
-export type Status = 1 | 2 | 3;
-
-// Main entity interface
 export interface Token {
-  id: string;
-  user: string;
+  id: number;
+  user: number;
   token: string;
-  status: string;
+  status: number;
   date: string;
 }
 
@@ -21,10 +17,10 @@ export type UpdateTokenRequest = Partial<Omit<Token, 'id'>>;
 
 // Search params type
 export interface TokenSearchParams {
-  id?: string;
-  user?: string;
+  id?: number;
+  user?: number;
   token?: string;
-  status?: string;
+  status?: number;
   date?: string;
   page?: number;
   limit?: number;
