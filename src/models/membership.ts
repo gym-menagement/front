@@ -1,27 +1,28 @@
 import { get, post, put, del } from '../services/api';
-import type { Membership, ApiResponse, ApiSingleResponse, Status } from '../types';
+import type {
+  Membership,
+  ApiResponse,
+  ApiSingleResponse,
+  MembershipSearchParams,
+} from '../types/membership';
 
 export default class MembershipModel {
-  static readonly status = {
-    ACTIVE: 'ACTIVE' as const,
-    INACTIVE: 'INACTIVE' as const,
-    PENDING: 'PENDING' as const,
-    EXPIRED: 'EXPIRED' as const,
+  // Sex constants (from backend: enums/sex/Enums.kt)
+  static readonly sex = {
+    MALE: 1,
+    FEMALE: 2,
   };
+  static readonly sexs = [
+    '',
+    '남성',
+    '여성',
+  ];
 
-  static readonly statuses: Record<Status, string> = {
-    ACTIVE: '활성',
-    INACTIVE: '비활성',
-    PENDING: '대기',
-    COMPLETED: '완료',
-    CANCELLED: '취소',
-    EXPIRED: '만료',
-  };
-
-  static getStatus(value: Status): string {
-    return this.statuses[value] || value;
+  static getSex(value: number): string {
+    return this.sexs[value] || String(value);
   }
 
+  // CRUD operations
   static async insert(item: Partial<Membership>) {
     const res = await post<Membership>('/membership', item);
     return res.data;
@@ -47,12 +48,12 @@ export default class MembershipModel {
     return res.data;
   }
 
-  static async find(params?: any) {
+  static async find(params?: MembershipSearchParams) {
     const res = await get<ApiResponse<Membership>>('/membership', { params });
     return res.data.items || [];
   }
 
-  static async count(params?: any) {
+  static async count(params?: MembershipSearchParams) {
     const res = await get<{ count: number }>('/membership/count', { params });
     return res.data.count || 0;
   }
@@ -60,29 +61,5 @@ export default class MembershipModel {
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Membership>>(`/membership/${id}`);
     return res.data.item;
-  }
-
-  static async searchByUserId(userId: number, params?: any) {
-    const res = await get<ApiResponse<Membership>>(
-      `/membership/search/userId?userId=${userId}`,
-      { params }
-    );
-    return res.data.items || [];
-  }
-
-  static async searchByGymId(gymId: number, params?: any) {
-    const res = await get<ApiResponse<Membership>>(
-      `/membership/search/gymId?gymId=${gymId}`,
-      { params }
-    );
-    return res.data.items || [];
-  }
-
-  static async searchByStatus(status: Status, params?: any) {
-    const res = await get<ApiResponse<Membership>>(
-      `/membership/search/status?status=${status}`,
-      { params }
-    );
-    return res.data.items || [];
   }
 }

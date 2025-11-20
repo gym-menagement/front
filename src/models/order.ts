@@ -1,26 +1,13 @@
 import { get, post, put, del } from '../services/api';
-import type { Order, ApiResponse, ApiSingleResponse, Status } from '../types';
+import type {
+  Order,
+  ApiResponse,
+  ApiSingleResponse,
+  OrderSearchParams,
+} from '../types/order';
 
 export default class OrderModel {
-  static readonly status = {
-    PENDING: 'PENDING' as const,
-    COMPLETED: 'COMPLETED' as const,
-    CANCELLED: 'CANCELLED' as const,
-  };
-
-  static readonly statuses: Record<Status, string> = {
-    ACTIVE: '활성',
-    INACTIVE: '비활성',
-    PENDING: '대기',
-    COMPLETED: '완료',
-    CANCELLED: '취소',
-    EXPIRED: '만료',
-  };
-
-  static getStatus(value: Status): string {
-    return this.statuses[value] || value;
-  }
-
+  // CRUD operations
   static async insert(item: Partial<Order>) {
     const res = await post<Order>('/order', item);
     return res.data;
@@ -46,12 +33,12 @@ export default class OrderModel {
     return res.data;
   }
 
-  static async find(params?: any) {
+  static async find(params?: OrderSearchParams) {
     const res = await get<ApiResponse<Order>>('/order', { params });
     return res.data.items || [];
   }
 
-  static async count(params?: any) {
+  static async count(params?: OrderSearchParams) {
     const res = await get<{ count: number }>('/order/count', { params });
     return res.data.count || 0;
   }
@@ -59,21 +46,5 @@ export default class OrderModel {
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Order>>(`/order/${id}`);
     return res.data.item;
-  }
-
-  static async searchByUserId(userId: number, params?: any) {
-    const res = await get<ApiResponse<Order>>(
-      `/order/search/userId?userId=${userId}`,
-      { params }
-    );
-    return res.data.items || [];
-  }
-
-  static async searchByStatus(status: Status, params?: any) {
-    const res = await get<ApiResponse<Order>>(
-      `/order/search/status?status=${status}`,
-      { params }
-    );
-    return res.data.items || [];
   }
 }

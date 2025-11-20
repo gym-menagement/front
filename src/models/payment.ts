@@ -1,26 +1,13 @@
 import { get, post, put, del } from '../services/api';
-import type { Payment, ApiResponse, ApiSingleResponse, Status } from '../types';
+import type {
+  Payment,
+  ApiResponse,
+  ApiSingleResponse,
+  PaymentSearchParams,
+} from '../types/payment';
 
 export default class PaymentModel {
-  static readonly status = {
-    PENDING: 'PENDING' as const,
-    COMPLETED: 'COMPLETED' as const,
-    CANCELLED: 'CANCELLED' as const,
-  };
-
-  static readonly statuses: Record<Status, string> = {
-    ACTIVE: '활성',
-    INACTIVE: '비활성',
-    PENDING: '대기',
-    COMPLETED: '완료',
-    CANCELLED: '취소',
-    EXPIRED: '만료',
-  };
-
-  static getStatus(value: Status): string {
-    return this.statuses[value] || value;
-  }
-
+  // CRUD operations
   static async insert(item: Partial<Payment>) {
     const res = await post<Payment>('/payment', item);
     return res.data;
@@ -46,12 +33,12 @@ export default class PaymentModel {
     return res.data;
   }
 
-  static async find(params?: any) {
+  static async find(params?: PaymentSearchParams) {
     const res = await get<ApiResponse<Payment>>('/payment', { params });
     return res.data.items || [];
   }
 
-  static async count(params?: any) {
+  static async count(params?: PaymentSearchParams) {
     const res = await get<{ count: number }>('/payment/count', { params });
     return res.data.count || 0;
   }
@@ -59,21 +46,5 @@ export default class PaymentModel {
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Payment>>(`/payment/${id}`);
     return res.data.item;
-  }
-
-  static async searchByOrderId(orderId: number, params?: any) {
-    const res = await get<ApiResponse<Payment>>(
-      `/payment/search/orderId?orderId=${orderId}`,
-      { params }
-    );
-    return res.data.items || [];
-  }
-
-  static async searchByStatus(status: Status, params?: any) {
-    const res = await get<ApiResponse<Payment>>(
-      `/payment/search/status?status=${status}`,
-      { params }
-    );
-    return res.data.items || [];
   }
 }

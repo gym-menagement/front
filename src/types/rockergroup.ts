@@ -1,0 +1,40 @@
+// Auto-generated TypeScript types for Rockergroup
+// Generated from table: rockergroup
+
+// Main entity interface
+export interface Rockergroup {
+  id: string;
+  gym: string;
+  name: string;
+  date: string;
+}
+
+// Create request type (omit auto-generated fields)
+export type CreateRockergroupRequest = Omit<Rockergroup, 'id'>;
+
+// Update request type (all fields optional except id)
+export type UpdateRockergroupRequest = Partial<Omit<Rockergroup, 'id'>>;
+
+// Search params type
+export interface RockergroupSearchParams {
+  id?: string;
+  gym?: string;
+  name?: string;
+  date?: string;
+  page?: number;
+  limit?: number;
+  sort?: string;
+  order?: 'asc' | 'desc';
+}
+
+// API response types
+export interface ApiResponse<T> {
+  items: T[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+export interface ApiSingleResponse<T> {
+  item: T;
+}

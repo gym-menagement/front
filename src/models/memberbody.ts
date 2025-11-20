@@ -1,19 +1,25 @@
 import { get, post, put, del } from '../services/api';
-import type { MemberBody, ApiResponse, ApiSingleResponse } from '../types';
+import type {
+  Memberbody,
+  ApiResponse,
+  ApiSingleResponse,
+  MemberbodySearchParams,
+} from '../types/memberbody';
 
-export default class MemberBodyModel {
-  static async insert(item: Partial<MemberBody>) {
-    const res = await post<MemberBody>('/memberbody', item);
+export default class MemberbodyModel {
+  // CRUD operations
+  static async insert(item: Partial<Memberbody>) {
+    const res = await post<Memberbody>('/memberbody', item);
     return res.data;
   }
 
-  static async insertBatch(items: Partial<MemberBody>[]) {
-    const res = await post<MemberBody[]>('/memberbody/batch', items);
+  static async insertBatch(items: Partial<Memberbody>[]) {
+    const res = await post<Memberbody[]>('/memberbody/batch', items);
     return res.data;
   }
 
-  static async update(id: number, item: Partial<MemberBody>) {
-    const res = await put<MemberBody>(`/memberbody/${id}`, item);
+  static async update(id: number, item: Partial<Memberbody>) {
+    const res = await put<Memberbody>(`/memberbody/${id}`, item);
     return res.data;
   }
 
@@ -27,26 +33,18 @@ export default class MemberBodyModel {
     return res.data;
   }
 
-  static async find(params?: any) {
-    const res = await get<ApiResponse<MemberBody>>('/memberbody', { params });
+  static async find(params?: MemberbodySearchParams) {
+    const res = await get<ApiResponse<Memberbody>>('/memberbody', { params });
     return res.data.items || [];
   }
 
-  static async count(params?: any) {
+  static async count(params?: MemberbodySearchParams) {
     const res = await get<{ count: number }>('/memberbody/count', { params });
     return res.data.count || 0;
   }
 
   static async get(id: number) {
-    const res = await get<ApiSingleResponse<MemberBody>>(`/memberbody/${id}`);
+    const res = await get<ApiSingleResponse<Memberbody>>(`/memberbody/${id}`);
     return res.data.item;
-  }
-
-  static async searchByUserId(userId: number, params?: any) {
-    const res = await get<ApiResponse<MemberBody>>(
-      `/memberbody/search/userId?userId=${userId}`,
-      { params }
-    );
-    return res.data.items || [];
   }
 }

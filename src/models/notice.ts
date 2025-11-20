@@ -1,25 +1,92 @@
 import { get, post, put, del } from '../services/api';
-import type { Notice, ApiResponse, ApiSingleResponse, Status } from '../types';
+import type {
+  Notice,
+  ApiResponse,
+  ApiSingleResponse,
+  NoticeSearchParams,
+} from '../types/notice';
 
 export default class NoticeModel {
-  static readonly status = {
-    ACTIVE: 'ACTIVE' as const,
-    INACTIVE: 'INACTIVE' as const,
+  // Type constants (from backend: enums/type/Enums.kt)
+  static readonly type = {
+    GENERAL: 1,
+    IMPORTANT: 2,
+    EVENT: 3,
   };
+  static readonly types = [
+    '',
+    '일반',
+    '중요',
+    '이벤트',
+  ];
 
-  static readonly statuses: Record<Status, string> = {
-    ACTIVE: '게시중',
-    INACTIVE: '비공개',
-    PENDING: '대기',
-    COMPLETED: '완료',
-    CANCELLED: '취소',
-    EXPIRED: '만료',
-  };
-
-  static getStatus(value: Status): string {
-    return this.statuses[value] || value;
+  static getType(value: number): string {
+    return this.types[value] || String(value);
   }
 
+  // Ispopup constants (from backend: enums/ispopup/Enums.kt)
+  static readonly ispopup = {
+    NO: 1,
+    YES: 2,
+  };
+  static readonly ispopups = [
+    '',
+    '아니오',
+    '예',
+  ];
+
+  static getIspopup(value: number): string {
+    return this.ispopups[value] || String(value);
+  }
+
+  // Ispush constants (from backend: enums/ispush/Enums.kt)
+  static readonly ispush = {
+    NO: 1,
+    YES: 2,
+  };
+  static readonly ispushs = [
+    '',
+    '아니오',
+    '예',
+  ];
+
+  static getIspush(value: number): string {
+    return this.ispushs[value] || String(value);
+  }
+
+  // Target constants (from backend: enums/target/Enums.kt)
+  static readonly target = {
+    ALL: 1,
+    MEMBERS_ONLY: 2,
+    SPECIFIC_MEMBERS: 3,
+  };
+  static readonly targets = [
+    '',
+    '전체',
+    '회원만',
+    '특정회원',
+  ];
+
+  static getTarget(value: number): string {
+    return this.targets[value] || String(value);
+  }
+
+  // Status constants (from backend: enums/status/Enums.kt)
+  static readonly status = {
+    PRIVATE: 1,
+    PUBLIC: 2,
+  };
+  static readonly statuss = [
+    '',
+    '비공개',
+    '공개',
+  ];
+
+  static getStatus(value: number): string {
+    return this.statuss[value] || String(value);
+  }
+
+  // CRUD operations
   static async insert(item: Partial<Notice>) {
     const res = await post<Notice>('/notice', item);
     return res.data;
@@ -45,12 +112,12 @@ export default class NoticeModel {
     return res.data;
   }
 
-  static async find(params?: any) {
+  static async find(params?: NoticeSearchParams) {
     const res = await get<ApiResponse<Notice>>('/notice', { params });
     return res.data.items || [];
   }
 
-  static async count(params?: any) {
+  static async count(params?: NoticeSearchParams) {
     const res = await get<{ count: number }>('/notice/count', { params });
     return res.data.count || 0;
   }
@@ -58,21 +125,5 @@ export default class NoticeModel {
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Notice>>(`/notice/${id}`);
     return res.data.item;
-  }
-
-  static async searchByGymId(gymId: number, params?: any) {
-    const res = await get<ApiResponse<Notice>>(
-      `/notice/search/gymId?gymId=${gymId}`,
-      { params }
-    );
-    return res.data.items || [];
-  }
-
-  static async searchByStatus(status: Status, params?: any) {
-    const res = await get<ApiResponse<Notice>>(
-      `/notice/search/status?status=${status}`,
-      { params }
-    );
-    return res.data.items || [];
   }
 }

@@ -1,25 +1,13 @@
 import { get, post, put, del } from '../services/api';
-import type { Health, ApiResponse, ApiSingleResponse, Status } from '../types';
+import type {
+  Health,
+  ApiResponse,
+  ApiSingleResponse,
+  HealthSearchParams,
+} from '../types/health';
 
 export default class HealthModel {
-  static readonly status = {
-    ACTIVE: 'ACTIVE' as const,
-    INACTIVE: 'INACTIVE' as const,
-  };
-
-  static readonly statuses: Record<Status, string> = {
-    ACTIVE: '판매중',
-    INACTIVE: '판매중지',
-    PENDING: '대기',
-    COMPLETED: '완료',
-    CANCELLED: '취소',
-    EXPIRED: '만료',
-  };
-
-  static getStatus(value: Status): string {
-    return this.statuses[value] || value;
-  }
-
+  // CRUD operations
   static async insert(item: Partial<Health>) {
     const res = await post<Health>('/health', item);
     return res.data;
@@ -45,12 +33,12 @@ export default class HealthModel {
     return res.data;
   }
 
-  static async find(params?: any) {
+  static async find(params?: HealthSearchParams) {
     const res = await get<ApiResponse<Health>>('/health', { params });
     return res.data.items || [];
   }
 
-  static async count(params?: any) {
+  static async count(params?: HealthSearchParams) {
     const res = await get<{ count: number }>('/health/count', { params });
     return res.data.count || 0;
   }
@@ -58,29 +46,5 @@ export default class HealthModel {
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Health>>(`/health/${id}`);
     return res.data.item;
-  }
-
-  static async searchByGymId(gymId: number, params?: any) {
-    const res = await get<ApiResponse<Health>>(
-      `/health/search/gymId?gymId=${gymId}`,
-      { params }
-    );
-    return res.data.items || [];
-  }
-
-  static async searchByCategoryId(categoryId: number, params?: any) {
-    const res = await get<ApiResponse<Health>>(
-      `/health/search/categoryId?categoryId=${categoryId}`,
-      { params }
-    );
-    return res.data.items || [];
-  }
-
-  static async searchByStatus(status: Status, params?: any) {
-    const res = await get<ApiResponse<Health>>(
-      `/health/search/status?status=${status}`,
-      { params }
-    );
-    return res.data.items || [];
   }
 }

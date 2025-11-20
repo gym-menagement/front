@@ -1,0 +1,52 @@
+// Auto-generated TypeScript types for Health
+// Generated from table: health
+
+// Main entity interface
+export interface Health {
+  id: string;
+  category: string;
+  term: string;
+  name: string;
+  count: string;
+  cost: string;
+  discount: string;
+  costdiscount: string;
+  content: string;
+  date: string;
+}
+
+// Create request type (omit auto-generated fields)
+export type CreateHealthRequest = Omit<Health, 'id'>;
+
+// Update request type (all fields optional except id)
+export type UpdateHealthRequest = Partial<Omit<Health, 'id'>>;
+
+// Search params type
+export interface HealthSearchParams {
+  id?: string;
+  category?: string;
+  term?: string;
+  name?: string;
+  count?: string;
+  cost?: string;
+  discount?: string;
+  costdiscount?: string;
+  content?: string;
+  date?: string;
+  page?: number;
+  limit?: number;
+  sort?: string;
+  order?: 'asc' | 'desc';
+}
+
+// API response types
+export interface ApiResponse<T> {
+  items: T[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
+export interface ApiSingleResponse<T> {
+  item: T;
+}

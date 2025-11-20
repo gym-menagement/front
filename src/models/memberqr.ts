@@ -1,19 +1,40 @@
 import { get, post, put, del } from '../services/api';
-import type { MemberQR, ApiResponse, ApiSingleResponse } from '../types';
+import type {
+  Memberqr,
+  ApiResponse,
+  ApiSingleResponse,
+  MemberqrSearchParams,
+} from '../types/memberqr';
 
-export default class MemberQRModel {
-  static async insert(item: Partial<MemberQR>) {
-    const res = await post<MemberQR>('/memberqr', item);
+export default class MemberqrModel {
+  // Isactive constants (from backend: enums/isactive/Enums.kt)
+  static readonly isactive = {
+    INACTIVE: 1,
+    ACTIVE: 2,
+  };
+  static readonly isactives = [
+    '',
+    '비활성',
+    '활성',
+  ];
+
+  static getIsactive(value: number): string {
+    return this.isactives[value] || String(value);
+  }
+
+  // CRUD operations
+  static async insert(item: Partial<Memberqr>) {
+    const res = await post<Memberqr>('/memberqr', item);
     return res.data;
   }
 
-  static async insertBatch(items: Partial<MemberQR>[]) {
-    const res = await post<MemberQR[]>('/memberqr/batch', items);
+  static async insertBatch(items: Partial<Memberqr>[]) {
+    const res = await post<Memberqr[]>('/memberqr/batch', items);
     return res.data;
   }
 
-  static async update(id: number, item: Partial<MemberQR>) {
-    const res = await put<MemberQR>(`/memberqr/${id}`, item);
+  static async update(id: number, item: Partial<Memberqr>) {
+    const res = await put<Memberqr>(`/memberqr/${id}`, item);
     return res.data;
   }
 
@@ -27,34 +48,18 @@ export default class MemberQRModel {
     return res.data;
   }
 
-  static async find(params?: any) {
-    const res = await get<ApiResponse<MemberQR>>('/memberqr', { params });
+  static async find(params?: MemberqrSearchParams) {
+    const res = await get<ApiResponse<Memberqr>>('/memberqr', { params });
     return res.data.items || [];
   }
 
-  static async count(params?: any) {
+  static async count(params?: MemberqrSearchParams) {
     const res = await get<{ count: number }>('/memberqr/count', { params });
     return res.data.count || 0;
   }
 
   static async get(id: number) {
-    const res = await get<ApiSingleResponse<MemberQR>>(`/memberqr/${id}`);
+    const res = await get<ApiSingleResponse<Memberqr>>(`/memberqr/${id}`);
     return res.data.item;
-  }
-
-  static async searchByUserId(userId: number, params?: any) {
-    const res = await get<ApiResponse<MemberQR>>(
-      `/memberqr/search/userId?userId=${userId}`,
-      { params }
-    );
-    return res.data.items || [];
-  }
-
-  static async searchByMembershipId(membershipId: number, params?: any) {
-    const res = await get<ApiResponse<MemberQR>>(
-      `/memberqr/search/membershipId?membershipId=${membershipId}`,
-      { params }
-    );
-    return res.data.items || [];
   }
 }

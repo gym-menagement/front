@@ -1,25 +1,13 @@
 import { get, post, put, del } from '../services/api';
-import type { Gym, ApiResponse, ApiSingleResponse, Status } from '../types';
+import type {
+  Gym,
+  ApiResponse,
+  ApiSingleResponse,
+  GymSearchParams,
+} from '../types/gym';
 
 export default class GymModel {
-  static readonly status = {
-    ACTIVE: 'ACTIVE' as const,
-    INACTIVE: 'INACTIVE' as const,
-  };
-
-  static readonly statuses: Record<Status, string> = {
-    ACTIVE: '운영중',
-    INACTIVE: '휴업',
-    PENDING: '대기',
-    COMPLETED: '완료',
-    CANCELLED: '취소',
-    EXPIRED: '만료',
-  };
-
-  static getStatus(value: Status): string {
-    return this.statuses[value] || value;
-  }
-
+  // CRUD operations
   static async insert(item: Partial<Gym>) {
     const res = await post<Gym>('/gym', item);
     return res.data;
@@ -45,12 +33,12 @@ export default class GymModel {
     return res.data;
   }
 
-  static async find(params?: any) {
+  static async find(params?: GymSearchParams) {
     const res = await get<ApiResponse<Gym>>('/gym', { params });
     return res.data.items || [];
   }
 
-  static async count(params?: any) {
+  static async count(params?: GymSearchParams) {
     const res = await get<{ count: number }>('/gym/count', { params });
     return res.data.count || 0;
   }
@@ -58,21 +46,5 @@ export default class GymModel {
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Gym>>(`/gym/${id}`);
     return res.data.item;
-  }
-
-  static async searchByName(name: string, params?: any) {
-    const res = await get<ApiResponse<Gym>>(
-      `/gym/search/name?name=${encodeURIComponent(name)}`,
-      { params }
-    );
-    return res.data.items || [];
-  }
-
-  static async searchByStatus(status: Status, params?: any) {
-    const res = await get<ApiResponse<Gym>>(
-      `/gym/search/status?status=${status}`,
-      { params }
-    );
-    return res.data.items || [];
   }
 }

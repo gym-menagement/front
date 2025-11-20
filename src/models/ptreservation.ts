@@ -1,40 +1,44 @@
 import { get, post, put, del } from '../services/api';
-import type { PTReservation, ApiResponse, ApiSingleResponse } from '../types';
+import type {
+  Ptreservation,
+  ApiResponse,
+  ApiSingleResponse,
+  PtreservationSearchParams,
+} from '../types/ptreservation';
 
-export default class PTReservationModel {
-  // Status constants (from backend: enums/ptreservation/Enums.kt)
+export default class PtreservationModel {
+  // Status constants (from backend: enums/status/Enums.kt)
   static readonly status = {
-    NONE: 'NONE' as const,
-    RESERVED: 'RESERVED' as const,
-    COMPLETED: 'COMPLETED' as const,
-    CANCELLED: 'CANCELLED' as const,
-    NO_SHOW: 'NO_SHOW' as const,
+    RESERVED: 1,
+    COMPLETED: 2,
+    CANCELLED: 3,
+    NO_SHOW: 4,
   };
+  static readonly statuss = [
+    '',
+    '예약',
+    '완료',
+    '취소',
+    '노쇼',
+  ];
 
-  static readonly statuses = {
-    NONE: '',
-    RESERVED: '예약',
-    COMPLETED: '완료',
-    CANCELLED: '취소',
-    NO_SHOW: '노쇼',
-  };
-
-  static getStatus(value: string): string {
-    return this.statuses[value as keyof typeof this.statuses] || value;
+  static getStatus(value: number): string {
+    return this.statuss[value] || String(value);
   }
 
-  static async insert(item: Partial<PTReservation>) {
-    const res = await post<PTReservation>('/ptreservation', item);
+  // CRUD operations
+  static async insert(item: Partial<Ptreservation>) {
+    const res = await post<Ptreservation>('/ptreservation', item);
     return res.data;
   }
 
-  static async insertBatch(items: Partial<PTReservation>[]) {
-    const res = await post<PTReservation[]>('/ptreservation/batch', items);
+  static async insertBatch(items: Partial<Ptreservation>[]) {
+    const res = await post<Ptreservation[]>('/ptreservation/batch', items);
     return res.data;
   }
 
-  static async update(id: number, item: Partial<PTReservation>) {
-    const res = await put<PTReservation>(`/ptreservation/${id}`, item);
+  static async update(id: number, item: Partial<Ptreservation>) {
+    const res = await put<Ptreservation>(`/ptreservation/${id}`, item);
     return res.data;
   }
 
@@ -48,48 +52,18 @@ export default class PTReservationModel {
     return res.data;
   }
 
-  static async find(params?: any) {
-    const res = await get<ApiResponse<PTReservation>>('/ptreservation', {
-      params,
-    });
+  static async find(params?: PtreservationSearchParams) {
+    const res = await get<ApiResponse<Ptreservation>>('/ptreservation', { params });
     return res.data.items || [];
   }
 
-  static async count(params?: any) {
-    const res = await get<{ count: number }>('/ptreservation/count', {
-      params,
-    });
+  static async count(params?: PtreservationSearchParams) {
+    const res = await get<{ count: number }>('/ptreservation/count', { params });
     return res.data.count || 0;
   }
 
   static async get(id: number) {
-    const res = await get<ApiSingleResponse<PTReservation>>(
-      `/ptreservation/${id}`
-    );
+    const res = await get<ApiSingleResponse<Ptreservation>>(`/ptreservation/${id}`);
     return res.data.item;
-  }
-
-  static async searchByUserId(userId: number, params?: any) {
-    const res = await get<ApiResponse<PTReservation>>(
-      `/ptreservation/search/userId?userId=${userId}`,
-      { params }
-    );
-    return res.data.items || [];
-  }
-
-  static async searchByTrainerId(trainerId: number, params?: any) {
-    const res = await get<ApiResponse<PTReservation>>(
-      `/ptreservation/search/trainerId?trainerId=${trainerId}`,
-      { params }
-    );
-    return res.data.items || [];
-  }
-
-  static async searchByGymId(gymId: number, params?: any) {
-    const res = await get<ApiResponse<PTReservation>>(
-      `/ptreservation/search/gymId?gymId=${gymId}`,
-      { params }
-    );
-    return res.data.items || [];
   }
 }
