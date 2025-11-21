@@ -50,7 +50,7 @@ export default class TrainermemberModel {
 
   static async find(params?: TrainermemberSearchParams) {
     const res = await get<ApiResponse<Trainermember>>('/trainermember', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: TrainermemberSearchParams) {
@@ -60,6 +60,6 @@ export default class TrainermemberModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Trainermember>>(`/trainermember/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

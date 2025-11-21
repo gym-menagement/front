@@ -50,7 +50,7 @@ export default class MemberqrModel {
 
   static async find(params?: MemberqrSearchParams) {
     const res = await get<ApiResponse<Memberqr>>('/memberqr', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: MemberqrSearchParams) {
@@ -60,6 +60,6 @@ export default class MemberqrModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Memberqr>>(`/memberqr/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

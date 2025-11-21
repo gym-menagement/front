@@ -35,7 +35,7 @@ export default class DaytypeModel {
 
   static async find(params?: DaytypeSearchParams) {
     const res = await get<ApiResponse<Daytype>>('/daytype', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: DaytypeSearchParams) {
@@ -45,6 +45,6 @@ export default class DaytypeModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Daytype>>(`/daytype/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

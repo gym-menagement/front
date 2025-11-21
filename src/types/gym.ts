@@ -4,6 +4,9 @@
 export interface Gym {
   id: number;
   name: string;
+  address: string;
+  tel: string;
+  user: number;
   date: string;
 }
 
@@ -17,6 +20,9 @@ export type UpdateGymRequest = Partial<Omit<Gym, 'id'>>;
 export interface GymSearchParams {
   id?: number;
   name?: string;
+  address?: string;
+  tel?: string;
+  user?: number;
   date?: string;
   page?: number;
   limit?: number;
@@ -26,7 +32,7 @@ export interface GymSearchParams {
 
 // API response types
 export interface ApiResponse<T> {
-  items: T[];
+  content: T[];
   total: number;
   page: number;
   limit: number;

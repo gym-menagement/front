@@ -35,7 +35,7 @@ export default class LoginlogModel {
 
   static async find(params?: LoginlogSearchParams) {
     const res = await get<ApiResponse<Loginlog>>('/loginlog', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: LoginlogSearchParams) {
@@ -45,6 +45,6 @@ export default class LoginlogModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Loginlog>>(`/loginlog/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

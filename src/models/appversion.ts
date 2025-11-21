@@ -65,7 +65,7 @@ export default class AppversionModel {
 
   static async find(params?: AppversionSearchParams) {
     const res = await get<ApiResponse<Appversion>>('/appversion', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: AppversionSearchParams) {
@@ -75,6 +75,6 @@ export default class AppversionModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Appversion>>(`/appversion/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

@@ -35,7 +35,7 @@ export default class GymModel {
 
   static async find(params?: GymSearchParams) {
     const res = await get<ApiResponse<Gym>>('/gym', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: GymSearchParams) {
@@ -45,6 +45,6 @@ export default class GymModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Gym>>(`/gym/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

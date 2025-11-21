@@ -35,7 +35,7 @@ export default class RoleModel {
 
   static async find(params?: RoleSearchParams) {
     const res = await get<ApiResponse<Role>>('/role', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: RoleSearchParams) {
@@ -45,6 +45,6 @@ export default class RoleModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Role>>(`/role/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

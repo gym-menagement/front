@@ -50,7 +50,7 @@ export default class PushtokenModel {
 
   static async find(params?: PushtokenSearchParams) {
     const res = await get<ApiResponse<Pushtoken>>('/pushtoken', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: PushtokenSearchParams) {
@@ -60,6 +60,6 @@ export default class PushtokenModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Pushtoken>>(`/pushtoken/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

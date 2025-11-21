@@ -71,7 +71,7 @@ export default class InquiryModel {
 
   static async find(params?: InquirySearchParams) {
     const res = await get<ApiResponse<Inquiry>>('/inquiry', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: InquirySearchParams) {
@@ -81,6 +81,6 @@ export default class InquiryModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Inquiry>>(`/inquiry/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

@@ -35,7 +35,7 @@ export default class OrderModel {
 
   static async find(params?: OrderSearchParams) {
     const res = await get<ApiResponse<Order>>('/order', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: OrderSearchParams) {
@@ -45,6 +45,6 @@ export default class OrderModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Order>>(`/order/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

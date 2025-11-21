@@ -69,7 +69,7 @@ export default class MembershipusageModel {
 
   static async find(params?: MembershipusageSearchParams) {
     const res = await get<ApiResponse<Membershipusage>>('/membershipusage', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: MembershipusageSearchParams) {
@@ -79,6 +79,6 @@ export default class MembershipusageModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Membershipusage>>(`/membershipusage/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

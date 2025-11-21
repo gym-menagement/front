@@ -114,7 +114,7 @@ export default class NoticeModel {
 
   static async find(params?: NoticeSearchParams) {
     const res = await get<ApiResponse<Notice>>('/notice', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: NoticeSearchParams) {
@@ -124,6 +124,6 @@ export default class NoticeModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Notice>>(`/notice/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

@@ -52,7 +52,7 @@ export default class TokenModel {
 
   static async find(params?: TokenSearchParams) {
     const res = await get<ApiResponse<Token>>('/token', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: TokenSearchParams) {
@@ -62,6 +62,6 @@ export default class TokenModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Token>>(`/token/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

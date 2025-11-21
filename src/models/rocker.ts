@@ -50,7 +50,7 @@ export default class RockerModel {
 
   static async find(params?: RockerSearchParams) {
     const res = await get<ApiResponse<Rocker>>('/rocker', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: RockerSearchParams) {
@@ -60,6 +60,6 @@ export default class RockerModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Rocker>>(`/rocker/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

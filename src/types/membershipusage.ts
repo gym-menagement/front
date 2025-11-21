@@ -52,7 +52,7 @@ export interface MembershipusageSearchParams {
 
 // API response types
 export interface ApiResponse<T> {
-  items: T[];
+  content: T[];
   total: number;
   page: number;
   limit: number;

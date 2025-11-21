@@ -71,7 +71,7 @@ export default class AlarmModel {
 
   static async find(params?: AlarmSearchParams) {
     const res = await get<ApiResponse<Alarm>>('/alarm', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: AlarmSearchParams) {
@@ -81,6 +81,6 @@ export default class AlarmModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Alarm>>(`/alarm/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

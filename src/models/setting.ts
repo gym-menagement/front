@@ -52,7 +52,7 @@ export default class SettingModel {
 
   static async find(params?: SettingSearchParams) {
     const res = await get<ApiResponse<Setting>>('/setting', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: SettingSearchParams) {
@@ -62,6 +62,6 @@ export default class SettingModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Setting>>(`/setting/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

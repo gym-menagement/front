@@ -35,7 +35,7 @@ export default class DiscountModel {
 
   static async find(params?: DiscountSearchParams) {
     const res = await get<ApiResponse<Discount>>('/discount', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: DiscountSearchParams) {
@@ -45,6 +45,6 @@ export default class DiscountModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Discount>>(`/discount/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

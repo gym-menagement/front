@@ -128,7 +128,7 @@ export default class UserModel {
 
   static async find(params?: UserSearchParams) {
     const res = await get<ApiResponse<User>>('/user', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: UserSearchParams) {
@@ -138,7 +138,7 @@ export default class UserModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<User>>(`/user/${id}`);
-    return res.data.item;
+    return res.data;
   }
 
   static async searchByLoginid(loginid: string) {

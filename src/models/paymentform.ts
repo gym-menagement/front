@@ -35,7 +35,7 @@ export default class PaymentformModel {
 
   static async find(params?: PaymentformSearchParams) {
     const res = await get<ApiResponse<Paymentform>>('/paymentform', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: PaymentformSearchParams) {
@@ -45,6 +45,6 @@ export default class PaymentformModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Paymentform>>(`/paymentform/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

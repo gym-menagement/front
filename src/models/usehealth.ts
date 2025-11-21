@@ -35,7 +35,7 @@ export default class UsehealthModel {
 
   static async find(params?: UsehealthSearchParams) {
     const res = await get<ApiResponse<Usehealth>>('/usehealth', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: UsehealthSearchParams) {
@@ -45,6 +45,6 @@ export default class UsehealthModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Usehealth>>(`/usehealth/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

@@ -35,7 +35,7 @@ export default class PaymentModel {
 
   static async find(params?: PaymentSearchParams) {
     const res = await get<ApiResponse<Payment>>('/payment', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: PaymentSearchParams) {
@@ -45,6 +45,6 @@ export default class PaymentModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Payment>>(`/payment/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

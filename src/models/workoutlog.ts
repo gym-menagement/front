@@ -35,7 +35,7 @@ export default class WorkoutlogModel {
 
   static async find(params?: WorkoutlogSearchParams) {
     const res = await get<ApiResponse<Workoutlog>>('/workoutlog', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: WorkoutlogSearchParams) {
@@ -45,6 +45,6 @@ export default class WorkoutlogModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Workoutlog>>(`/workoutlog/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

@@ -35,7 +35,7 @@ export default class TermModel {
 
   static async find(params?: TermSearchParams) {
     const res = await get<ApiResponse<Term>>('/term', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: TermSearchParams) {
@@ -45,6 +45,6 @@ export default class TermModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Term>>(`/term/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

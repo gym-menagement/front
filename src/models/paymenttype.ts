@@ -35,7 +35,7 @@ export default class PaymenttypeModel {
 
   static async find(params?: PaymenttypeSearchParams) {
     const res = await get<ApiResponse<Paymenttype>>('/paymenttype', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: PaymenttypeSearchParams) {
@@ -45,6 +45,6 @@ export default class PaymenttypeModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Paymenttype>>(`/paymenttype/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

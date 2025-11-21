@@ -84,7 +84,7 @@ export default class AttendanceModel {
 
   static async find(params?: AttendanceSearchParams) {
     const res = await get<ApiResponse<Attendance>>('/attendance', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: AttendanceSearchParams) {
@@ -94,6 +94,6 @@ export default class AttendanceModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Attendance>>(`/attendance/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

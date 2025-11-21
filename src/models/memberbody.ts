@@ -35,7 +35,7 @@ export default class MemberbodyModel {
 
   static async find(params?: MemberbodySearchParams) {
     const res = await get<ApiResponse<Memberbody>>('/memberbody', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: MemberbodySearchParams) {
@@ -45,6 +45,6 @@ export default class MemberbodyModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Memberbody>>(`/memberbody/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

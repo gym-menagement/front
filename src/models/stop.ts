@@ -35,7 +35,7 @@ export default class StopModel {
 
   static async find(params?: StopSearchParams) {
     const res = await get<ApiResponse<Stop>>('/stop', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: StopSearchParams) {
@@ -45,6 +45,6 @@ export default class StopModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Stop>>(`/stop/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

@@ -54,7 +54,7 @@ export default class PtreservationModel {
 
   static async find(params?: PtreservationSearchParams) {
     const res = await get<ApiResponse<Ptreservation>>('/ptreservation', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: PtreservationSearchParams) {
@@ -64,6 +64,6 @@ export default class PtreservationModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Ptreservation>>(`/ptreservation/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }

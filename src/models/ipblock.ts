@@ -80,7 +80,7 @@ export default class IpblockModel {
 
   static async find(params?: IpblockSearchParams) {
     const res = await get<ApiResponse<Ipblock>>('/ipblock', { params });
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async count(params?: IpblockSearchParams) {
@@ -90,6 +90,6 @@ export default class IpblockModel {
 
   static async get(id: number) {
     const res = await get<ApiSingleResponse<Ipblock>>(`/ipblock/${id}`);
-    return res.data.item;
+    return res.data;
   }
 }
