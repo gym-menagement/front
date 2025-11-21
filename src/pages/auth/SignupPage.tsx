@@ -30,7 +30,11 @@ const SignupPage = () => {
     address: '',
     birth: '',
     sex: 1, // 1: 남성, 2: 여성
+    role: User.role.MEMBER, // 기본값: 일반 회원
+    image: '', // 프로필 이미지 URL
   });
+  const [, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
 
   const handleChange = (field: string, value: string | number) => {
     let processedValue = value;
@@ -53,6 +57,58 @@ const SignupPage = () => {
         return newErrors;
       });
     }
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // 파일 크기 체크 (5MB 제한)
+      if (file.size > 5 * 1024 * 1024) {
+        setErrors((prev) => ({
+          ...prev,
+          image: '이미지 파일 크기는 5MB 이하여야 합니다.',
+        }));
+        return;
+      }
+
+      // 파일 타입 체크
+      if (!file.type.startsWith('image/')) {
+        setErrors((prev) => ({
+          ...prev,
+          image: '이미지 파일만 업로드 가능합니다.',
+        }));
+        return;
+      }
+
+      setImageFile(file);
+
+      // 이미지 미리보기
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+        setFormData((prev) => ({
+          ...prev,
+          image: reader.result as string, // Base64로 저장
+        }));
+      };
+      reader.readAsDataURL(file);
+
+      // 에러 제거
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors.image;
+        return newErrors;
+      });
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    setImagePreview('');
+    setFormData((prev) => ({
+      ...prev,
+      image: '',
+    }));
   };
 
   const validateForm = (): boolean => {
@@ -191,7 +247,13 @@ const SignupPage = () => {
 
         {/* Form */}
         <form onSubmit={handleSubmit}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing[4] }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: theme.spacing[4],
+            }}
+          >
             {/* 아이디 */}
             <Input
               label="아이디"
@@ -271,6 +333,94 @@ const SignupPage = () => {
               fullWidth
             />
 
+            {/* 프로필 이미지 */}
+            <div>
+              <label
+                style={{
+                  display: 'block',
+                  fontSize: theme.typography.fontSize.sm,
+                  fontWeight: theme.typography.fontWeight.medium,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                }}
+              >
+                프로필 이미지 (선택)
+              </label>
+              {imagePreview ? (
+                <div>
+                  <div
+                    style={{
+                      position: 'relative',
+                      width: '120px',
+                      height: '120px',
+                      marginBottom: theme.spacing[2],
+                    }}
+                  >
+                    <img
+                      src={imagePreview}
+                      alt="프로필 미리보기"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        borderRadius: theme.borderRadius.md,
+                        border: `2px solid ${theme.colors.border.medium}`,
+                      }}
+                    />
+                  </div>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleRemoveImage}
+                  >
+                    이미지 제거
+                  </Button>
+                </div>
+              ) : (
+                <div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    style={{ display: 'none' }}
+                    id="profile-image"
+                  />
+                  <label htmlFor="profile-image">
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      onClick={() =>
+                        document.getElementById('profile-image')?.click()
+                      }
+                    >
+                      이미지 선택
+                    </Button>
+                  </label>
+                  {errors.image && (
+                    <div
+                      style={{
+                        marginTop: theme.spacing[2],
+                        fontSize: theme.typography.fontSize.sm,
+                        color: theme.colors.semantic.error,
+                      }}
+                    >
+                      {errors.image}
+                    </div>
+                  )}
+                  <div
+                    style={{
+                      marginTop: theme.spacing[2],
+                      fontSize: theme.typography.fontSize.sm,
+                      color: theme.colors.text.secondary,
+                    }}
+                  >
+                    JPG, PNG, GIF 형식, 최대 5MB
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* 성별 */}
             <div>
               <label
@@ -297,7 +447,9 @@ const SignupPage = () => {
                     name="sex"
                     value={1}
                     checked={formData.sex === 1}
-                    onChange={(e) => handleChange('sex', parseInt(e.target.value))}
+                    onChange={(e) =>
+                      handleChange('sex', parseInt(e.target.value))
+                    }
                     style={{ marginRight: theme.spacing[2] }}
                   />
                   남성
@@ -314,10 +466,92 @@ const SignupPage = () => {
                     name="sex"
                     value={2}
                     checked={formData.sex === 2}
-                    onChange={(e) => handleChange('sex', parseInt(e.target.value))}
+                    onChange={(e) =>
+                      handleChange('sex', parseInt(e.target.value))
+                    }
                     style={{ marginRight: theme.spacing[2] }}
                   />
                   여성
+                </label>
+              </div>
+            </div>
+
+            {/* 역할 */}
+            <div>
+              <label
+                style={{
+                  display: 'block',
+                  fontSize: theme.typography.fontSize.sm,
+                  fontWeight: theme.typography.fontWeight.medium,
+                  color: theme.colors.text.primary,
+                  marginBottom: theme.spacing[2],
+                }}
+              >
+                회원 유형
+              </label>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: theme.spacing[2],
+                }}
+              >
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input
+                    type="radio"
+                    name="role"
+                    value={User.role.MEMBER}
+                    checked={formData.role === User.role.MEMBER}
+                    onChange={(e) =>
+                      handleChange('role', parseInt(e.target.value))
+                    }
+                    style={{ marginRight: theme.spacing[2] }}
+                  />
+                  일반 회원
+                </label>
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input
+                    type="radio"
+                    name="role"
+                    value={User.role.TRAINER}
+                    checked={formData.role === User.role.TRAINER}
+                    onChange={(e) =>
+                      handleChange('role', parseInt(e.target.value))
+                    }
+                    style={{ marginRight: theme.spacing[2] }}
+                  />
+                  트레이너
+                </label>
+                <label
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <input
+                    type="radio"
+                    name="role"
+                    value={User.role.GYM_ADMIN}
+                    checked={formData.role === User.role.GYM_ADMIN}
+                    onChange={(e) =>
+                      handleChange('role', parseInt(e.target.value))
+                    }
+                    style={{ marginRight: theme.spacing[2] }}
+                  />
+                  헬스장 관리자
                 </label>
               </div>
             </div>
