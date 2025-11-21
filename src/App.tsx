@@ -12,6 +12,7 @@ import MemberDashboard from './pages/member/MemberDashboard';
 
 // Gym Pages
 import GymList from './pages/gym/GymList';
+import GymRegisterPage from './pages/gym/GymRegisterPage';
 
 // Trainer Pages (to be created)
 // import TrainerDashboard from './pages/trainer/Dashboard';
@@ -65,6 +66,7 @@ function App() {
         {/* Public Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/gym/register" element={<GymRegisterPage />} />
         <Route path="/components" element={<ComponentsDemo />} />
 
         {/* Member Routes */}

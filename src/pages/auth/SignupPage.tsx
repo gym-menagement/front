@@ -196,8 +196,16 @@ const SignupPage = () => {
 
       await User.insert(userData);
 
-      alert('회원가입이 완료되었습니다. 로그인해주세요.');
-      navigate('/login');
+      alert('회원가입이 완료되었습니다.');
+
+      // 헬스장 관리자인 경우 헬스장 등록 페이지로 이동
+      if (formData.role === User.role.GYM_ADMIN) {
+        alert('헬스장 관리자로 가입하셨습니다. 헬스장을 등록해주세요.');
+        navigate('/gym/register');
+      } else {
+        alert('로그인해주세요.');
+        navigate('/login');
+      }
     } catch (error) {
       console.error('Signup failed:', error);
       alert('회원가입에 실패했습니다. 다시 시도해주세요.');
