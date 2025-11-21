@@ -164,7 +164,7 @@ const LoginPage = () => {
 
           <div style={linkContainerStyles}>
             계정이 없으신가요?
-            <a href="/register" style={linkStyles}>
+            <a href="/signup" style={linkStyles}>
               회원가입
             </a>
           </div>

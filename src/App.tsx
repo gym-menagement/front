@@ -5,6 +5,7 @@ import { User as UserModel } from './models';
 
 // Auth Pages
 import LoginPage from './pages/auth/LoginPage';
+import SignupPage from './pages/auth/SignupPage';
 
 // Member Pages
 import MemberDashboard from './pages/member/MemberDashboard';
@@ -63,6 +64,7 @@ function App() {
       <Routes>
         {/* Public Routes */}
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
         <Route path="/components" element={<ComponentsDemo />} />
 
         {/* Member Routes */}
