@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Card, Badge, Button } from '../../components/ui';
 import { theme } from '../../theme';
-import { User, Membership, Attendance } from '../../models';
+import { User, Attendance } from '../../models';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../../services/auth.service';
+import GymSelector from '../../components/GymSelector';
+import { useAtomValue } from 'jotai';
+import { selectedGymIdAtom } from '../../store/gym';
 
 interface DashboardStats {
   totalMembers: number;
@@ -16,6 +19,7 @@ interface DashboardStats {
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  const selectedGymId = useAtomValue(selectedGymIdAtom);
   const [stats, setStats] = useState<DashboardStats>({
     totalMembers: 0,
     activeMembers: 0,
@@ -29,15 +33,24 @@ const AdminDashboard = () => {
   const currentUser = authService.getCurrentUser();
 
   useEffect(() => {
-    loadDashboardStats();
-  }, []);
+    console.log('AdminDashboard - selectedGymId changed:', selectedGymId);
+    if (selectedGymId) {
+      loadDashboardStats();
+    } else {
+      // selectedGymId가 없으면 로딩 상태 해제
+      setLoading(false);
+    }
+  }, [selectedGymId]);
 
   const loadDashboardStats = async () => {
     try {
+      console.log('Loading dashboard stats...');
       setLoading(true);
 
       // 전체 회원 수
+      console.log('Fetching total members...');
       const totalMembers = await User.count({ role: User.role.MEMBER });
+      console.log('Total members:', totalMembers);
 
       // 활성 회원 수
       const activeMembers = await User.count({
@@ -55,12 +68,8 @@ const AdminDashboard = () => {
       });
 
       // 만료 예정 회원권 (30일 이내)
-      const thirtyDaysLater = new Date();
-      thirtyDaysLater.setDate(thirtyDaysLater.getDate() + 30);
-      const expiringMemberships = await Membership.count({
-        // enddate가 30일 이내인 것들
-        use: 1,
-      });
+      // TODO: Membership 타입에 enddate, use 필드 추가 필요
+      const expiringMemberships = 0; // await Membership.count({ ... });
 
       setStats({
         totalMembers,
@@ -70,9 +79,12 @@ const AdminDashboard = () => {
         monthlyRevenue: 0, // TODO: 실제 매출 데이터 연동
         expiringMemberships,
       });
+      console.log('Dashboard stats loaded successfully');
     } catch (error) {
       console.error('Failed to load dashboard stats:', error);
+      alert('대시보드 데이터를 불러오는데 실패했습니다: ' + error);
     } finally {
+      console.log('Setting loading to false');
       setLoading(false);
     }
   };
@@ -102,7 +114,7 @@ const AdminDashboard = () => {
       <div
         style={{
           backgroundColor: theme.colors.background.primary,
-          borderBottom: `1px solid ${theme.colors.border.primary}`,
+          borderBottom: `1px solid ${theme.colors.border.light}`,
           padding: `${theme.spacing[4]} ${theme.spacing[8]}`,
         }}
       >
@@ -136,9 +148,18 @@ const AdminDashboard = () => {
               {currentUser?.name}님 환영합니다
             </p>
           </div>
-          <Button variant="ghost" onClick={handleLogout}>
-            로그아웃
-          </Button>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: theme.spacing[4],
+            }}
+          >
+            <GymSelector />
+            <Button variant="ghost" onClick={handleLogout}>
+              로그아웃
+            </Button>
+          </div>
         </div>
       </div>
 

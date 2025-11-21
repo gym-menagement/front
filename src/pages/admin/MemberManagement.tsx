@@ -4,17 +4,25 @@ import { theme } from '../../theme';
 import { User } from '../../models';
 import type { User as UserType } from '../../types/user';
 import { useNavigate } from 'react-router-dom';
+import GymSelector from '../../components/GymSelector';
+import { useAtomValue } from 'jotai';
+import { selectedGymIdAtom } from '../../store/gym';
 
 const MemberManagement = () => {
   const navigate = useNavigate();
+  const selectedGymId = useAtomValue(selectedGymIdAtom);
   const [members, setMembers] = useState<UserType[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'inactive'>('all');
+  const [filterStatus, setFilterStatus] = useState<
+    'all' | 'active' | 'inactive'
+  >('all');
 
   useEffect(() => {
-    loadMembers();
-  }, [filterStatus]);
+    if (selectedGymId) {
+      loadMembers();
+    }
+  }, [filterStatus, selectedGymId]);
 
   const loadMembers = async () => {
     try {
@@ -78,7 +86,7 @@ const MemberManagement = () => {
       <div
         style={{
           backgroundColor: theme.colors.background.primary,
-          borderBottom: `1px solid ${theme.colors.border.primary}`,
+          borderBottom: `1px solid ${theme.colors.border.light}`,
           padding: `${theme.spacing[4]} ${theme.spacing[8]}`,
         }}
       >
@@ -91,8 +99,17 @@ const MemberManagement = () => {
             margin: '0 auto',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: theme.spacing[4] }}>
-            <Button variant="ghost" onClick={() => navigate('/admin/dashboard')}>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: theme.spacing[4],
+            }}
+          >
+            <Button
+              variant="ghost"
+              onClick={() => navigate('/admin/dashboard')}
+            >
               ← 대시보드
             </Button>
             <h1
@@ -106,9 +123,21 @@ const MemberManagement = () => {
               회원 관리
             </h1>
           </div>
-          <Button variant="primary" onClick={() => navigate('/admin/members/new')}>
-            + 새 회원 등록
-          </Button>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: theme.spacing[4],
+            }}
+          >
+            <GymSelector />
+            <Button
+              variant="primary"
+              onClick={() => navigate('/admin/members/new')}
+            >
+              + 새 회원 등록
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -175,7 +204,13 @@ const MemberManagement = () => {
             </div>
           </Card>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing[4] }}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: theme.spacing[4],
+            }}
+          >
             {filteredMembers.map((member) => (
               <Card key={member.id} hoverable>
                 <div
@@ -251,7 +286,9 @@ const MemberManagement = () => {
                     <Button
                       size="sm"
                       variant={member.use === 1 ? 'ghost' : 'primary'}
-                      onClick={() => handleStatusChange(member.id, member.use === 1 ? 0 : 1)}
+                      onClick={() =>
+                        handleStatusChange(member.id, member.use === 1 ? 0 : 1)
+                      }
                     >
                       {member.use === 1 ? '비활성화' : '활성화'}
                     </Button>
