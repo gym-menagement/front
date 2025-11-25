@@ -3,6 +3,7 @@
 
 export interface Discount {
   id: number;
+  gym: number;
   name: string;
   discount: number;
   date: string;
@@ -17,6 +18,7 @@ export type UpdateDiscountRequest = Partial<Omit<Discount, 'id'>>;
 // Search params type
 export interface DiscountSearchParams {
   id?: number;
+  gym?: number;
   name?: string;
   discount?: number;
   date?: string;

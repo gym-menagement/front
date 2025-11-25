@@ -22,6 +22,12 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import MemberManagement from './pages/admin/MemberManagement';
 import TrainerManagement from './pages/admin/TrainerManagement';
 import MembershipManagement from './pages/admin/MembershipManagement';
+import HealthManagement from './pages/admin/HealthManagement';
+import DiscountManagement from './pages/admin/DiscountManagement';
+import RockerManagement from './pages/admin/RockerManagement';
+import RockerUsageManagement from './pages/admin/RockerUsageManagement';
+import WorkoutLogManagement from './pages/admin/WorkoutLogManagement';
+import MembershipUsageManagement from './pages/admin/MembershipUsageManagement';
 
 // Demo Page (keep for component showcase)
 import ComponentsDemo from './pages/ComponentsDemo';
@@ -135,6 +141,54 @@ function App() {
           element={
             <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
               <MembershipManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/health"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <HealthManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/discounts"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <DiscountManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/rockers"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <RockerManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/rocker-usages"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <RockerUsageManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/workout-logs"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <WorkoutLogManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/membership-usages"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <MembershipUsageManagement />
             </ProtectedRoute>
           }
         />

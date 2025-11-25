@@ -3,6 +3,7 @@
 
 export interface Memberbody {
   id: number;
+  gym: number;
   user: number;
   height: number;
   weight: number;
@@ -31,6 +32,7 @@ export type UpdateMemberbodyRequest = Partial<Omit<Memberbody, 'id'>>;
 // Search params type
 export interface MemberbodySearchParams {
   id?: number;
+  gym?: number;
   user?: number;
   height?: number;
   weight?: number;

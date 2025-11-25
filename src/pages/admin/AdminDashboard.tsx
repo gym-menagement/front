@@ -316,7 +316,14 @@ const AdminDashboard = () => {
               fullWidth
               onClick={() => navigate('/admin/memberships')}
             >
-              회원권 관리
+              회원권 발급 관리
+            </Button>
+            <Button
+              variant="primary"
+              fullWidth
+              onClick={() => navigate('/admin/health')}
+            >
+              회원권 상품 관리
             </Button>
             <Button
               variant="secondary"

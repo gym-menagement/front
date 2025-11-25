@@ -3,6 +3,7 @@
 
 export interface Membershipusage {
   id: number;
+  gym: number;
   membership: number;
   user: number;
   type: number;
@@ -29,6 +30,7 @@ export type UpdateMembershipusageRequest = Partial<Omit<Membershipusage, 'id'>>;
 // Search params type
 export interface MembershipusageSearchParams {
   id?: number;
+  gym?: number;
   membership?: number;
   user?: number;
   type?: number;

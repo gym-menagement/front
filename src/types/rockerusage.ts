@@ -3,6 +3,7 @@
 
 export interface Rockerusage {
   id: number;
+  gym: number;
   rocker: number;
   user: number;
   membership: number;
@@ -26,6 +27,7 @@ export type UpdateRockerusageRequest = Partial<Omit<Rockerusage, 'id'>>;
 // Search params type
 export interface RockerusageSearchParams {
   id?: number;
+  gym?: number;
   rocker?: number;
   user?: number;
   membership?: number;

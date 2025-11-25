@@ -3,6 +3,7 @@
 
 export interface Workoutlog {
   id: number;
+  gym: number;
   user: number;
   attendance: number;
   health: number;
@@ -25,6 +26,7 @@ export type UpdateWorkoutlogRequest = Partial<Omit<Workoutlog, 'id'>>;
 // Search params type
 export interface WorkoutlogSearchParams {
   id?: number;
+  gym?: number;
   user?: number;
   attendance?: number;
   health?: number;
