@@ -1,24 +1,46 @@
 import { useEffect, useState } from 'react';
 import { Card, Badge, Button, Input } from '../../components/ui';
 import { theme } from '../../theme';
-import { User } from '../../models';
+import { User, Gymtrainer } from '../../models';
 import type { User as UserType } from '../../types/user';
 import { useNavigate } from 'react-router-dom';
+import GymSelector from '../../components/GymSelector';
+import { useAtomValue } from 'jotai';
+import { selectedGymIdAtom } from '../../store/gym';
 
 const TrainerManagement = () => {
   const navigate = useNavigate();
+  const selectedGymId = useAtomValue(selectedGymIdAtom);
   const [trainers, setTrainers] = useState<UserType[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'inactive'>('all');
 
   useEffect(() => {
-    loadTrainers();
-  }, [filterStatus]);
+    if (selectedGymId) {
+      loadTrainers();
+    }
+  }, [filterStatus, selectedGymId]);
 
   const loadTrainers = async () => {
     try {
       setLoading(true);
+
+      if (!selectedGymId) {
+        setTrainers([]);
+        return;
+      }
+
+      // 1. 선택된 헬스장의 트레이너 ID 조회 (gymtrainer_tb 사용)
+      const gymTrainers = await Gymtrainer.find({ gym: selectedGymId });
+      const trainerUserIds = [...new Set(gymTrainers.map(gt => gt.trainer))];
+
+      if (trainerUserIds.length === 0) {
+        setTrainers([]);
+        return;
+      }
+
+      // 2. 트레이너 정보 조회
       const params: any = { role: User.role.TRAINER };
 
       if (filterStatus === 'active') {
@@ -27,8 +49,14 @@ const TrainerManagement = () => {
         params.use = 0;
       }
 
-      const data = await User.find(params);
-      setTrainers(data);
+      const allTrainers = await User.find(params);
+
+      // 3. 해당 헬스장의 트레이너만 필터링
+      const filteredTrainers = allTrainers.filter(trainer =>
+        trainerUserIds.includes(trainer.id)
+      );
+
+      setTrainers(filteredTrainers);
     } catch (error) {
       console.error('Failed to load trainers:', error);
     } finally {
@@ -78,7 +106,7 @@ const TrainerManagement = () => {
       <div
         style={{
           backgroundColor: theme.colors.background.primary,
-          borderBottom: `1px solid ${theme.colors.border.primary}`,
+          borderBottom: `1px solid ${theme.colors.border.light}`,
           padding: `${theme.spacing[4]} ${theme.spacing[8]}`,
         }}
       >
@@ -106,9 +134,18 @@ const TrainerManagement = () => {
               트레이너 관리
             </h1>
           </div>
-          <Button variant="primary" onClick={() => navigate('/admin/trainers/new')}>
-            + 새 트레이너 등록
-          </Button>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: theme.spacing[4],
+            }}
+          >
+            <GymSelector />
+            <Button variant="primary" onClick={() => navigate('/admin/trainers/new')}>
+              + 새 트레이너 등록
+            </Button>
+          </div>
         </div>
       </div>
 

@@ -11,6 +11,7 @@ export interface Health {
   discount: number;
   costdiscount: number;
   content: string;
+  gym: number;
   date: string;
 }
 
@@ -31,6 +32,7 @@ export interface HealthSearchParams {
   discount?: number;
   costdiscount?: number;
   content?: string;
+  gym?: number;
   date?: string;
   page?: number;
   limit?: number;

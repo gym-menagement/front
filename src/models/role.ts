@@ -7,6 +7,27 @@ import type {
 } from '../types/role';
 
 export default class RoleModel {
+  // Roleid constants (from backend: enums/roleid/Enums.kt)
+  static readonly roleid = {
+    MEMBER: 1,
+    TRAINER: 2,
+    STAFF: 3,
+    GYM_ADMIN: 4,
+    PLATFORM_ADMIN: 5,
+  };
+  static readonly roleids = [
+    '',
+    '회원',
+    '트레이너',
+    '직원',
+    '헬스장관리자',
+    '플랫폼관리자',
+  ];
+
+  static getRoleid(value: number): string {
+    return this.roleids[value] || String(value);
+  }
+
   // CRUD operations
   static async insert(item: Partial<Role>) {
     const res = await post<Role>('/role', item);

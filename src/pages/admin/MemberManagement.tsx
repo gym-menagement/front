@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Card, Badge, Button, Input } from '../../components/ui';
 import { theme } from '../../theme';
-import { User } from '../../models';
+import { User, Membership } from '../../models';
 import type { User as UserType } from '../../types/user';
 import { useNavigate } from 'react-router-dom';
 import GymSelector from '../../components/GymSelector';
@@ -27,6 +27,22 @@ const MemberManagement = () => {
   const loadMembers = async () => {
     try {
       setLoading(true);
+
+      if (!selectedGymId) {
+        setMembers([]);
+        return;
+      }
+
+      // 1. 선택된 헬스장의 회원 ID 조회
+      const memberships = await Membership.find({ gym: selectedGymId });
+      const memberUserIds = memberships.map(m => m.user);
+
+      if (memberUserIds.length === 0) {
+        setMembers([]);
+        return;
+      }
+
+      // 2. 회원 정보 조회
       const params: any = { role: User.role.MEMBER };
 
       if (filterStatus === 'active') {
@@ -35,8 +51,14 @@ const MemberManagement = () => {
         params.use = 0;
       }
 
-      const data = await User.find(params);
-      setMembers(data);
+      const allMembers = await User.find(params);
+
+      // 3. 해당 헬스장의 회원만 필터링
+      const filteredMembers = allMembers.filter(member =>
+        memberUserIds.includes(member.id)
+      );
+
+      setMembers(filteredMembers);
     } catch (error) {
       console.error('Failed to load members:', error);
     } finally {

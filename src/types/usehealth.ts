@@ -11,6 +11,7 @@ export interface Usehealth {
   discount: number;
   startday: string;
   endday: string;
+  gym: number;
   date: string;
 }
 
@@ -31,6 +32,7 @@ export interface UsehealthSearchParams {
   discount?: number;
   startday?: string;
   endday?: string;
+  gym?: number;
   date?: string;
   page?: number;
   limit?: number;

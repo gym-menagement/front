@@ -7,6 +7,7 @@ export { default as Role } from './role';
 
 // Gym Management
 export { default as Gym } from './gym';
+export { default as Gymtrainer } from './gymtrainer';
 
 // Health & Workout
 export { default as Health } from './health';
