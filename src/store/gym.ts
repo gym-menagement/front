@@ -2,7 +2,7 @@ import { atom } from 'jotai';
 import type { Gym } from '../types/gym';
 
 // 선택된 헬스장 ID
-export const selectedGymIdAtom = atom<number | null>(null);
+export const selectedGymIdAtom = atom<number>(0);
 
 // 선택된 헬스장 정보
 export const selectedGymAtom = atom<Gym | null>(null);

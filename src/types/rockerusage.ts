@@ -6,7 +6,7 @@ export interface Rockerusage {
   gym: number;
   rocker: number;
   user: number;
-  membership: number;
+  usehealth: number;
   startdate: string;
   enddate: string;
   status: number;
@@ -30,7 +30,7 @@ export interface RockerusageSearchParams {
   gym?: number;
   rocker?: number;
   user?: number;
-  membership?: number;
+  usehealth?: number;
   startdate?: string;
   enddate?: string;
   status?: number;

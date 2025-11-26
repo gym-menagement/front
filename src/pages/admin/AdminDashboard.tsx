@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Card, Badge, Button } from '../../components/ui';
 import { theme } from '../../theme';
-import { User, Attendance } from '../../models';
+import { Attendance, UseHealth } from '../../models';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../../services/auth.service';
 import GymSelector from '../../components/GymSelector';
@@ -9,11 +9,8 @@ import { useAtomValue } from 'jotai';
 import { selectedGymIdAtom } from '../../store/gym';
 
 interface DashboardStats {
-  totalMembers: number;
   activeMembers: number;
-  totalTrainers: number;
   todayAttendance: number;
-  monthlyRevenue: number;
   expiringMemberships: number;
 }
 
@@ -21,11 +18,8 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const selectedGymId = useAtomValue(selectedGymIdAtom);
   const [stats, setStats] = useState<DashboardStats>({
-    totalMembers: 0,
     activeMembers: 0,
-    totalTrainers: 0,
     todayAttendance: 0,
-    monthlyRevenue: 0,
     expiringMemberships: 0,
   });
   const [loading, setLoading] = useState(true);
@@ -47,36 +41,38 @@ const AdminDashboard = () => {
       console.log('Loading dashboard stats...');
       setLoading(true);
 
-      // 전체 회원 수
-      console.log('Fetching total members...');
-      const totalMembers = await User.count({ role: User.role.MEMBER });
-      console.log('Total members:', totalMembers);
+      const today = new Date();
+      const todayStr = today.toISOString().split('T')[0];
 
-      // 활성 회원 수
-      const activeMembers = await User.count({
-        role: User.role.MEMBER,
-        use: 1,
+      // 활성 회원 수: startday <= 오늘 <= endday
+      const allUseHealths = await UseHealth.find({
+        gym: selectedGymId,
       });
 
-      // 트레이너 수
-      const totalTrainers = await User.count({ role: User.role.TRAINER });
+      const activeMembers = allUseHealths.filter((uh) => {
+        const startDate = new Date(uh.startday);
+        const endDate = new Date(uh.endday);
+        return startDate <= today && today <= endDate;
+      }).length;
 
       // 오늘 출석 수
-      const today = new Date().toISOString().split('T')[0];
       const todayAttendance = await Attendance.count({
-        date: today,
+        gym: selectedGymId,
+        date: todayStr,
       });
 
       // 만료 예정 회원권 (30일 이내)
-      // TODO: Membership 타입에 enddate, use 필드 추가 필요
-      const expiringMemberships = 0; // await Membership.count({ ... });
+      const thirtyDaysLater = new Date(today);
+      thirtyDaysLater.setDate(today.getDate() + 30);
+
+      const expiringMemberships = allUseHealths.filter((uh) => {
+        const endDate = new Date(uh.endday);
+        return endDate >= today && endDate <= thirtyDaysLater;
+      }).length;
 
       setStats({
-        totalMembers,
         activeMembers,
-        totalTrainers,
         todayAttendance,
-        monthlyRevenue: 0, // TODO: 실제 매출 데이터 연동
         expiringMemberships,
       });
       console.log('Dashboard stats loaded successfully');
@@ -189,7 +185,7 @@ const AdminDashboard = () => {
                   marginBottom: theme.spacing[1],
                 }}
               >
-                전체 회원
+                활성 회원
               </div>
               <div
                 style={{
@@ -198,34 +194,10 @@ const AdminDashboard = () => {
                   color: theme.colors.brand.primary,
                 }}
               >
-                {stats.totalMembers}
+                {stats.activeMembers}
               </div>
             </div>
-            <Badge variant="info">활성: {stats.activeMembers}</Badge>
-          </Card>
-
-          <Card hoverable>
-            <div style={{ marginBottom: theme.spacing[2] }}>
-              <div
-                style={{
-                  fontSize: theme.typography.fontSize.sm,
-                  color: theme.colors.text.secondary,
-                  marginBottom: theme.spacing[1],
-                }}
-              >
-                트레이너
-              </div>
-              <div
-                style={{
-                  fontSize: theme.typography.fontSize['3xl'],
-                  fontWeight: theme.typography.fontWeight.bold,
-                  color: theme.colors.brand.primary,
-                }}
-              >
-                {stats.totalTrainers}
-              </div>
-            </div>
-            <Badge variant="success">활동중</Badge>
+            <Badge variant="success">이용 가능</Badge>
           </Card>
 
           <Card hoverable>
@@ -249,7 +221,7 @@ const AdminDashboard = () => {
                 {stats.todayAttendance}
               </div>
             </div>
-            <Badge variant="default">
+            <Badge variant="info">
               {new Date().toLocaleDateString('ko-KR')}
             </Badge>
           </Card>
@@ -314,16 +286,37 @@ const AdminDashboard = () => {
             <Button
               variant="primary"
               fullWidth
-              onClick={() => navigate('/admin/memberships')}
+              onClick={() => navigate('/admin/health')}
             >
-              회원권 발급 관리
+              회원권 상품 관리
             </Button>
             <Button
               variant="primary"
               fullWidth
-              onClick={() => navigate('/admin/health')}
+              onClick={() => navigate('/admin/discounts')}
             >
-              회원권 상품 관리
+              할인 관리
+            </Button>
+            <Button
+              variant="primary"
+              fullWidth
+              onClick={() => navigate('/admin/rockers')}
+            >
+              락커 관리
+            </Button>
+            <Button
+              variant="secondary"
+              fullWidth
+              onClick={() => navigate('/admin/rocker-usages')}
+            >
+              락커 사용내역
+            </Button>
+            <Button
+              variant="secondary"
+              fullWidth
+              onClick={() => navigate('/admin/workout-logs')}
+            >
+              운동 기록
             </Button>
             <Button
               variant="secondary"

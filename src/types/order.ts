@@ -3,7 +3,9 @@
 
 export interface Order {
   id: number;
-  membership: number;
+  user: number;
+  gym: number;
+  health: number;
   date: string;
 }
 
@@ -16,7 +18,9 @@ export type UpdateOrderRequest = Partial<Omit<Order, 'id'>>;
 // Search params type
 export interface OrderSearchParams {
   id?: number;
-  membership?: number;
+  user?: number;
+  gym?: number;
+  health?: number;
   date?: string;
   page?: number;
   limit?: number;

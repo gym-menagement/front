@@ -134,18 +134,7 @@ const TrainerManagement = () => {
               트레이너 관리
             </h1>
           </div>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: theme.spacing[4],
-            }}
-          >
-            <GymSelector />
-            <Button variant="primary" onClick={() => navigate('/admin/trainers/new')}>
-              + 새 트레이너 등록
-            </Button>
-          </div>
+          <GymSelector />
         </div>
       </div>
 

@@ -1,6 +1,13 @@
 // Auto-generated TypeScript types for Usehealth
 // Generated from table: usehealth
 
+import type { Discount } from './discount';
+import type { Gym } from './gym';
+import type { Health } from './health';
+import type { Rocker } from './rocker';
+import type { Term } from './term';
+import type { User } from './user';
+
 export interface Usehealth {
   id: number;
   order: number;
@@ -12,7 +19,21 @@ export interface Usehealth {
   startday: string;
   endday: string;
   gym: number;
+  status: number;
+  totalcount: number;
+  usedcount: number;
+  remainingcount: number;
+  qrcode: string;
+  lastuseddate: string;
   date: string;
+  extra?: {
+    user?: User;
+    health?: Health;
+    rocker?: Rocker;
+    term?: Term;
+    discount?: Discount;
+    gym?: Gym;
+  };
 }
 
 // Create request type (omit auto-generated fields)
@@ -33,6 +54,12 @@ export interface UsehealthSearchParams {
   startday?: string;
   endday?: string;
   gym?: number;
+  status?: number;
+  totalcount?: number;
+  usedcount?: number;
+  remainingcount?: number;
+  qrcode?: string;
+  lastuseddate?: string;
   date?: string;
   page?: number;
   limit?: number;

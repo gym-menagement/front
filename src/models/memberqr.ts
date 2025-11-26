@@ -7,21 +7,6 @@ import type {
 } from '../types/memberqr';
 
 export default class MemberqrModel {
-  // Isactive constants (from backend: enums/isactive/Enums.kt)
-  static readonly isactive = {
-    INACTIVE: 1,
-    ACTIVE: 2,
-  };
-  static readonly isactives = [
-    '',
-    '비활성',
-    '활성',
-  ];
-
-  static getIsactive(value: number): string {
-    return this.isactives[value] || String(value);
-  }
-
   // CRUD operations
   static async insert(item: Partial<Memberqr>) {
     const res = await post<Memberqr>('/memberqr', item);

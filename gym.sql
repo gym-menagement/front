@@ -164,25 +164,8 @@ CREATE TABLE `loginlog_tb` (
 
 --
 -- Table structure for table `membership_tb`
+-- (DEPRECATED: 이 테이블은 더 이상 사용하지 않습니다. usehealth_tb가 회원권 정보를 관리합니다)
 --
-
-DROP TABLE IF EXISTS `membership_tb`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `membership_tb` (
-  `m_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '회원 ID',
-  `m_gym` bigint(20) NOT NULL DEFAULT 0 COMMENT '헬스장 ID (gym_tb 참조)',
-  `m_user` bigint(20) NOT NULL DEFAULT 0 COMMENT '사용자 ID (user_tb 참조)',
-  `m_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '회원명',
-  `m_sex` int(11) NOT NULL DEFAULT 0 COMMENT '성별 (MALE:남성, FEMALE:여성)',
-  `m_birth` datetime NOT NULL DEFAULT '1900-01-01 00:00:00' COMMENT '생년월일',
-  `m_phonenum` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '전화번호',
-  `m_address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '주소',
-  `m_image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '프로필 이미지',
-  `m_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일',
-  PRIMARY KEY (`m_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='회원 테이블';
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `order_tb`
@@ -193,9 +176,13 @@ DROP TABLE IF EXISTS `order_tb`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `order_tb` (
   `o_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '주문 ID',
-  `o_membership` bigint(20) NOT NULL DEFAULT 0 COMMENT '회원 ID (membership_tb 참조)',
+  `o_user` bigint(20) NOT NULL DEFAULT 0 COMMENT '회원 ID (user_tb 참조)',
+  `o_gym` bigint(20) NOT NULL DEFAULT 0 COMMENT '헬스장 ID (gym_tb 참조)',
+  `o_health` bigint(20) NOT NULL DEFAULT 0 COMMENT '운동권 ID (health_tb 참조)',
   `o_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '주문일',
-  PRIMARY KEY (`o_id`)
+  PRIMARY KEY (`o_id`),
+  INDEX idx_user (o_user),
+  INDEX idx_gym (o_gym)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='주문 테이블';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -210,10 +197,13 @@ CREATE TABLE `payment_tb` (
   `p_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '결제 ID',
   `p_gym` bigint(20) NOT NULL DEFAULT 0 COMMENT '헬스장 ID (gym_tb 참조)',
   `p_order` bigint(20) NOT NULL DEFAULT 0 COMMENT '주문 ID (order_tb 참조)',
-  `p_membership` bigint(20) NOT NULL DEFAULT 0 COMMENT '회원 ID (membership_tb 참조)',
+  `p_user` bigint(20) NOT NULL DEFAULT 0 COMMENT '회원 ID (user_tb 참조)',
   `p_cost` int(11) NOT NULL DEFAULT 0 COMMENT '결제 금액',
   `p_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '결제일',
-  PRIMARY KEY (`p_id`)
+  PRIMARY KEY (`p_id`),
+  INDEX idx_gym (p_gym),
+  INDEX idx_order (p_order),
+  INDEX idx_user (p_user)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='결제 테이블';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -404,7 +394,7 @@ DROP TABLE IF EXISTS `usehealth_tb`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `usehealth_tb` (
-  `uh_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '운동권 사용 ID',
+  `uh_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '운동권 사용 ID (회원권 ID)',
   `uh_order` bigint(20) NOT NULL DEFAULT 0 COMMENT '주문 ID (order_tb 참조)',
   `uh_health` bigint(20) NOT NULL DEFAULT 0 COMMENT '운동권 ID (health_tb 참조)',
   `uh_user` bigint(20) NOT NULL DEFAULT 0 COMMENT '회원 ID (user_tb 참조)',
@@ -414,9 +404,20 @@ CREATE TABLE `usehealth_tb` (
   `uh_startday` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '시작일',
   `uh_endday` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '종료일',
   `uh_gym` bigint(20) NOT NULL DEFAULT 0 COMMENT '헬스장 ID (gym_tb 참조)',
+  `uh_status` int(11) NOT NULL DEFAULT 1 COMMENT '회원권 상태 (TERMINATED:종료, USE:사용중, PAUSED:일시정지, EXPIRED:만료)',
+  `uh_totalcount` int(11) NOT NULL DEFAULT 0 COMMENT '총 이용 가능 횟수 (0이면 기간제)',
+  `uh_usedcount` int(11) NOT NULL DEFAULT 0 COMMENT '사용한 횟수',
+  `uh_remainingcount` int(11) NOT NULL DEFAULT 0 COMMENT '남은 횟수',
+  `uh_qrcode` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'QR 코드 (memberqr_tb와 연동)',
+  `uh_lastuseddate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '마지막 사용일',
   `uh_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일',
-  PRIMARY KEY (`uh_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='운동권 사용 테이블';
+  PRIMARY KEY (`uh_id`),
+  INDEX idx_gym (uh_gym),
+  INDEX idx_user (uh_user),
+  INDEX idx_status (uh_status),
+  INDEX idx_endday (uh_endday),
+  INDEX idx_qrcode (uh_qrcode)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='운동권 사용 테이블 (회원권)';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -470,7 +471,7 @@ CREATE TABLE `user_tb` (
 CREATE TABLE IF NOT EXISTS attendance_tb (
     at_id BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '출석 ID',
     at_user BIGINT(20) NOT NULL DEFAULT 0 COMMENT '회원 ID (user_tb 참조)',
-    at_membership BIGINT(20) NOT NULL DEFAULT 0 COMMENT '회원권 ID (membership_tb 참조)',
+    at_usehealth BIGINT(20) NOT NULL DEFAULT 0 COMMENT '운동권 사용 ID (usehealth_tb 참조)',
     at_gym BIGINT(20) NOT NULL DEFAULT 0 COMMENT '헬스장 ID (gym_tb 참조)',
     at_type INT(11) NOT NULL DEFAULT 0 COMMENT '출석 타입 (ENTRY:입장, EXIT:퇴장)',
     at_method INT(11) NOT NULL DEFAULT 0 COMMENT '체크 방법 (QR_CODE:QR코드, MANUAL:수동, CARD:카드)',
@@ -485,29 +486,30 @@ CREATE TABLE IF NOT EXISTS attendance_tb (
     at_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일',
     PRIMARY KEY (at_id),
     INDEX idx_user (at_user),
+    INDEX idx_usehealth (at_usehealth),
     INDEX idx_gym (at_gym),
     INDEX idx_checkintime (at_checkintime),
     INDEX idx_date (at_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='출석 체크 테이블';
 
--- 2. 회원 QR 코드 테이블 (memberqr_tb)
+-- 2. 회원 QR 코드 테이블 (qrcode_tb)
 -- 각 회원의 고유 QR 코드 정보
-CREATE TABLE IF NOT EXISTS memberqr_tb (
-    mq_id BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'QR ID',
-    mq_user BIGINT(20) NOT NULL DEFAULT 0 COMMENT '회원 ID (user_tb 참조)',
-    mq_code VARCHAR(255) NOT NULL DEFAULT '' UNIQUE COMMENT 'QR 코드 값 (UUID)',
-    mq_imageurl VARCHAR(500) NOT NULL DEFAULT '' COMMENT 'QR 이미지 URL',
-    mq_isactive INT(11) NOT NULL DEFAULT 1 COMMENT '활성 상태 (INACTIVE:비활성, ACTIVE:활성)',
-    mq_expiredate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '만료일',
-    mq_generateddate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일',
-    mq_lastuseddate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '마지막 사용일',
-    mq_usecount INT(11) NOT NULL DEFAULT 0 COMMENT '사용 횟수',
-    mq_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일',
-    PRIMARY KEY (mq_id),
-    UNIQUE KEY uk_user (mq_user),
-    UNIQUE KEY uk_code (mq_code),
-    INDEX idx_code (mq_code),
-    INDEX idx_active (mq_isactive)
+CREATE TABLE IF NOT EXISTS qrcode_tb (
+    qr_id BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT 'QR ID',
+    qr_user BIGINT(20) NOT NULL DEFAULT 0 COMMENT '회원 ID (user_tb 참조)',
+    qr_code VARCHAR(255) NOT NULL DEFAULT '' UNIQUE COMMENT 'QR 코드 값 (UUID)',
+    qr_imageurl VARCHAR(500) NOT NULL DEFAULT '' COMMENT 'QR 이미지 URL',
+    qr_isactive INT(11) NOT NULL DEFAULT 1 COMMENT '활성 상태 (INACTIVE:비활성, ACTIVE:활성)',
+    qr_expiredate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '만료일',
+    qr_generateddate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일',
+    qr_lastuseddate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '마지막 사용일',
+    qr_usecount INT(11) NOT NULL DEFAULT 0 COMMENT '사용 횟수',
+    qr_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일',
+    PRIMARY KEY (qr_id),
+    UNIQUE KEY uk_user (qr_user),
+    UNIQUE KEY uk_code (qr_code),
+    INDEX idx_code (qr_code),
+    INDEX idx_active (qr_isactive)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='회원 QR 코드 테이블';
 
 -- 3. 운동 기록 테이블 (workoutlog_tb)
@@ -533,33 +535,29 @@ CREATE TABLE IF NOT EXISTS workoutlog_tb (
     INDEX idx_date (wl_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='운동 기록 테이블';
 
--- 4. 회원권 이용 내역 테이블 (membershipusage_tb)
--- 회원권별 사용 내역 (남은 횟수, 기간 등 추적)
-CREATE TABLE IF NOT EXISTS membershipusage_tb (
-    mu_id BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '이용내역 ID',
-    mu_gym BIGINT(20) NOT NULL DEFAULT 0 COMMENT '헬스장 ID (gym_tb 참조)',
-    mu_membership BIGINT(20) NOT NULL DEFAULT 0 COMMENT '회원권 ID',
-    mu_user BIGINT(20) NOT NULL DEFAULT 0 COMMENT '회원 ID',
-    mu_type INT(11) NOT NULL DEFAULT 0 COMMENT '회원권 타입 (PERIOD_BASED:기간제, COUNT_BASED:횟수제)',
-    mu_totaldays INT(11) NOT NULL DEFAULT 0 COMMENT '총 이용 가능 일수',
-    mu_useddays INT(11) NOT NULL DEFAULT 0 COMMENT '사용한 일수',
-    mu_remainingdays INT(11) NOT NULL DEFAULT 0 COMMENT '남은 일수',
-    mu_totalcount INT(11) NOT NULL DEFAULT 0 COMMENT '총 이용 가능 횟수',
-    mu_usedcount INT(11) NOT NULL DEFAULT 0 COMMENT '사용한 횟수',
-    mu_remainingcount INT(11) NOT NULL DEFAULT 0 COMMENT '남은 횟수',
-    mu_startdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '시작일',
-    mu_enddate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '종료일',
-    mu_status INT(11) NOT NULL DEFAULT 0 COMMENT '상태 (IN_USE:사용중, PAUSED:일시정지, EXPIRED:만료, REFUNDED:환불)',
-    mu_pausedays INT(11) NOT NULL DEFAULT 0 COMMENT '일시정지 일수',
-    mu_lastuseddate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '마지막 사용일',
-    mu_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일',
-    PRIMARY KEY (mu_id),
-    INDEX idx_gym (mu_gym),
-    INDEX idx_membership (mu_membership),
-    INDEX idx_user (mu_user),
-    INDEX idx_status (mu_status),
-    INDEX idx_enddate (mu_enddate)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='회원권 이용 내역 테이블';
+-- 4. 운동권 이용 내역 테이블 (usehealthusage_tb)
+-- 운동권 사용할 때마다 이력이 쌓이는 테이블 (INSERT만, UPDATE 안함)
+CREATE TABLE IF NOT EXISTS usehealthusage_tb (
+    uhu_id BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '이용내역 ID',
+    uhu_gym BIGINT(20) NOT NULL DEFAULT 0 COMMENT '헬스장 ID (gym_tb 참조)',
+    uhu_usehealth BIGINT(20) NOT NULL DEFAULT 0 COMMENT '운동권 사용 ID (usehealth_tb 참조)',
+    uhu_user BIGINT(20) NOT NULL DEFAULT 0 COMMENT '회원 ID (user_tb 참조)',
+    uhu_attendance BIGINT(20) NOT NULL DEFAULT 0 COMMENT '출석 ID (attendance_tb 참조)',
+    uhu_type INT(11) NOT NULL DEFAULT 0 COMMENT '이용 타입 (ENTRY:입장, PT:PT수업, CLASS:그룹수업)',
+    uhu_usedcount INT(11) NOT NULL DEFAULT 1 COMMENT '차감된 횟수 (기본 1회)',
+    uhu_remainingcount INT(11) NOT NULL DEFAULT 0 COMMENT '이용 시점의 남은 횟수',
+    uhu_checkintime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '체크인 시간',
+    uhu_checkouttime DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '체크아웃 시간',
+    uhu_duration INT(11) NOT NULL DEFAULT 0 COMMENT '이용 시간(분)',
+    uhu_note TEXT NOT NULL COMMENT '비고',
+    uhu_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일',
+    PRIMARY KEY (uhu_id),
+    INDEX idx_gym (uhu_gym),
+    INDEX idx_usehealth (uhu_usehealth),
+    INDEX idx_user (uhu_user),
+    INDEX idx_attendance (uhu_attendance),
+    INDEX idx_date (uhu_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='운동권 이용 내역 테이블';
 
 -- 5. 공지사항 테이블 (notice_tb)
 -- 헬스장 공지사항 (웹/앱에서 조회)
@@ -634,7 +632,7 @@ CREATE TABLE IF NOT EXISTS ptreservation_tb (
 CREATE TABLE IF NOT EXISTS memberbody_tb (
     mb_id BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '신체정보 ID',
     mb_gym BIGINT(20) NOT NULL DEFAULT 0 COMMENT '헬스장 ID (gym_tb 참조)',
-    mb_user BIGINT(20) NOT NULL DEFAULT 0 COMMENT '회원 ID',
+    mb_user BIGINT(20) NOT NULL DEFAULT 0 COMMENT '회원 ID (user_tb 참조)',
     mb_height DECIMAL(5,2) NOT NULL DEFAULT 0 COMMENT '키(cm)',
     mb_weight DECIMAL(5,2) NOT NULL DEFAULT 0 COMMENT '체중(kg)',
     mb_bodyfat DECIMAL(5,2) NOT NULL DEFAULT 0 COMMENT '체지방률(%)',
@@ -649,7 +647,7 @@ CREATE TABLE IF NOT EXISTS memberbody_tb (
     mb_thigh DECIMAL(5,2) NOT NULL DEFAULT 0 COMMENT '허벅지둘레(cm)',
     mb_note TEXT NOT NULL COMMENT '메모',
     mb_measureddate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '측정일',
-    mb_measuredby BIGINT(20) NOT NULL DEFAULT 0 COMMENT '측정자 ID',
+    mb_measuredby BIGINT(20) NOT NULL DEFAULT 0 COMMENT '측정자 ID (user_tb 참조)',
     mb_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '등록일',
     PRIMARY KEY (mb_id),
     INDEX idx_gym (mb_gym),
@@ -686,7 +684,7 @@ CREATE TABLE IF NOT EXISTS rockerusage_tb (
     ru_gym BIGINT(20) NOT NULL DEFAULT 0 COMMENT '헬스장 ID (gym_tb 참조)',
     ru_rocker BIGINT(20) NOT NULL DEFAULT 0 COMMENT '락커 ID',
     ru_user BIGINT(20) NOT NULL DEFAULT 0 COMMENT '회원 ID',
-    ru_membership BIGINT(20) NOT NULL DEFAULT 0 COMMENT '회원권 ID',
+    ru_usehealth BIGINT(20) NOT NULL DEFAULT 0 COMMENT '운동권 사용 ID (usehealth_tb 참조)',
     ru_startdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '시작일',
     ru_enddate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '종료일',
     ru_status INT(11) NOT NULL DEFAULT 1 COMMENT '상태 (TERMINATED:종료, IN_USE:사용중, OVERDUE:연체)',
@@ -700,6 +698,7 @@ CREATE TABLE IF NOT EXISTS rockerusage_tb (
     INDEX idx_gym (ru_gym),
     INDEX idx_rocker (ru_rocker),
     INDEX idx_user (ru_user),
+    INDEX idx_usehealth (ru_usehealth),
     INDEX idx_status (ru_status),
     INDEX idx_enddate (ru_enddate)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='락커 사용 내역 테이블';
@@ -766,7 +765,7 @@ CREATE TABLE IF NOT EXISTS gymtrainer_tb (
 -- ============================================
 
 -- -- QR 코드 샘플 (user_tb의 ID 1번 회원)
--- INSERT INTO memberqr_tb (mq_user, mq_code, mq_isactive, mq_generateddate)
+-- INSERT INTO qrcode_tb (qr_user, qr_code, qr_isactive, qr_generateddate)
 -- VALUES (1, UUID(), 1, NOW());
 
 -- -- 공지사항 샘플

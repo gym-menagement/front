@@ -1,46 +1,42 @@
-// Auto-generated TypeScript types for Attendance
-// Generated from table: attendance
+// Auto-generated TypeScript types for Usehealthusage
+// Generated from table: usehealthusage
 
-export interface Attendance {
+export interface Usehealthusage {
   id: number;
-  user: number;
-  usehealth: number;
   gym: number;
+  usehealth: number;
+  user: number;
+  attendance: number;
   type: number;
-  method: number;
+  usedcount: number;
+  remainingcount: number;
   checkintime: string;
   checkouttime: string;
   duration: number;
-  status: number;
   note: string;
-  ip: string;
-  device: string;
-  createdby: number;
   date: string;
 }
 
 // Create request type (omit auto-generated fields)
-export type CreateAttendanceRequest = Omit<Attendance, 'id'>;
+export type CreateUsehealthusageRequest = Omit<Usehealthusage, 'id'>;
 
 // Update request type (all fields optional except id)
-export type UpdateAttendanceRequest = Partial<Omit<Attendance, 'id'>>;
+export type UpdateUsehealthusageRequest = Partial<Omit<Usehealthusage, 'id'>>;
 
 // Search params type
-export interface AttendanceSearchParams {
+export interface UsehealthusageSearchParams {
   id?: number;
-  user?: number;
-  usehealth?: number;
   gym?: number;
+  usehealth?: number;
+  user?: number;
+  attendance?: number;
   type?: number;
-  method?: number;
+  usedcount?: number;
+  remainingcount?: number;
   checkintime?: string;
   checkouttime?: string;
   duration?: number;
-  status?: number;
   note?: string;
-  ip?: string;
-  device?: string;
-  createdby?: number;
   date?: string;
   page?: number;
   limit?: number;

@@ -5,7 +5,7 @@ export interface Payment {
   id: number;
   gym: number;
   order: number;
-  membership: number;
+  user: number;
   cost: number;
   date: string;
 }
@@ -21,7 +21,7 @@ export interface PaymentSearchParams {
   id?: number;
   gym?: number;
   order?: number;
-  membership?: number;
+  user?: number;
   cost?: number;
   date?: string;
   page?: number;

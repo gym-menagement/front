@@ -16,8 +16,6 @@ export { default as WorkoutLog } from './workoutlog';
 export { default as UseHealth } from './usehealth';
 
 // Membership
-export { default as Membership } from './membership';
-export { default as MembershipUsage } from './membershipusage';
 export { default as MemberBody } from './memberbody';
 export { default as MemberQR } from './memberqr';
 

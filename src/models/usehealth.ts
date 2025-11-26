@@ -7,6 +7,25 @@ import type {
 } from '../types/usehealth';
 
 export default class UsehealthModel {
+  // Status constants (from backend: enums/status/Enums.kt)
+  static readonly status = {
+    TERMINATED: 1,
+    USE: 2,
+    PAUSED: 3,
+    EXPIRED: 4,
+  };
+  static readonly statuss = [
+    '',
+    '종료',
+    '사용중',
+    '일시정지',
+    '만료',
+  ];
+
+  static getStatus(value: number): string {
+    return this.statuss[value] || String(value);
+  }
+
   // CRUD operations
   static async insert(item: Partial<Usehealth>) {
     const res = await post<Usehealth>('/usehealth', item);

@@ -3,22 +3,15 @@ import { useAtomValue } from 'jotai';
 import { userAtom } from '../../store/auth';
 import { Card, Button, Badge } from '../../components/ui';
 import {
-  Membership as MembershipModel,
   Attendance as AttendanceModel,
   MemberQR as MemberQRModel,
   PTReservation as PTReservationModel,
 } from '../../models';
-import type {
-  Membership,
-  Attendance,
-  MemberQR,
-  PTReservation,
-} from '../../types';
+import type { Attendance, MemberQR, PTReservation } from '../../types';
 import { QRCodeSVG } from 'qrcode.react';
 
 const MemberDashboard = () => {
   const user = useAtomValue(userAtom);
-  const [memberships, setMemberships] = useState<Membership[]>([]);
   const [recentAttendance, setRecentAttendance] = useState<Attendance[]>([]);
   const [qrCode, setQrCode] = useState<MemberQR | null>(null);
   const [upcomingPT, setUpcomingPT] = useState<PTReservation[]>([]);
