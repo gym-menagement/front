@@ -1,7 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Card, Badge, Button, Input } from '../../components/ui';
 import { theme } from '../../theme';
-import { User, UseHealth } from '../../models';
+import {
+  User,
+  UseHealth,
+  Health,
+  Order,
+  Rocker,
+  Term,
+  Discount,
+  Gym,
+} from '../../models';
 import type {
   UsehealthSearchParams,
   Usehealth as UsehealthType,
@@ -14,18 +23,13 @@ import { selectedGymIdAtom } from '../../store/gym';
 // Extended type for usehealth with joined data
 interface UsehealthWithExtra extends UsehealthType {
   extra?: {
-    user?: {
-      id: number;
-      name: string;
-      loginid: string;
-      tel: string;
-      use: number;
-      role: number;
-    };
-    health?: {
-      id: number;
-      name: string;
-    };
+    order?: Order;
+    health?: Health;
+    user?: User;
+    rocker?: Rocker;
+    term?: Term;
+    discount?: Discount;
+    gym?: Gym;
   };
 }
 
@@ -115,8 +119,16 @@ const UsehealthManager = () => {
 
   const getMembershipStatus = (usehealth: UsehealthType) => {
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const endDate = new Date(usehealth.endday);
+    endDate.setHours(0, 0, 0, 0);
     const startDate = new Date(usehealth.startday);
+    startDate.setHours(0, 0, 0, 0);
+
+    // 이용 기간이 지난 경우
+    if (endDate < today) {
+      return { label: '만료', variant: 'default' as const };
+    }
 
     if (usehealth.status === UseHealth.status.EXPIRED) {
       return { label: '만료', variant: 'default' as const };
@@ -294,6 +306,16 @@ const UsehealthManager = () => {
 
               if (!user) return null;
 
+              // 이용 기간 체크
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
+              const endDate = new Date(usehealth.endday);
+              endDate.setHours(0, 0, 0, 0);
+              const isExpired = endDate < today;
+
+              // 이용 기간이 지났거나 user.use가 0이면 비활성
+              const isActive = !isExpired && user.use === 1;
+
               return (
                 <Card key={usehealth.id} hoverable>
                   <div
@@ -328,8 +350,8 @@ const UsehealthManager = () => {
                         >
                           {user.name}
                         </div>
-                        <Badge variant={user.use === 1 ? 'success' : 'default'}>
-                          {user.use === 1 ? '활성' : '비활성'}
+                        <Badge variant={isActive ? 'success' : 'default'}>
+                          {isActive ? '활성' : '비활성'}
                         </Badge>
                         <Badge variant={membershipStatus.variant}>
                           {membershipStatus.label}
