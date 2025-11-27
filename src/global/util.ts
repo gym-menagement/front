@@ -19,7 +19,8 @@ export const REGEX_LOGINID = /^[a-zA-Z][a-zA-Z0-9_]{3,19}$/;
  * - 영문자, 숫자, 특수문자 중 2가지 이상 조합
  * - 8~20자
  */
-export const REGEX_PASSWORD = /^(?=.*[A-Za-z])(?=.*[\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,20}$/;
+export const REGEX_PASSWORD =
+  /^(?=.*[A-Za-z])(?=.*[\d!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,20}$/;
 
 /**
  * 이메일 정규식
@@ -86,7 +87,9 @@ export const REGEX_ONLY_KOREAN = /^[가-힣]+$/;
 /**
  * 아이디 검증
  */
-export const validateLoginId = (loginid: string): { valid: boolean; message?: string } => {
+export const validateLoginId = (
+  loginid: string
+): { valid: boolean; message?: string } => {
   if (!loginid) {
     return { valid: false, message: '아이디를 입력해주세요.' };
   }
@@ -99,7 +102,8 @@ export const validateLoginId = (loginid: string): { valid: boolean; message?: st
   if (!REGEX_LOGINID.test(loginid)) {
     return {
       valid: false,
-      message: '아이디는 영문자로 시작하며, 영문자, 숫자, 언더스코어(_)만 사용 가능합니다.',
+      message:
+        '아이디는 영문자로 시작하며, 영문자, 숫자, 언더스코어(_)만 사용 가능합니다.',
     };
   }
   return { valid: true };
@@ -108,7 +112,9 @@ export const validateLoginId = (loginid: string): { valid: boolean; message?: st
 /**
  * 비밀번호 검증
  */
-export const validatePassword = (password: string): { valid: boolean; message?: string } => {
+export const validatePassword = (
+  password: string
+): { valid: boolean; message?: string } => {
   if (!password) {
     return { valid: false, message: '비밀번호를 입력해주세요.' };
   }
@@ -121,7 +127,8 @@ export const validatePassword = (password: string): { valid: boolean; message?: 
   if (!REGEX_PASSWORD.test(password)) {
     return {
       valid: false,
-      message: '비밀번호는 영문자, 숫자, 특수문자 중 2가지 이상 조합해야 합니다.',
+      message:
+        '비밀번호는 영문자, 숫자, 특수문자 중 2가지 이상 조합해야 합니다.',
     };
   }
   return { valid: true };
@@ -146,7 +153,9 @@ export const validatePasswordConfirm = (
 /**
  * 이메일 검증
  */
-export const validateEmail = (email: string): { valid: boolean; message?: string } => {
+export const validateEmail = (
+  email: string
+): { valid: boolean; message?: string } => {
   if (!email) {
     return { valid: false, message: '이메일을 입력해주세요.' };
   }
@@ -159,7 +168,9 @@ export const validateEmail = (email: string): { valid: boolean; message?: string
 /**
  * 전화번호 검증
  */
-export const validatePhone = (phone: string): { valid: boolean; message?: string } => {
+export const validatePhone = (
+  phone: string
+): { valid: boolean; message?: string } => {
   if (!phone) {
     return { valid: false, message: '전화번호를 입력해주세요.' };
   }
@@ -175,7 +186,9 @@ export const validatePhone = (phone: string): { valid: boolean; message?: string
 /**
  * 휴대폰 번호 검증
  */
-export const validateMobile = (mobile: string): { valid: boolean; message?: string } => {
+export const validateMobile = (
+  mobile: string
+): { valid: boolean; message?: string } => {
   if (!mobile) {
     return { valid: false, message: '휴대폰 번호를 입력해주세요.' };
   }
@@ -191,7 +204,9 @@ export const validateMobile = (mobile: string): { valid: boolean; message?: stri
 /**
  * 이름 검증
  */
-export const validateName = (name: string): { valid: boolean; message?: string } => {
+export const validateName = (
+  name: string
+): { valid: boolean; message?: string } => {
   if (!name) {
     return { valid: false, message: '이름을 입력해주세요.' };
   }
@@ -202,7 +217,10 @@ export const validateName = (name: string): { valid: boolean; message?: string }
     return { valid: false, message: '이름은 50자 이하여야 합니다.' };
   }
   if (!REGEX_NAME.test(name)) {
-    return { valid: false, message: '이름은 한글 또는 영문자만 입력 가능합니다.' };
+    return {
+      valid: false,
+      message: '이름은 한글 또는 영문자만 입력 가능합니다.',
+    };
   }
   return { valid: true };
 };
@@ -210,12 +228,17 @@ export const validateName = (name: string): { valid: boolean; message?: string }
 /**
  * 생년월일 검증
  */
-export const validateBirthDate = (birthDate: string): { valid: boolean; message?: string } => {
+export const validateBirthDate = (
+  birthDate: string
+): { valid: boolean; message?: string } => {
   if (!birthDate) {
     return { valid: false, message: '생년월일을 입력해주세요.' };
   }
   if (!REGEX_BIRTH_DATE.test(birthDate)) {
-    return { valid: false, message: '생년월일 형식이 올바르지 않습니다. (YYYY-MM-DD)' };
+    return {
+      valid: false,
+      message: '생년월일 형식이 올바르지 않습니다. (YYYY-MM-DD)',
+    };
   }
 
   // 날짜 유효성 검증
@@ -309,4 +332,53 @@ export const extractAlphabet = (str: string): string => {
  */
 export const extractKorean = (str: string): string => {
   return str.replace(/[^가-힣]/g, '');
+};
+
+// ===========================
+// Date/Time Functions
+// ===========================
+
+/**
+ * 현재 날짜/시간을 LocalDateTime 형식으로 반환
+ * @returns YYYY-MM-DD HH:mm:ss 형식의 문자열
+ * @example
+ * formatLocalDateTime() // "2025-11-27 14:24:09"
+ */
+export const formatLocalDateTime = (date: Date = new Date()): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+};
+
+/**
+ * 현재 날짜를 YYYY-MM-DD 형식으로 반환
+ * @returns YYYY-MM-DD 형식의 문자열
+ * @example
+ * formatLocalDate() // "2025-11-27"
+ */
+export const formatLocalDate = (date: Date = new Date()): string => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+};
+
+/**
+ * 현재 시간을 HH:mm:ss 형식으로 반환
+ * @returns HH:mm:ss 형식의 문자열
+ * @example
+ * formatLocalTime() // "14:24:09"
+ */
+export const formatLocalTime = (date: Date = new Date()): string => {
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+
+  return `${hours}:${minutes}:${seconds}`;
 };

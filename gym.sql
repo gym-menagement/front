@@ -325,7 +325,7 @@ DROP TABLE IF EXISTS `stop_tb`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `stop_tb` (
   `s_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '일시정지 ID',
-  `s_usehelth` bigint(20) NOT NULL DEFAULT 0 COMMENT '운동권 사용 ID (usehealth_tb 참조)',
+  `s_usehealth` bigint(20) NOT NULL DEFAULT 0 COMMENT '운동권 사용 ID (usehealth_tb 참조)',
   `s_startday` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '일시정지 시작일',
   `s_endday` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '일시정지 종료일',
   `s_count` int(11) NOT NULL DEFAULT 0 COMMENT '일시정지 일수',

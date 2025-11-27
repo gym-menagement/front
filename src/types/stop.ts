@@ -3,10 +3,9 @@
 
 import type { Usehealth } from './usehealth';
 
-
 export interface Stop {
   id: number;
-  usehelth: number;
+  usehealth: number;
   startday: string;
   endday: string;
   count: number;
@@ -25,7 +24,7 @@ export type UpdateStopRequest = Partial<Omit<Stop, 'id'>>;
 // Search params type
 export interface StopSearchParams {
   id?: number;
-  usehelth?: number;
+  usehealth?: number;
   startday?: string;
   endday?: string;
   count?: number;

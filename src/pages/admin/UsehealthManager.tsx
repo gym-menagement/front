@@ -1,35 +1,36 @@
 import { useEffect, useState } from 'react';
 import { Card, Badge, Button, Input } from '../../components/ui';
 import { theme } from '../../theme';
-import {
-  User,
-  UseHealth,
-  Health,
-  Order,
-  Rocker,
-  Term,
-  Discount,
-  Gym,
-} from '../../models';
+import { User, UseHealth, Stop } from '../../models';
 import type {
   UsehealthSearchParams,
   Usehealth as UsehealthType,
 } from '../../types/usehealth';
+import type { User as UserType } from '../../types/user';
+import type { Health as HealthType } from '../../types/health';
+import type { Order as OrderType } from '../../types/order';
+import type { Rocker as RockerType } from '../../types/rocker';
+import type { Term as TermType } from '../../types/term';
+import type { Discount as DiscountType } from '../../types/discount';
+import type { Gym as GymType } from '../../types/gym';
 import { useNavigate } from 'react-router-dom';
 import GymSelector from '../../components/GymSelector';
 import { useAtomValue } from 'jotai';
 import { selectedGymIdAtom } from '../../store/gym';
+import PauseModal from './PauseModal';
+import MemberDetailModal from './MemberDetailModal';
+import { formatLocalDateTime } from '../../global/util';
 
 // Extended type for usehealth with joined data
 interface UsehealthWithExtra extends UsehealthType {
   extra?: {
-    order?: Order;
-    health?: Health;
-    user?: User;
-    rocker?: Rocker;
-    term?: Term;
-    discount?: Discount;
-    gym?: Gym;
+    order?: OrderType;
+    health?: HealthType;
+    user?: UserType;
+    rocker?: RockerType;
+    term?: TermType;
+    discount?: DiscountType;
+    gym?: GymType;
   };
 }
 
@@ -40,6 +41,26 @@ const UsehealthManager = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState<number | ''>('');
+
+  // 일시정지 모달 상태
+  const [pauseModal, setPauseModal] = useState<{
+    show: boolean;
+    usehealthId: number | null;
+    usehealthData: UsehealthWithExtra | null;
+  }>({
+    show: false,
+    usehealthId: null,
+    usehealthData: null,
+  });
+
+  // 상세 모달 상태
+  const [detailModal, setDetailModal] = useState<{
+    show: boolean;
+    usehealthData: UsehealthWithExtra | null;
+  }>({
+    show: false,
+    usehealthData: null,
+  });
 
   useEffect(() => {
     if (selectedGymId) {
@@ -63,6 +84,8 @@ const UsehealthManager = () => {
       }
 
       const data = await UseHealth.find(params);
+      console.log('Total usehealth records:', data.length);
+      console.log('Filter params:', params);
 
       // 회원별로 그룹화 (가장 최근 회원권 기준)
       const memberMap = new Map<number, UsehealthWithExtra>();
@@ -83,7 +106,17 @@ const UsehealthManager = () => {
         }
       });
 
-      setMemberships(Array.from(memberMap.values()));
+      const finalMembers = Array.from(memberMap.values());
+      console.log('Final members after grouping:', finalMembers.length);
+      console.log(
+        'Status distribution:',
+        finalMembers.reduce((acc, m) => {
+          acc[m.status] = (acc[m.status] || 0) + 1;
+          return acc;
+        }, {} as Record<number, number>)
+      );
+
+      setMemberships(finalMembers);
     } catch (error) {
       console.error('Failed to load members:', error);
     } finally {
@@ -110,6 +143,104 @@ const UsehealthManager = () => {
     } catch (error) {
       console.error('Failed to update member status:', error);
       alert('상태 변경에 실패했습니다.');
+    }
+  };
+
+  // 일시정지 모달 열기
+  const openPauseModal = (usehealth: UsehealthWithExtra) => {
+    setPauseModal({
+      show: true,
+      usehealthId: usehealth.id,
+      usehealthData: usehealth,
+    });
+  };
+
+  // 일시정지 모달 닫기
+  const closePauseModal = () => {
+    setPauseModal({
+      show: false,
+      usehealthId: null,
+      usehealthData: null,
+    });
+  };
+
+  // 상세 모달 열기
+  const openDetailModal = (usehealth: UsehealthWithExtra) => {
+    setDetailModal({
+      show: true,
+      usehealthData: usehealth,
+    });
+  };
+
+  // 상세 모달 닫기
+  const closeDetailModal = () => {
+    setDetailModal({
+      show: false,
+      usehealthData: null,
+    });
+  };
+
+  // 일시정지 등록
+  const handlePauseMembership = async (
+    usehealthId: number,
+    startDate: string,
+    days: number
+  ) => {
+    try {
+      console.log(usehealthId, startDate, days);
+      const startDateTime = new Date(startDate);
+      const endDateTime = new Date(startDate);
+      endDateTime.setDate(endDateTime.getDate() + days);
+
+      // 1. stop 레코드 생성
+      const stopData = {
+        usehealth: usehealthId,
+        startday: formatLocalDateTime(startDateTime),
+        endday: formatLocalDateTime(endDateTime),
+        count: days,
+        date: formatLocalDateTime(),
+      };
+      console.log('Stop insert data:', stopData);
+      await Stop.insert(stopData);
+
+      // 2. usehealth 상태 변경 및 종료일 연장
+      const currentUsehealth = pauseModal.usehealthData;
+      if (!currentUsehealth) return;
+
+      const currentEndDay = new Date(currentUsehealth.endday);
+      const newEndDay = new Date(currentEndDay);
+      newEndDay.setDate(newEndDay.getDate() + days);
+
+      await UseHealth.update(usehealthId, {
+        status: UseHealth.status.PAUSED,
+        endday: formatLocalDateTime(newEndDay),
+      });
+
+      alert(`${days}일간 일시정지가 등록되었습니다.`);
+      closePauseModal();
+      loadMembers();
+    } catch (error) {
+      console.error('Failed to pause membership:', error);
+      alert('일시정지 등록에 실패했습니다.');
+    }
+  };
+
+  // 일시정지 해제
+  const handleResumeMembership = async (usehealthId: number) => {
+    if (!confirm('일시정지를 해제하시겠습니까?')) {
+      return;
+    }
+
+    try {
+      await UseHealth.update(usehealthId, {
+        status: UseHealth.status.USE,
+      });
+
+      alert('일시정지가 해제되었습니다.');
+      loadMembers();
+    } catch (error) {
+      console.error('Failed to resume membership:', error);
+      alert('일시정지 해제에 실패했습니다.');
     }
   };
 
@@ -316,8 +447,10 @@ const UsehealthManager = () => {
               // 이용 기간이 지났거나 user.use가 0이면 비활성
               const isActive = !isExpired && user.use === 1;
 
+              const isPaused = usehealth.status === UseHealth.status.PAUSED;
+
               return (
-                <Card key={usehealth.id} hoverable>
+                <Card hoverable>
                   <div
                     style={{
                       display: 'flex',
@@ -356,15 +489,38 @@ const UsehealthManager = () => {
                         <Badge variant={membershipStatus.variant}>
                           {membershipStatus.label}
                         </Badge>
+                        {isPaused && <Badge variant="warning">⏸️ PAUSED</Badge>}
                       </div>
                       <div style={{ display: 'flex', gap: theme.spacing[2] }}>
                         <Button
                           size="sm"
                           variant="secondary"
-                          onClick={() => navigate(`/admin/members/${user.id}`)}
+                          onClick={() => openDetailModal(usehealth)}
                         >
                           상세
                         </Button>
+
+                        {/* 일시정지/해제 버튼 */}
+                        {usehealth.status === UseHealth.status.PAUSED ? (
+                          <Button
+                            size="sm"
+                            variant="primary"
+                            onClick={() => handleResumeMembership(usehealth.id)}
+                          >
+                            일시정지 해제
+                          </Button>
+                        ) : !isExpired &&
+                          usehealth.status !== UseHealth.status.EXPIRED &&
+                          usehealth.status !== UseHealth.status.TERMINATED ? (
+                          <Button
+                            size="sm"
+                            variant="secondary"
+                            onClick={() => openPauseModal(usehealth)}
+                          >
+                            일시정지
+                          </Button>
+                        ) : null}
+
                         <Button
                           size="sm"
                           variant={user.use === 1 ? 'ghost' : 'primary'}
@@ -517,6 +673,22 @@ const UsehealthManager = () => {
           </div>
         )}
       </div>
+
+      {/* 일시정지 모달 */}
+      <PauseModal
+        show={pauseModal.show}
+        usehealthId={pauseModal.usehealthId}
+        usehealthData={pauseModal.usehealthData}
+        onClose={closePauseModal}
+        onConfirm={handlePauseMembership}
+      />
+
+      {/* 상세 모달 */}
+      <MemberDetailModal
+        show={detailModal.show}
+        usehealth={detailModal.usehealthData}
+        onClose={closeDetailModal}
+      />
     </div>
   );
 };
