@@ -1,6 +1,9 @@
 // Auto-generated TypeScript types for Qrcode
 // Generated from table: qrcode
 
+import type { User } from './user';
+
+
 export interface Qrcode {
   id: number;
   user: number;
@@ -12,6 +15,9 @@ export interface Qrcode {
   lastuseddate: string;
   usecount: number;
   date: string;
+  extra?: {
+    user?: User;
+  };
 }
 
 // Create request type (omit auto-generated fields)

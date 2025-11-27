@@ -1,6 +1,9 @@
 // Auto-generated TypeScript types for Alarm
 // Generated from table: alarm
 
+import type { User } from './user';
+
+
 export interface Alarm {
   id: number;
   title: string;
@@ -9,6 +12,9 @@ export interface Alarm {
   status: number;
   user: number;
   date: string;
+  extra?: {
+    user?: User;
+  };
 }
 
 // Create request type (omit auto-generated fields)

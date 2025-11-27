@@ -1,6 +1,12 @@
 // Auto-generated TypeScript types for Workoutlog
 // Generated from table: workoutlog
 
+import type { Gym } from './gym';
+import type { User } from './user';
+import type { Attendance } from './attendance';
+import type { Health } from './health';
+
+
 export interface Workoutlog {
   id: number;
   gym: number;
@@ -15,6 +21,12 @@ export interface Workoutlog {
   calories: number;
   note: string;
   date: string;
+  extra?: {
+    gym?: Gym;
+    user?: User;
+    attendance?: Attendance;
+    health?: Health;
+  };
 }
 
 // Create request type (omit auto-generated fields)

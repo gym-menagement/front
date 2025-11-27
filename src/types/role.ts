@@ -1,12 +1,18 @@
 // Auto-generated TypeScript types for Role
 // Generated from table: role
 
+import type { Gym } from './gym';
+
+
 export interface Role {
   id: number;
   gym: number;
   roleid: number;
   name: string;
   date: string;
+  extra?: {
+    gym?: Gym;
+  };
 }
 
 // Create request type (omit auto-generated fields)

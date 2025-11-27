@@ -1,6 +1,11 @@
 // Auto-generated TypeScript types for Payment
 // Generated from table: payment
 
+import type { Gym } from './gym';
+import type { Order } from './order';
+import type { User } from './user';
+
+
 export interface Payment {
   id: number;
   gym: number;
@@ -8,6 +13,11 @@ export interface Payment {
   user: number;
   cost: number;
   date: string;
+  extra?: {
+    gym?: Gym;
+    order?: Order;
+    user?: User;
+  };
 }
 
 // Create request type (omit auto-generated fields)

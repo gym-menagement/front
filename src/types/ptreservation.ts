@@ -1,6 +1,10 @@
 // Auto-generated TypeScript types for Ptreservation
 // Generated from table: ptreservation
 
+import type { User } from './user';
+import type { Gym } from './gym';
+
+
 export interface Ptreservation {
   id: number;
   trainer: number;
@@ -16,6 +20,11 @@ export interface Ptreservation {
   createddate: string;
   updateddate: string;
   date: string;
+  extra?: {
+    traineruser?: User;
+    memberuser?: User;
+    gym?: Gym;
+  };
 }
 
 // Create request type (omit auto-generated fields)

@@ -1,6 +1,10 @@
 // Auto-generated TypeScript types for Gymtrainer
 // Generated from table: gymtrainer
 
+import type { Gym } from './gym';
+import type { User } from './user';
+
+
 export interface Gymtrainer {
   id: number;
   gym: number;
@@ -11,6 +15,10 @@ export interface Gymtrainer {
   position: string;
   note: string;
   date: string;
+  extra?: {
+    gym?: Gym;
+    traineruser?: User;
+  };
 }
 
 // Create request type (omit auto-generated fields)

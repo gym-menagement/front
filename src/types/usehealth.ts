@@ -1,12 +1,14 @@
 // Auto-generated TypeScript types for Usehealth
 // Generated from table: usehealth
 
-import type { Discount } from './discount';
-import type { Gym } from './gym';
+import type { Order } from './order';
 import type { Health } from './health';
+import type { User } from './user';
 import type { Rocker } from './rocker';
 import type { Term } from './term';
-import type { User } from './user';
+import type { Discount } from './discount';
+import type { Gym } from './gym';
+
 
 export interface Usehealth {
   id: number;
@@ -27,8 +29,9 @@ export interface Usehealth {
   lastuseddate: string;
   date: string;
   extra?: {
-    user?: User;
+    order?: Order;
     health?: Health;
+    user?: User;
     rocker?: Rocker;
     term?: Term;
     discount?: Discount;

@@ -1,6 +1,11 @@
 // Auto-generated TypeScript types for Attendance
 // Generated from table: attendance
 
+import type { User } from './user';
+import type { Usehealth } from './usehealth';
+import type { Gym } from './gym';
+
+
 export interface Attendance {
   id: number;
   user: number;
@@ -17,6 +22,11 @@ export interface Attendance {
   device: string;
   createdby: number;
   date: string;
+  extra?: {
+    user?: User;
+    usehealth?: Usehealth;
+    gym?: Gym;
+  };
 }
 
 // Create request type (omit auto-generated fields)

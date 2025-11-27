@@ -1,6 +1,9 @@
 // Auto-generated TypeScript types for Pushtoken
 // Generated from table: pushtoken
 
+import type { User } from './user';
+
+
 export interface Pushtoken {
   id: number;
   user: number;
@@ -12,6 +15,9 @@ export interface Pushtoken {
   createddate: string;
   updateddate: string;
   date: string;
+  extra?: {
+    user?: User;
+  };
 }
 
 // Create request type (omit auto-generated fields)

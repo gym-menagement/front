@@ -1,11 +1,17 @@
 // Auto-generated TypeScript types for Rockergroup
 // Generated from table: rockergroup
 
+import type { Gym } from './gym';
+
+
 export interface Rockergroup {
   id: number;
   gym: number;
   name: string;
   date: string;
+  extra?: {
+    gym?: Gym;
+  };
 }
 
 // Create request type (omit auto-generated fields)

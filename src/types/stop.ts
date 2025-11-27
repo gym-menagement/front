@@ -1,6 +1,9 @@
 // Auto-generated TypeScript types for Stop
 // Generated from table: stop
 
+import type { Usehealth } from './usehealth';
+
+
 export interface Stop {
   id: number;
   usehelth: number;
@@ -8,6 +11,9 @@ export interface Stop {
   endday: string;
   count: number;
   date: string;
+  extra?: {
+    usehealth?: Usehealth;
+  };
 }
 
 // Create request type (omit auto-generated fields)

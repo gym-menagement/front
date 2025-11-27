@@ -1,12 +1,18 @@
 // Auto-generated TypeScript types for Discount
 // Generated from table: discount
 
+import type { Gym } from './gym';
+
+
 export interface Discount {
   id: number;
   gym: number;
   name: string;
   discount: number;
   date: string;
+  extra?: {
+    gym?: Gym;
+  };
 }
 
 // Create request type (omit auto-generated fields)

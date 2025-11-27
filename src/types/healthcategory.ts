@@ -1,11 +1,17 @@
 // Auto-generated TypeScript types for Healthcategory
 // Generated from table: healthcategory
 
+import type { Gym } from './gym';
+
+
 export interface Healthcategory {
   id: number;
   gym: number;
   name: string;
   date: string;
+  extra?: {
+    gym?: Gym;
+  };
 }
 
 // Create request type (omit auto-generated fields)

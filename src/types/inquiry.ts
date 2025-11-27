@@ -1,6 +1,10 @@
 // Auto-generated TypeScript types for Inquiry
 // Generated from table: inquiry
 
+import type { User } from './user';
+import type { Gym } from './gym';
+
+
 export interface Inquiry {
   id: number;
   user: number;
@@ -14,6 +18,11 @@ export interface Inquiry {
   answereddate: string;
   createddate: string;
   date: string;
+  extra?: {
+    inquireruser?: User;
+    gym?: Gym;
+    answeredbyuser?: User;
+  };
 }
 
 // Create request type (omit auto-generated fields)

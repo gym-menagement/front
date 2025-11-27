@@ -1,11 +1,17 @@
 // Auto-generated TypeScript types for Paymenttype
 // Generated from table: paymenttype
 
+import type { Gym } from './gym';
+
+
 export interface Paymenttype {
   id: number;
   gym: number;
   name: string;
   date: string;
+  extra?: {
+    gym?: Gym;
+  };
 }
 
 // Create request type (omit auto-generated fields)

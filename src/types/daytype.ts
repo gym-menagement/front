@@ -1,11 +1,17 @@
 // Auto-generated TypeScript types for Daytype
 // Generated from table: daytype
 
+import type { Gym } from './gym';
+
+
 export interface Daytype {
   id: number;
   gym: number;
   name: string;
   date: string;
+  extra?: {
+    gym?: Gym;
+  };
 }
 
 // Create request type (omit auto-generated fields)

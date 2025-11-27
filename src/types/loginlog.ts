@@ -1,12 +1,18 @@
 // Auto-generated TypeScript types for Loginlog
 // Generated from table: loginlog
 
+import type { User } from './user';
+
+
 export interface Loginlog {
   id: number;
   ip: string;
   ipvalue: number;
   user: number;
   date: string;
+  extra?: {
+    user?: User;
+  };
 }
 
 // Create request type (omit auto-generated fields)

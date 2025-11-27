@@ -1,6 +1,12 @@
 // Auto-generated TypeScript types for Usehealthusage
 // Generated from table: usehealthusage
 
+import type { Gym } from './gym';
+import type { Usehealth } from './usehealth';
+import type { User } from './user';
+import type { Attendance } from './attendance';
+
+
 export interface Usehealthusage {
   id: number;
   gym: number;
@@ -15,6 +21,12 @@ export interface Usehealthusage {
   duration: number;
   note: string;
   date: string;
+  extra?: {
+    gym?: Gym;
+    usehealth?: Usehealth;
+    user?: User;
+    attendance?: Attendance;
+  };
 }
 
 // Create request type (omit auto-generated fields)

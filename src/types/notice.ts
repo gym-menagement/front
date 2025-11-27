@@ -1,6 +1,10 @@
 // Auto-generated TypeScript types for Notice
 // Generated from table: notice
 
+import type { Gym } from './gym';
+import type { User } from './user';
+
+
 export interface Notice {
   id: number;
   gym: number;
@@ -18,6 +22,10 @@ export interface Notice {
   createddate: string;
   updateddate: string;
   date: string;
+  extra?: {
+    gym?: Gym;
+    user?: User;
+  };
 }
 
 // Create request type (omit auto-generated fields)

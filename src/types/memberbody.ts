@@ -1,6 +1,10 @@
 // Auto-generated TypeScript types for Memberbody
 // Generated from table: memberbody
 
+import type { Gym } from './gym';
+import type { User } from './user';
+
+
 export interface Memberbody {
   id: number;
   gym: number;
@@ -21,6 +25,11 @@ export interface Memberbody {
   measureddate: string;
   measuredby: number;
   date: string;
+  extra?: {
+    gym?: Gym;
+    memberuser?: User;
+    measuredbyuser?: User;
+  };
 }
 
 // Create request type (omit auto-generated fields)

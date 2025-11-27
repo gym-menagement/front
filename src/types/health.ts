@@ -1,6 +1,12 @@
 // Auto-generated TypeScript types for Health
 // Generated from table: health
 
+import type { Healthcategory } from './healthcategory';
+import type { Term } from './term';
+import type { Discount } from './discount';
+import type { Gym } from './gym';
+
+
 export interface Health {
   id: number;
   category: number;
@@ -13,6 +19,12 @@ export interface Health {
   content: string;
   gym: number;
   date: string;
+  extra?: {
+    healthcategory?: Healthcategory;
+    term?: Term;
+    discount?: Discount;
+    gym?: Gym;
+  };
 }
 
 // Create request type (omit auto-generated fields)

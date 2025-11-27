@@ -1,6 +1,10 @@
 // Auto-generated TypeScript types for Trainermember
 // Generated from table: trainermember
 
+import type { User } from './user';
+import type { Gym } from './gym';
+
+
 export interface Trainermember {
   id: number;
   trainer: number;
@@ -11,6 +15,11 @@ export interface Trainermember {
   status: number;
   note: string;
   date: string;
+  extra?: {
+    traineruser?: User;
+    memberuser?: User;
+    gym?: Gym;
+  };
 }
 
 // Create request type (omit auto-generated fields)

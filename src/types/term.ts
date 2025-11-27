@@ -1,6 +1,10 @@
 // Auto-generated TypeScript types for Term
 // Generated from table: term
 
+import type { Gym } from './gym';
+import type { Daytype } from './daytype';
+
+
 export interface Term {
   id: number;
   gym: number;
@@ -8,6 +12,10 @@ export interface Term {
   name: string;
   term: number;
   date: string;
+  extra?: {
+    gym?: Gym;
+    daytype?: Daytype;
+  };
 }
 
 // Create request type (omit auto-generated fields)

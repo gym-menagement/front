@@ -1,12 +1,22 @@
 // Auto-generated TypeScript types for Order
 // Generated from table: order
 
+import type { User } from './user';
+import type { Gym } from './gym';
+import type { Health } from './health';
+
+
 export interface Order {
   id: number;
   user: number;
   gym: number;
   health: number;
   date: string;
+  extra?: {
+    user?: User;
+    gym?: Gym;
+    health?: Health;
+  };
 }
 
 // Create request type (omit auto-generated fields)

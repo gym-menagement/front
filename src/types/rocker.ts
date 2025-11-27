@@ -1,6 +1,10 @@
 // Auto-generated TypeScript types for Rocker
 // Generated from table: rocker
 
+import type { Gym } from './gym';
+import type { Rockergroup } from './rockergroup';
+
+
 export interface Rocker {
   id: number;
   gym: number;
@@ -8,6 +12,10 @@ export interface Rocker {
   name: string;
   available: number;
   date: string;
+  extra?: {
+    gym?: Gym;
+    rockergroup?: Rockergroup;
+  };
 }
 
 // Create request type (omit auto-generated fields)

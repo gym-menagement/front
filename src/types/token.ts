@@ -1,12 +1,18 @@
 // Auto-generated TypeScript types for Token
 // Generated from table: token
 
+import type { User } from './user';
+
+
 export interface Token {
   id: number;
   user: number;
   token: string;
   status: number;
   date: string;
+  extra?: {
+    user?: User;
+  };
 }
 
 // Create request type (omit auto-generated fields)
