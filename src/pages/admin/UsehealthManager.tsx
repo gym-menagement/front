@@ -13,6 +13,7 @@ import type { Rocker as RockerType } from '../../types/rocker';
 import type { Term as TermType } from '../../types/term';
 import type { Discount as DiscountType } from '../../types/discount';
 import type { Gym as GymType } from '../../types/gym';
+import type { Stop as StopType } from '../../types/stop';
 import { useNavigate } from 'react-router-dom';
 import GymSelector from '../../components/GymSelector';
 import { useAtomValue } from 'jotai';
@@ -32,6 +33,9 @@ interface UsehealthWithExtra extends UsehealthType {
     discount?: DiscountType;
     gym?: GymType;
   };
+  // 동적 계산된 일시정지 정보
+  activePause?: StopType | null;
+  isPaused?: boolean;
 }
 
 const UsehealthManager = () => {
@@ -116,7 +120,19 @@ const UsehealthManager = () => {
         }, {} as Record<number, number>)
       );
 
-      setMemberships(finalMembers);
+      // 각 회원의 일시정지 상태를 동적으로 계산
+      const membersWithPauseStatus = await Promise.all(
+        finalMembers.map(async (member) => {
+          const activePause = await getActivePause(member.id);
+          return {
+            ...member,
+            activePause,
+            isPaused: activePause !== null,
+          };
+        })
+      );
+
+      setMemberships(membersWithPauseStatus);
     } catch (error) {
       console.error('Failed to load members:', error);
     } finally {
@@ -180,6 +196,26 @@ const UsehealthManager = () => {
     });
   };
 
+  // 현재 활성 일시정지 확인 (동적 계산)
+  const getActivePause = async (usehealthId: number): Promise<StopType | null> => {
+    try {
+      const stops = await Stop.find({ usehealth: usehealthId });
+      const today = new Date();
+
+      // 현재 진행중인 일시정지 찾기
+      const activePause = stops.find((stop) => {
+        const startDate = new Date(stop.startday);
+        const endDate = new Date(stop.endday);
+        return startDate <= today && today <= endDate;
+      });
+
+      return activePause || null;
+    } catch (error) {
+      console.error('Failed to get active pause:', error);
+      return null;
+    }
+  };
+
   // 일시정지 등록
   const handlePauseMembership = async (
     usehealthId: number,
@@ -192,7 +228,7 @@ const UsehealthManager = () => {
       const endDateTime = new Date(startDate);
       endDateTime.setDate(endDateTime.getDate() + days);
 
-      // 1. stop 레코드 생성
+      // 1. stop 레코드 생성 (상태는 변경하지 않음)
       const stopData = {
         usehealth: usehealthId,
         startday: formatLocalDateTime(startDateTime),
@@ -203,7 +239,7 @@ const UsehealthManager = () => {
       console.log('Stop insert data:', stopData);
       await Stop.insert(stopData);
 
-      // 2. usehealth 상태 변경 및 종료일 연장
+      // 2. usehealth 종료일만 연장 (상태는 동적으로 계산하므로 변경하지 않음)
       const currentUsehealth = pauseModal.usehealthData;
       if (!currentUsehealth) return;
 
@@ -212,7 +248,6 @@ const UsehealthManager = () => {
       newEndDay.setDate(newEndDay.getDate() + days);
 
       await UseHealth.patch(usehealthId, {
-        status: UseHealth.status.PAUSED,
         endday: formatLocalDateTime(newEndDay),
       });
 
@@ -225,18 +260,44 @@ const UsehealthManager = () => {
     }
   };
 
-  // 일시정지 해제
+  // 일시정지 조기 해제 (기간을 오늘로 단축)
   const handleResumeMembership = async (usehealthId: number) => {
     if (!confirm('일시정지를 해제하시겠습니까?')) {
       return;
     }
 
     try {
+      // 현재 활성 일시정지 찾기
+      const activePause = await getActivePause(usehealthId);
+      if (!activePause) {
+        alert('활성 일시정지가 없습니다.');
+        return;
+      }
+
+      // 일시정지 종료일을 오늘로 변경 (조기 종료)
       const today = new Date();
-      await UseHealth.patch(usehealthId, {
-        status: UseHealth.status.USE,
+      today.setHours(23, 59, 59, 999); // 오늘 끝으로 설정
+
+      await Stop.patch(activePause.id, {
         endday: formatLocalDateTime(today),
       });
+
+      // 회원권 종료일도 단축 (연장했던 일수만큼 빼기)
+      const originalPauseDays = activePause.count;
+      const actualPauseDays = Math.ceil(
+        (today.getTime() - new Date(activePause.startday).getTime()) / (1000 * 60 * 60 * 24)
+      );
+      const reduceDays = originalPauseDays - actualPauseDays;
+
+      if (reduceDays > 0) {
+        const usehealthData = await UseHealth.get(usehealthId);
+        const currentEndDay = new Date(usehealthData.item.endday);
+        currentEndDay.setDate(currentEndDay.getDate() - reduceDays);
+
+        await UseHealth.patch(usehealthId, {
+          endday: formatLocalDateTime(currentEndDay),
+        });
+      }
 
       alert('일시정지가 해제되었습니다.');
       loadMembers();
@@ -250,7 +311,7 @@ const UsehealthManager = () => {
     return new Date(dateString).toLocaleDateString('ko-KR');
   };
 
-  const getMembershipStatus = (usehealth: UsehealthType) => {
+  const getMembershipStatus = (usehealth: UsehealthWithExtra) => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const endDate = new Date(usehealth.endday);
@@ -263,15 +324,16 @@ const UsehealthManager = () => {
       return { label: '만료', variant: 'default' as const };
     }
 
-    if (usehealth.status === UseHealth.status.EXPIRED) {
-      return { label: '만료', variant: 'default' as const };
-    }
-    if (usehealth.status === UseHealth.status.PAUSED) {
+    // 동적으로 계산된 일시정지 상태 확인
+    if (usehealth.isPaused) {
       return { label: '일시정지', variant: 'warning' as const };
     }
+
+    // status를 사용한 상태 체크 (TERMINATED만 status로 체크)
     if (usehealth.status === UseHealth.status.TERMINATED) {
       return { label: '종료', variant: 'default' as const };
     }
+
     if (startDate <= today && today <= endDate) {
       return { label: '사용중', variant: 'success' as const };
     }
@@ -449,7 +511,8 @@ const UsehealthManager = () => {
               // 이용 기간이 지났거나 user.use가 0이면 비활성
               const isActive = !isExpired && user.use === 1;
 
-              const isPaused = usehealth.status === UseHealth.status.PAUSED;
+              // 동적으로 계산된 일시정지 상태 사용
+              const isPaused = usehealth.isPaused || false;
 
               return (
                 <Card hoverable key={usehealth.id}>
@@ -503,7 +566,7 @@ const UsehealthManager = () => {
                         </Button>
 
                         {/* 일시정지/해제 버튼 */}
-                        {usehealth.status === UseHealth.status.PAUSED ? (
+                        {isPaused ? (
                           <Button
                             size="sm"
                             variant="primary"
