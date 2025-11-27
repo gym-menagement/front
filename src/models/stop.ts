@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Stop,
   ApiResponse,
@@ -20,6 +20,11 @@ export default class StopModel {
 
   static async update(id: number, item: Partial<Stop>) {
     const res = await put<Stop>(`/stop/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Stop>) {
+    const res = await patch<Stop>(`/stop/${id}`, item);
     return res.data;
   }
 

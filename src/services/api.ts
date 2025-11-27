@@ -59,6 +59,10 @@ export const put = <T>(url: string, data?: unknown, config?: any) => {
   return apiClient.put<T>(url, data, config);
 };
 
+export const patch = <T>(url: string, data?: unknown, config?: any) => {
+  return apiClient.patch<T>(url, data, config);
+};
+
 // Helper function for DELETE requests
 export const del = <T>(url: string, config?: any) => {
   return apiClient.delete<T>(url, config);

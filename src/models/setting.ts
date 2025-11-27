@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Setting,
   ApiResponse,
@@ -37,6 +37,11 @@ export default class SettingModel {
 
   static async update(id: number, item: Partial<Setting>) {
     const res = await put<Setting>(`/setting/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Setting>) {
+    const res = await patch<Setting>(`/setting/${id}`, item);
     return res.data;
   }
 

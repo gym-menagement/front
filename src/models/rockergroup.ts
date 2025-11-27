@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Rockergroup,
   ApiResponse,
@@ -20,6 +20,11 @@ export default class RockergroupModel {
 
   static async update(id: number, item: Partial<Rockergroup>) {
     const res = await put<Rockergroup>(`/rockergroup/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Rockergroup>) {
+    const res = await patch<Rockergroup>(`/rockergroup/${id}`, item);
     return res.data;
   }
 

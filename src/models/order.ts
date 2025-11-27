@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Order,
   ApiResponse,
@@ -20,6 +20,11 @@ export default class OrderModel {
 
   static async update(id: number, item: Partial<Order>) {
     const res = await put<Order>(`/order/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Order>) {
+    const res = await patch<Order>(`/order/${id}`, item);
     return res.data;
   }
 

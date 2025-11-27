@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Notice,
   ApiResponse,
@@ -99,6 +99,11 @@ export default class NoticeModel {
 
   static async update(id: number, item: Partial<Notice>) {
     const res = await put<Notice>(`/notice/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Notice>) {
+    const res = await patch<Notice>(`/notice/${id}`, item);
     return res.data;
   }
 

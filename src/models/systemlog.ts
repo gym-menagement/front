@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Systemlog,
   ApiResponse,
@@ -50,6 +50,11 @@ export default class SystemlogModel {
 
   static async update(id: number, item: Partial<Systemlog>) {
     const res = await put<Systemlog>(`/systemlog/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Systemlog>) {
+    const res = await patch<Systemlog>(`/systemlog/${id}`, item);
     return res.data;
   }
 

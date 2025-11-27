@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Loginlog,
   ApiResponse,
@@ -20,6 +20,11 @@ export default class LoginlogModel {
 
   static async update(id: number, item: Partial<Loginlog>) {
     const res = await put<Loginlog>(`/loginlog/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Loginlog>) {
+    const res = await patch<Loginlog>(`/loginlog/${id}`, item);
     return res.data;
   }
 

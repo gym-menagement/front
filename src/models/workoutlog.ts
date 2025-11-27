@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Workoutlog,
   ApiResponse,
@@ -20,6 +20,11 @@ export default class WorkoutlogModel {
 
   static async update(id: number, item: Partial<Workoutlog>) {
     const res = await put<Workoutlog>(`/workoutlog/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Workoutlog>) {
+    const res = await patch<Workoutlog>(`/workoutlog/${id}`, item);
     return res.data;
   }
 

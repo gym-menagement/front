@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Role,
   ApiResponse,
@@ -41,6 +41,11 @@ export default class RoleModel {
 
   static async update(id: number, item: Partial<Role>) {
     const res = await put<Role>(`/role/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Role>) {
+    const res = await patch<Role>(`/role/${id}`, item);
     return res.data;
   }
 

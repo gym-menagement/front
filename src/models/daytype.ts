@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Daytype,
   ApiResponse,
@@ -20,6 +20,11 @@ export default class DaytypeModel {
 
   static async update(id: number, item: Partial<Daytype>) {
     const res = await put<Daytype>(`/daytype/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Daytype>) {
+    const res = await patch<Daytype>(`/daytype/${id}`, item);
     return res.data;
   }
 

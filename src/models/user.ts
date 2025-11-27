@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   User,
   ApiResponse,
@@ -113,6 +113,11 @@ export default class UserModel {
 
   static async update(id: number, item: Partial<User>) {
     const res = await put<User>(`/user/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<User>) {
+    const res = await patch<User>(`/user/${id}`, item);
     return res.data;
   }
 

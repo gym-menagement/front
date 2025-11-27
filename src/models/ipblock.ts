@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Ipblock,
   ApiResponse,
@@ -65,6 +65,11 @@ export default class IpblockModel {
 
   static async update(id: number, item: Partial<Ipblock>) {
     const res = await put<Ipblock>(`/ipblock/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Ipblock>) {
+    const res = await patch<Ipblock>(`/ipblock/${id}`, item);
     return res.data;
   }
 

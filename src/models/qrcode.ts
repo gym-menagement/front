@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Qrcode,
   ApiResponse,
@@ -35,6 +35,11 @@ export default class QrcodeModel {
 
   static async update(id: number, item: Partial<Qrcode>) {
     const res = await put<Qrcode>(`/qrcode/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Qrcode>) {
+    const res = await patch<Qrcode>(`/qrcode/${id}`, item);
     return res.data;
   }
 

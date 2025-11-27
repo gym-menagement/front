@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Payment,
   ApiResponse,
@@ -20,6 +20,11 @@ export default class PaymentModel {
 
   static async update(id: number, item: Partial<Payment>) {
     const res = await put<Payment>(`/payment/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Payment>) {
+    const res = await patch<Payment>(`/payment/${id}`, item);
     return res.data;
   }
 

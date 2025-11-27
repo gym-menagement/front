@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Inquiry,
   ApiResponse,
@@ -56,6 +56,11 @@ export default class InquiryModel {
 
   static async update(id: number, item: Partial<Inquiry>) {
     const res = await put<Inquiry>(`/inquiry/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Inquiry>) {
+    const res = await patch<Inquiry>(`/inquiry/${id}`, item);
     return res.data;
   }
 

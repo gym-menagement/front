@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Gym,
   ApiResponse,
@@ -20,6 +20,11 @@ export default class GymModel {
 
   static async update(id: number, item: Partial<Gym>) {
     const res = await put<Gym>(`/gym/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Gym>) {
+    const res = await patch<Gym>(`/gym/${id}`, item);
     return res.data;
   }
 

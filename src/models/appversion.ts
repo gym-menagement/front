@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Appversion,
   ApiResponse,
@@ -50,6 +50,11 @@ export default class AppversionModel {
 
   static async update(id: number, item: Partial<Appversion>) {
     const res = await put<Appversion>(`/appversion/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Appversion>) {
+    const res = await patch<Appversion>(`/appversion/${id}`, item);
     return res.data;
   }
 

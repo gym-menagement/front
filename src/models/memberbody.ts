@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Memberbody,
   ApiResponse,
@@ -20,6 +20,11 @@ export default class MemberbodyModel {
 
   static async update(id: number, item: Partial<Memberbody>) {
     const res = await put<Memberbody>(`/memberbody/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Memberbody>) {
+    const res = await patch<Memberbody>(`/memberbody/${id}`, item);
     return res.data;
   }
 

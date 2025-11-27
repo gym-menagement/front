@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Token,
   ApiResponse,
@@ -37,6 +37,11 @@ export default class TokenModel {
 
   static async update(id: number, item: Partial<Token>) {
     const res = await put<Token>(`/token/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Token>) {
+    const res = await patch<Token>(`/token/${id}`, item);
     return res.data;
   }
 

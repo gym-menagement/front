@@ -211,7 +211,7 @@ const UsehealthManager = () => {
       const newEndDay = new Date(currentEndDay);
       newEndDay.setDate(newEndDay.getDate() + days);
 
-      await UseHealth.update(usehealthId, {
+      await UseHealth.patch(usehealthId, {
         status: UseHealth.status.PAUSED,
         endday: formatLocalDateTime(newEndDay),
       });
@@ -232,8 +232,10 @@ const UsehealthManager = () => {
     }
 
     try {
-      await UseHealth.update(usehealthId, {
+      const today = new Date();
+      await UseHealth.patch(usehealthId, {
         status: UseHealth.status.USE,
+        endday: formatLocalDateTime(today),
       });
 
       alert('일시정지가 해제되었습니다.');
@@ -450,7 +452,7 @@ const UsehealthManager = () => {
               const isPaused = usehealth.status === UseHealth.status.PAUSED;
 
               return (
-                <Card hoverable>
+                <Card hoverable key={usehealth.id}>
                   <div
                     style={{
                       display: 'flex',

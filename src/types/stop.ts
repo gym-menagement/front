@@ -3,6 +3,7 @@
 
 import type { Usehealth } from './usehealth';
 
+
 export interface Stop {
   id: number;
   usehealth: number;

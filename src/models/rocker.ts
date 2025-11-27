@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Rocker,
   ApiResponse,
@@ -35,6 +35,11 @@ export default class RockerModel {
 
   static async update(id: number, item: Partial<Rocker>) {
     const res = await put<Rocker>(`/rocker/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Rocker>) {
+    const res = await patch<Rocker>(`/rocker/${id}`, item);
     return res.data;
   }
 

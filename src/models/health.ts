@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Health,
   ApiResponse,
@@ -20,6 +20,11 @@ export default class HealthModel {
 
   static async update(id: number, item: Partial<Health>) {
     const res = await put<Health>(`/health/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Health>) {
+    const res = await patch<Health>(`/health/${id}`, item);
     return res.data;
   }
 

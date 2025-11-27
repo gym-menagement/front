@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Ptreservation,
   ApiResponse,
@@ -39,6 +39,11 @@ export default class PtreservationModel {
 
   static async update(id: number, item: Partial<Ptreservation>) {
     const res = await put<Ptreservation>(`/ptreservation/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Ptreservation>) {
+    const res = await patch<Ptreservation>(`/ptreservation/${id}`, item);
     return res.data;
   }
 

@@ -1,4 +1,4 @@
-import { get, post, put, del } from '../services/api';
+import { get, post, put, patch, del } from '../services/api';
 import type {
   Term,
   ApiResponse,
@@ -20,6 +20,11 @@ export default class TermModel {
 
   static async update(id: number, item: Partial<Term>) {
     const res = await put<Term>(`/term/${id}`, item);
+    return res.data;
+  }
+
+  static async patch(id: number, item: Partial<Term>) {
+    const res = await patch<Term>(`/term/${id}`, item);
     return res.data;
   }
 
