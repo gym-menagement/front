@@ -7,7 +7,7 @@ import type { HealthCategory as HealthCategoryType } from '../../types/healthcat
 import type { Term as TermType } from '../../types/term';
 import type { Discount as DiscountType } from '../../types/discount';
 import { useNavigate } from 'react-router-dom';
-import GymSelector from '../../components/GymSelector';
+import AdminHeader from '../../components/AdminHeader';
 import { useAtomValue } from 'jotai';
 import { selectedGymIdAtom } from '../../store/gym';
 
@@ -123,64 +123,11 @@ const HealthManagement = () => {
         backgroundColor: theme.colors.background.secondary,
       }}
     >
-      {/* Header */}
-      <div
-        style={{
-          backgroundColor: theme.colors.background.primary,
-          borderBottom: `1px solid ${theme.colors.border.light}`,
-          padding: `${theme.spacing[4]} ${theme.spacing[8]}`,
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            maxWidth: '1400px',
-            margin: '0 auto',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: theme.spacing[4],
-            }}
-          >
-            <Button
-              variant="ghost"
-              onClick={() => navigate('/admin/dashboard')}
-            >
-              ← 대시보드
-            </Button>
-            <h1
-              style={{
-                fontSize: theme.typography.fontSize['2xl'],
-                fontWeight: theme.typography.fontWeight.bold,
-                color: theme.colors.text.primary,
-                margin: 0,
-              }}
-            >
-              회원권 관리
-            </h1>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: theme.spacing[4],
-            }}
-          >
-            <GymSelector />
-            <Button
-              variant="primary"
-              onClick={() => navigate('/admin/health/new')}
-            >
-              + 새 회원권 등록
-            </Button>
-          </div>
-        </div>
-      </div>
+      <AdminHeader title="회원권 관리">
+        <Button variant="primary" onClick={() => navigate('/admin/health/new')}>
+          + 새 회원권 등록
+        </Button>
+      </AdminHeader>
 
       {/* Main Content */}
       <div

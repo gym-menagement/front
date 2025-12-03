@@ -14,8 +14,7 @@ import type { Term as TermType } from '../../types/term';
 import type { Discount as DiscountType } from '../../types/discount';
 import type { Gym as GymType } from '../../types/gym';
 import type { Stop as StopType } from '../../types/stop';
-import { useNavigate } from 'react-router-dom';
-import GymSelector from '../../components/GymSelector';
+import AdminHeader from '../../components/AdminHeader';
 import { useAtomValue } from 'jotai';
 import { selectedGymIdAtom } from '../../store/gym';
 import PauseModal from './PauseModal';
@@ -39,7 +38,6 @@ interface UsehealthWithExtra extends UsehealthType {
 }
 
 const UsehealthManager = () => {
-  const navigate = useNavigate();
   const selectedGymId = useAtomValue(selectedGymIdAtom);
   const [memberships, setMemberships] = useState<UsehealthWithExtra[]>([]);
   const [loading, setLoading] = useState(true);
@@ -355,50 +353,7 @@ const UsehealthManager = () => {
         backgroundColor: theme.colors.background.secondary,
       }}
     >
-      {/* Header */}
-      <div
-        style={{
-          backgroundColor: theme.colors.background.primary,
-          borderBottom: `1px solid ${theme.colors.border.light}`,
-          padding: `${theme.spacing[4]} ${theme.spacing[8]}`,
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            maxWidth: '1400px',
-            margin: '0 auto',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: theme.spacing[4],
-            }}
-          >
-            <Button
-              variant="ghost"
-              onClick={() => navigate('/admin/dashboard')}
-            >
-              ← 대시보드
-            </Button>
-            <h1
-              style={{
-                fontSize: theme.typography.fontSize['2xl'],
-                fontWeight: theme.typography.fontWeight.bold,
-                color: theme.colors.text.primary,
-                margin: 0,
-              }}
-            >
-              회원 관리
-            </h1>
-          </div>
-          <GymSelector />
-        </div>
-      </div>
+      <AdminHeader title="회원 관리" />
 
       {/* Main Content */}
       <div

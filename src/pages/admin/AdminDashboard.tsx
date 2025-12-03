@@ -293,6 +293,13 @@ const AdminDashboard = () => {
             <Button
               variant="primary"
               fullWidth
+              onClick={() => navigate('/admin/categories')}
+            >
+              카테고리 관리
+            </Button>
+            <Button
+              variant="primary"
+              fullWidth
               onClick={() => navigate('/admin/discounts')}
             >
               할인 관리

@@ -25,6 +25,7 @@ import TrainerManagement from './pages/admin/TrainerManagement';
 import TrainerForm from './pages/admin/TrainerForm';
 import HealthManagement from './pages/admin/HealthManagement';
 import HealthForm from './pages/admin/HealthForm';
+import HealthCategoryManager from './pages/admin/HealthCategoryManager';
 import DiscountManagement from './pages/admin/DiscountManagement';
 import DiscountForm from './pages/admin/DiscountForm';
 import RockerManagement from './pages/admin/RockerManagement';
@@ -176,6 +177,14 @@ function App() {
           element={
             <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
               <HealthForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/categories"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <HealthCategoryManager />
             </ProtectedRoute>
           }
         />
