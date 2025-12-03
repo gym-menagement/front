@@ -3,17 +3,23 @@ import { Card, Badge, Button, Input } from '../../components/ui';
 import { theme } from '../../theme';
 import { Discount } from '../../models';
 import type { Discount as DiscountType } from '../../types/discount';
-import { useNavigate } from 'react-router-dom';
-import GymSelector from '../../components/GymSelector';
+import AdminHeader from '../../components/AdminHeader';
 import { useAtomValue } from 'jotai';
 import { selectedGymIdAtom } from '../../store/gym';
+import DiscountModal from './DiscountModal';
 
 const DiscountManagement = () => {
-  const navigate = useNavigate();
   const selectedGymId = useAtomValue(selectedGymIdAtom);
   const [discounts, setDiscounts] = useState<DiscountType[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [modalState, setModalState] = useState<{
+    show: boolean;
+    discount: DiscountType | null;
+  }>({
+    show: false,
+    discount: null,
+  });
 
   useEffect(() => {
     if (selectedGymId) {
@@ -31,6 +37,10 @@ const DiscountManagement = () => {
       }
 
       const data = await Discount.find({ gym: selectedGymId });
+
+      // 정렬: 할인율 높은 순
+      data.sort((a, b) => b.discount - a.discount);
+
       setDiscounts(data);
     } catch (error) {
       console.error('Failed to load discounts:', error);
@@ -44,16 +54,70 @@ const DiscountManagement = () => {
   );
 
   const handleDelete = async (discountId: number, discountName: string) => {
-    if (!confirm(`${discountName} 할인을 정말 삭제하시겠습니까?`)) {
+    if (!confirm(`"${discountName}" 할인을 정말 삭제하시겠습니까?`)) {
       return;
     }
 
     try {
       await Discount.remove(discountId);
       loadDiscounts();
+      alert('할인이 삭제되었습니다.');
     } catch (error) {
       console.error('Failed to delete discount:', error);
       alert('할인 삭제에 실패했습니다.');
+    }
+  };
+
+  const openCreateModal = () => {
+    setModalState({
+      show: true,
+      discount: null,
+    });
+  };
+
+  const openEditModal = (discount: DiscountType) => {
+    setModalState({
+      show: true,
+      discount,
+    });
+  };
+
+  const closeModal = () => {
+    setModalState({
+      show: false,
+      discount: null,
+    });
+  };
+
+  const handleSave = async (data: { name: string; discount: number }) => {
+    if (!selectedGymId) {
+      alert('헬스장을 선택해주세요.');
+      return;
+    }
+
+    try {
+      if (modalState.discount) {
+        // 수정
+        await Discount.patch(modalState.discount.id, {
+          name: data.name,
+          discount: data.discount,
+        });
+        alert('할인이 수정되었습니다.');
+      } else {
+        // 등록
+        await Discount.insert({
+          gym: selectedGymId,
+          name: data.name,
+          discount: data.discount,
+          date: new Date().toISOString(),
+        });
+        alert('할인이 등록되었습니다.');
+      }
+
+      loadDiscounts();
+    } catch (error) {
+      console.error('Failed to save discount:', error);
+      throw error;
     }
   };
 
@@ -64,64 +128,11 @@ const DiscountManagement = () => {
         backgroundColor: theme.colors.background.secondary,
       }}
     >
-      {/* Header */}
-      <div
-        style={{
-          backgroundColor: theme.colors.background.primary,
-          borderBottom: `1px solid ${theme.colors.border.light}`,
-          padding: `${theme.spacing[4]} ${theme.spacing[8]}`,
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            maxWidth: '1400px',
-            margin: '0 auto',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: theme.spacing[4],
-            }}
-          >
-            <Button
-              variant="ghost"
-              onClick={() => navigate('/admin/dashboard')}
-            >
-              ← 대시보드
-            </Button>
-            <h1
-              style={{
-                fontSize: theme.typography.fontSize['2xl'],
-                fontWeight: theme.typography.fontWeight.bold,
-                color: theme.colors.text.primary,
-                margin: 0,
-              }}
-            >
-              할인 관리
-            </h1>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: theme.spacing[4],
-            }}
-          >
-            <GymSelector />
-            <Button
-              variant="primary"
-              onClick={() => navigate('/admin/discounts/new')}
-            >
-              + 새 할인 등록
-            </Button>
-          </div>
-        </div>
-      </div>
+      <AdminHeader title="할인 관리">
+        <Button variant="primary" onClick={openCreateModal}>
+          + 새 할인 등록
+        </Button>
+      </AdminHeader>
 
       {/* Main Content */}
       <div
@@ -189,7 +200,7 @@ const DiscountManagement = () => {
                         color: theme.colors.text.secondary,
                       }}
                     >
-                      할인율: {discount.discount}%
+                      등록일: {new Date(discount.date).toLocaleDateString('ko-KR')}
                     </div>
                   </div>
 
@@ -203,7 +214,7 @@ const DiscountManagement = () => {
                     <Button
                       size="sm"
                       variant="secondary"
-                      onClick={() => navigate(`/admin/discounts/${discount.id}`)}
+                      onClick={() => openEditModal(discount)}
                     >
                       수정
                     </Button>
@@ -221,6 +232,15 @@ const DiscountManagement = () => {
           </div>
         )}
       </div>
+
+      {/* Discount Modal */}
+      <DiscountModal
+        show={modalState.show}
+        discount={modalState.discount}
+        gymId={selectedGymId}
+        onClose={closeModal}
+        onSave={handleSave}
+      />
     </div>
   );
 };
