@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Card, Badge, Button, Input } from '../../components/ui';
+import { Card, Button, Input, Select } from '../../components/ui';
 import { theme } from '../../theme';
 import { Health, HealthCategory, Term, Discount } from '../../models';
 import type { Health as HealthType } from '../../types/health';
@@ -87,11 +87,6 @@ const HealthManagement = () => {
   const filteredHealthPlans = healthPlans.filter((plan) =>
     plan.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  const getCategoryName = (categoryId: number) => {
-    const category = categories.find((c) => c.id === categoryId);
-    return category ? category.name : '-';
-  };
 
   const getTermName = (termId: number) => {
     const term = terms.find((t) => t.id === termId);
@@ -213,24 +208,23 @@ const HealthManagement = () => {
                 fullWidth
               />
             </div>
-            <div style={{ display: 'flex', gap: theme.spacing[2], flexWrap: 'wrap' }}>
-              <Button
-                variant={filterCategory === 'all' ? 'primary' : 'ghost'}
-                onClick={() => setFilterCategory('all')}
-                size="sm"
-              >
-                전체
-              </Button>
-              {categories.map((category) => (
-                <Button
-                  key={category.id}
-                  variant={filterCategory === category.id ? 'primary' : 'ghost'}
-                  onClick={() => setFilterCategory(category.id)}
-                  size="sm"
-                >
-                  {category.name}
-                </Button>
-              ))}
+            <div style={{ width: '200px' }}>
+              <Select
+                value={filterCategory}
+                onChange={(e) => {
+                  const value = e.target.value === 'all' ? 'all' : Number(e.target.value);
+                  setFilterCategory(value);
+                }}
+                options={[
+                  { value: 'all', label: '전체 카테고리' },
+                  ...categories.map((category) => ({
+                    value: category.id,
+                    label: category.name,
+                  })),
+                ]}
+                selectSize="md"
+                fullWidth
+              />
             </div>
           </div>
         </Card>
@@ -245,7 +239,9 @@ const HealthManagement = () => {
         ) : filteredHealthPlans.length === 0 ? (
           <Card>
             <div style={{ textAlign: 'center', padding: theme.spacing[8] }}>
-              {searchTerm ? '검색 결과가 없습니다.' : '등록된 회원권이 없습니다.'}
+              {searchTerm
+                ? '검색 결과가 없습니다.'
+                : '등록된 회원권이 없습니다.'}
             </div>
           </Card>
         ) : (
@@ -273,20 +269,37 @@ const HealthManagement = () => {
                       alignItems: 'flex-start',
                     }}
                   >
-                    <div>
+                    <div style={{ flex: 1 }}>
                       <div
                         style={{
                           fontWeight: theme.typography.fontWeight.bold,
                           fontSize: theme.typography.fontSize.lg,
-                          marginBottom: theme.spacing[1],
+                          marginBottom: theme.spacing[2],
                           color: theme.colors.text.primary,
                         }}
                       >
                         {plan.name}
                       </div>
-                      <Badge variant="info" size="sm">
-                        {getCategoryName(plan.category)}
-                      </Badge>
+                      <Select
+                        value={plan.category}
+                        onChange={async (e) => {
+                          const newCategoryId = Number(e.target.value);
+                          try {
+                            await Health.update(plan.id, {
+                              category: newCategoryId,
+                            });
+                            loadHealthPlans();
+                          } catch (error) {
+                            console.error('Failed to update category:', error);
+                            alert('카테고리 변경에 실패했습니다.');
+                          }
+                        }}
+                        options={categories.map((cat) => ({
+                          value: cat.id,
+                          label: cat.name,
+                        }))}
+                        selectSize="sm"
+                      />
                     </div>
                   </div>
 
@@ -308,7 +321,11 @@ const HealthManagement = () => {
                       <span style={{ color: theme.colors.text.secondary }}>
                         기간
                       </span>
-                      <span style={{ fontWeight: theme.typography.fontWeight.medium }}>
+                      <span
+                        style={{
+                          fontWeight: theme.typography.fontWeight.medium,
+                        }}
+                      >
                         {getTermName(plan.term)}
                       </span>
                     </div>
@@ -323,7 +340,11 @@ const HealthManagement = () => {
                         <span style={{ color: theme.colors.text.secondary }}>
                           이용 횟수
                         </span>
-                        <span style={{ fontWeight: theme.typography.fontWeight.medium }}>
+                        <span
+                          style={{
+                            fontWeight: theme.typography.fontWeight.medium,
+                          }}
+                        >
                           {plan.count}회
                         </span>
                       </div>
@@ -341,8 +362,12 @@ const HealthManagement = () => {
                       <span
                         style={{
                           fontWeight: theme.typography.fontWeight.medium,
-                          textDecoration: plan.discount > 0 ? 'line-through' : 'none',
-                          color: plan.discount > 0 ? theme.colors.text.tertiary : theme.colors.text.primary,
+                          textDecoration:
+                            plan.discount > 0 ? 'line-through' : 'none',
+                          color:
+                            plan.discount > 0
+                              ? theme.colors.text.tertiary
+                              : theme.colors.text.primary,
                         }}
                       >
                         {formatPrice(plan.cost)}

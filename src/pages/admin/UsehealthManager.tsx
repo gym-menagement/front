@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Card, Badge, Button, Input } from '../../components/ui';
+import { Card, Badge, Button, Input, Select } from '../../components/ui';
 import { theme } from '../../theme';
 import { User, UseHealth, Stop } from '../../models';
 import type {
@@ -151,16 +151,6 @@ const UsehealthManager = () => {
       user.tel.includes(searchTerm)
     );
   });
-
-  const handleStatusChange = async (memberId: number, newStatus: number) => {
-    try {
-      await User.update(memberId, { use: newStatus });
-      loadMembers();
-    } catch (error) {
-      console.error('Failed to update member status:', error);
-      alert('상태 변경에 실패했습니다.');
-    }
-  };
 
   // 일시정지 모달 열기
   const openPauseModal = (usehealth: UsehealthWithExtra) => {
@@ -436,39 +426,22 @@ const UsehealthManager = () => {
                 fullWidth
               />
             </div>
-            <div style={{ display: 'flex', gap: theme.spacing[2] }}>
-              <Button
-                variant={filterStatus === '' ? 'primary' : 'ghost'}
-                onClick={() => setFilterStatus('')}
-              >
-                전체
-              </Button>
-              <Button
-                variant={
-                  filterStatus === UseHealth.status.USE ? 'primary' : 'ghost'
-                }
-                onClick={() => setFilterStatus(UseHealth.status.USE)}
-              >
-                사용중
-              </Button>
-              <Button
-                variant={
-                  filterStatus === UseHealth.status.PAUSED ? 'primary' : 'ghost'
-                }
-                onClick={() => setFilterStatus(UseHealth.status.PAUSED)}
-              >
-                일시정지
-              </Button>
-              <Button
-                variant={
-                  filterStatus === UseHealth.status.EXPIRED
-                    ? 'primary'
-                    : 'ghost'
-                }
-                onClick={() => setFilterStatus(UseHealth.status.EXPIRED)}
-              >
-                만료
-              </Button>
+            <div style={{ width: '200px' }}>
+              <Select
+                value={filterStatus}
+                onChange={(e) => {
+                  const value = e.target.value === '' ? '' : Number(e.target.value);
+                  setFilterStatus(value);
+                }}
+                options={[
+                  { value: '', label: '전체 상태' },
+                  { value: UseHealth.status.USE, label: '사용중' },
+                  { value: UseHealth.status.PAUSED, label: '일시정지' },
+                  { value: UseHealth.status.EXPIRED, label: '만료' },
+                ]}
+                selectSize="md"
+                fullWidth
+              />
             </div>
           </div>
         </Card>
@@ -508,9 +481,6 @@ const UsehealthManager = () => {
               endDate.setHours(0, 0, 0, 0);
               const isExpired = endDate < today;
 
-              // 이용 기간이 지났거나 user.use가 0이면 비활성
-              const isActive = !isExpired && user.use === 1;
-
               // 동적으로 계산된 일시정지 상태 사용
               const isPaused = usehealth.isPaused || false;
 
@@ -548,9 +518,6 @@ const UsehealthManager = () => {
                         >
                           {user.name}
                         </div>
-                        <Badge variant={isActive ? 'success' : 'default'}>
-                          {isActive ? '활성' : '비활성'}
-                        </Badge>
                         <Badge variant={membershipStatus.variant}>
                           {membershipStatus.label}
                         </Badge>
@@ -585,16 +552,6 @@ const UsehealthManager = () => {
                             일시정지
                           </Button>
                         ) : null}
-
-                        <Button
-                          size="sm"
-                          variant={user.use === 1 ? 'ghost' : 'primary'}
-                          onClick={() =>
-                            handleStatusChange(user.id, user.use === 1 ? 0 : 1)
-                          }
-                        >
-                          {user.use === 1 ? '비활성화' : '활성화'}
-                        </Button>
                       </div>
                     </div>
 
