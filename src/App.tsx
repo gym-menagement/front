@@ -33,6 +33,7 @@ import RockerForm from './pages/admin/RockerForm';
 import RockerUsageManagement from './pages/admin/RockerUsageManagement';
 import WorkoutLogManagement from './pages/admin/WorkoutLogManagement';
 import TermManagement from './pages/admin/TermManagement';
+import AttendanceManagement from './pages/admin/AttendanceManagement';
 
 // Demo Page (keep for component showcase)
 import ComponentsDemo from './pages/ComponentsDemo';
@@ -258,6 +259,14 @@ function App() {
           element={
             <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
               <TermManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/attendance"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <AttendanceManagement />
             </ProtectedRoute>
           }
         />
