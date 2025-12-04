@@ -19,7 +19,7 @@ import GymRegisterPage from './pages/gym/GymRegisterPage';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
-import UsehealthManager from './pages/admin/UsehealthManager';
+import MemberManagement from './pages/admin/MemberManagement';
 import MemberForm from './pages/admin/MemberForm';
 import TrainerManagement from './pages/admin/TrainerManagement';
 import TrainerForm from './pages/admin/TrainerForm';
@@ -130,7 +130,7 @@ function App() {
           path="/admin/members"
           element={
             <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <UsehealthManager />
+              <MemberManagement />
             </ProtectedRoute>
           }
         />

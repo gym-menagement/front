@@ -1,54 +1,46 @@
-import { useEffect, useState } from 'react';
 import { Card, Badge, Button } from '../../components/ui';
 import { theme } from '../../theme';
-import { Stop } from '../../models';
-import type { Stop as StopType } from '../../types/stop';
-import type { User as UserType } from '../../types/user';
-import type { Health as HealthType } from '../../types/health';
+import type { Membership as MembershipType } from '../../types/membership';
+import type { Usehealth as UsehealthType } from '../../types/usehealth';
 
 interface MemberDetailModalProps {
   show: boolean;
-  usehealth: {
-    id: number;
-    startday: string;
-    endday: string;
-    totalcount: number;
-    usedcount: number;
-    remainingcount: number;
-    status: number;
-    extra?: {
-      user?: UserType;
-      health?: HealthType;
-    };
-  } | null;
+  membership: MembershipType;
+  usehealths: UsehealthType[];
   onClose: () => void;
+  onRefresh: () => void;
 }
 
-const MemberDetailModal = ({ show, usehealth, onClose }: MemberDetailModalProps) => {
-  const [stopHistory, setStopHistory] = useState<StopType[]>([]);
-  const [loading, setLoading] = useState(false);
+const MemberDetailModal = ({
+  show,
+  membership,
+  usehealths,
+  onClose,
+}: MemberDetailModalProps) => {
+  if (!show) return null;
 
-  useEffect(() => {
-    const loadStopHistory = async () => {
-      if (!usehealth) return;
+  const user = membership.extra?.user;
+  const today = new Date();
 
-      try {
-        setLoading(true);
-        const stops = await Stop.find({ usehealth: usehealth.id });
-        // 최신 순으로 정렬
-        stops.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-        setStopHistory(stops);
-      } catch (error) {
-        console.error('Failed to load stop history:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Debug: Log usehealth data
+  console.log('=== MemberDetailModal Debug ===');
+  console.log('Membership ID:', membership.id);
+  console.log('User ID:', membership.user);
+  console.log('User Name:', user?.name);
+  console.log('Total usehealths:', usehealths.length);
+  console.log('Usehealths data:', usehealths);
 
-    if (show && usehealth) {
-      loadStopHistory();
-    }
-  }, [show, usehealth]);
+  // Separate active and expired usehealths
+  const activeUsehealths = usehealths.filter((uh) => {
+    const startDate = new Date(uh.startday);
+    const endDate = new Date(uh.endday);
+    return startDate <= today && today <= endDate;
+  });
+
+  const expiredUsehealths = usehealths.filter((uh) => {
+    const endDate = new Date(uh.endday);
+    return endDate < today;
+  });
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('ko-KR');
@@ -58,10 +50,180 @@ const MemberDetailModal = ({ show, usehealth, onClose }: MemberDetailModalProps)
     return new Date(dateString).toLocaleString('ko-KR');
   };
 
-  if (!show || !usehealth) return null;
+  const getDaysRemaining = (endday: string) => {
+    const end = new Date(endday);
+    const diffTime = end.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays;
+  };
 
-  const user = usehealth.extra?.user;
-  const health = usehealth.extra?.health;
+  const renderUsehealthCard = (uh: UsehealthType, isActive: boolean) => {
+    const daysRemaining = getDaysRemaining(uh.endday);
+    const healthName = uh.extra?.health?.name || '알 수 없음';
+
+    return (
+      <div
+        key={uh.id}
+        style={{
+          padding: theme.spacing[4],
+          backgroundColor: isActive
+            ? theme.colors.semantic.successSubtle
+            : theme.colors.background.secondary,
+          borderRadius: theme.borderRadius.md,
+          border: `1px solid ${
+            isActive ? theme.colors.semantic.success : theme.colors.border.light
+          }`,
+        }}
+      >
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            marginBottom: theme.spacing[3],
+          }}
+        >
+          <div
+            style={{
+              fontWeight: theme.typography.fontWeight.bold,
+              fontSize: theme.typography.fontSize.base,
+            }}
+          >
+            {healthName}
+          </div>
+          <Badge variant={isActive ? 'success' : 'info'}>
+            {isActive ? '사용중' : '만료'}
+          </Badge>
+        </div>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))',
+            gap: theme.spacing[3],
+          }}
+        >
+          <div>
+            <div
+              style={{
+                fontSize: theme.typography.fontSize.sm,
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing[1],
+              }}
+            >
+              시작일
+            </div>
+            <div style={{ fontWeight: theme.typography.fontWeight.medium }}>
+              {formatDate(uh.startday)}
+            </div>
+          </div>
+          <div>
+            <div
+              style={{
+                fontSize: theme.typography.fontSize.sm,
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing[1],
+              }}
+            >
+              종료일
+            </div>
+            <div style={{ fontWeight: theme.typography.fontWeight.medium }}>
+              {formatDate(uh.endday)}
+            </div>
+          </div>
+          {isActive && (
+            <div>
+              <div
+                style={{
+                  fontSize: theme.typography.fontSize.sm,
+                  color: theme.colors.text.secondary,
+                  marginBottom: theme.spacing[1],
+                }}
+              >
+                남은 일수
+              </div>
+              <div
+                style={{
+                  fontWeight: theme.typography.fontWeight.semibold,
+                  color:
+                    daysRemaining <= 7
+                      ? theme.colors.semantic.error
+                      : daysRemaining <= 30
+                      ? theme.colors.semantic.warning
+                      : theme.colors.semantic.success,
+                }}
+              >
+                {daysRemaining}일
+              </div>
+            </div>
+          )}
+          {uh.totalcount > 0 && (
+            <>
+              <div>
+                <div
+                  style={{
+                    fontSize: theme.typography.fontSize.sm,
+                    color: theme.colors.text.secondary,
+                    marginBottom: theme.spacing[1],
+                  }}
+                >
+                  총 횟수
+                </div>
+                <div style={{ fontWeight: theme.typography.fontWeight.medium }}>
+                  {uh.totalcount}회
+                </div>
+              </div>
+              <div>
+                <div
+                  style={{
+                    fontSize: theme.typography.fontSize.sm,
+                    color: theme.colors.text.secondary,
+                    marginBottom: theme.spacing[1],
+                  }}
+                >
+                  사용 횟수
+                </div>
+                <div style={{ fontWeight: theme.typography.fontWeight.medium }}>
+                  {uh.usedcount}회
+                </div>
+              </div>
+              <div>
+                <div
+                  style={{
+                    fontSize: theme.typography.fontSize.sm,
+                    color: theme.colors.text.secondary,
+                    marginBottom: theme.spacing[1],
+                  }}
+                >
+                  잔여 횟수
+                </div>
+                <div
+                  style={{
+                    fontWeight: theme.typography.fontWeight.semibold,
+                    color: theme.colors.brand.primary,
+                  }}
+                >
+                  {uh.remainingcount}회
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+
+        <div
+          style={{
+            marginTop: theme.spacing[3],
+            paddingTop: theme.spacing[3],
+            borderTop: `1px solid ${theme.colors.border.light}`,
+            fontSize: theme.typography.fontSize.sm,
+            color: theme.colors.text.tertiary,
+          }}
+        >
+          등록일: {formatDateTime(uh.date)}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div
@@ -84,7 +246,7 @@ const MemberDetailModal = ({ show, usehealth, onClose }: MemberDetailModalProps)
         style={{
           backgroundColor: theme.colors.background.primary,
           borderRadius: theme.borderRadius.lg,
-          maxWidth: '800px',
+          maxWidth: '900px',
           width: '100%',
           maxHeight: '90vh',
           overflow: 'auto',
@@ -117,7 +279,7 @@ const MemberDetailModal = ({ show, usehealth, onClose }: MemberDetailModalProps)
           </Button>
         </div>
 
-        {/* 회원 정보 */}
+        {/* 회원 기본 정보 */}
         <Card style={{ marginBottom: theme.spacing[6] }}>
           <h3
             style={{
@@ -191,239 +353,93 @@ const MemberDetailModal = ({ show, usehealth, onClose }: MemberDetailModalProps)
                 {user?.email || '-'}
               </div>
             </div>
+            <div>
+              <div
+                style={{
+                  fontSize: theme.typography.fontSize.sm,
+                  color: theme.colors.text.secondary,
+                  marginBottom: theme.spacing[1],
+                }}
+              >
+                가입일
+              </div>
+              <div style={{ fontWeight: theme.typography.fontWeight.medium }}>
+                {formatDate(membership.date)}
+              </div>
+            </div>
           </div>
         </Card>
 
-        {/* 회원권 정보 */}
-        <Card>
-          <h3
-            style={{
-              fontSize: theme.typography.fontSize.lg,
-              fontWeight: theme.typography.fontWeight.semibold,
-              marginBottom: theme.spacing[4],
-            }}
-          >
-            회원권 정보
-          </h3>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: theme.spacing[4],
-              marginBottom: theme.spacing[6],
-            }}
-          >
-            <div>
-              <div
-                style={{
-                  fontSize: theme.typography.fontSize.sm,
-                  color: theme.colors.text.secondary,
-                  marginBottom: theme.spacing[1],
-                }}
-              >
-                상품명
-              </div>
-              <div style={{ fontWeight: theme.typography.fontWeight.medium }}>
-                {health?.name || '-'}
-              </div>
-            </div>
-            <div>
-              <div
-                style={{
-                  fontSize: theme.typography.fontSize.sm,
-                  color: theme.colors.text.secondary,
-                  marginBottom: theme.spacing[1],
-                }}
-              >
-                이용 기간
-              </div>
-              <div style={{ fontWeight: theme.typography.fontWeight.medium }}>
-                {formatDate(usehealth.startday)} ~ {formatDate(usehealth.endday)}
-              </div>
-            </div>
-            {usehealth.totalcount > 0 && (
-              <>
-                <div>
-                  <div
-                    style={{
-                      fontSize: theme.typography.fontSize.sm,
-                      color: theme.colors.text.secondary,
-                      marginBottom: theme.spacing[1],
-                    }}
-                  >
-                    총 횟수
-                  </div>
-                  <div style={{ fontWeight: theme.typography.fontWeight.medium }}>
-                    {usehealth.totalcount}회
-                  </div>
-                </div>
-                <div>
-                  <div
-                    style={{
-                      fontSize: theme.typography.fontSize.sm,
-                      color: theme.colors.text.secondary,
-                      marginBottom: theme.spacing[1],
-                    }}
-                  >
-                    사용 횟수
-                  </div>
-                  <div style={{ fontWeight: theme.typography.fontWeight.medium }}>
-                    {usehealth.usedcount}회
-                  </div>
-                </div>
-                <div>
-                  <div
-                    style={{
-                      fontSize: theme.typography.fontSize.sm,
-                      color: theme.colors.text.secondary,
-                      marginBottom: theme.spacing[1],
-                    }}
-                  >
-                    잔여 횟수
-                  </div>
-                  <div
-                    style={{
-                      fontWeight: theme.typography.fontWeight.semibold,
-                      color: theme.colors.brand.primary,
-                    }}
-                  >
-                    {usehealth.remainingcount}회
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-
-          {/* 일시정지 이력 */}
-          <div
-            style={{
-              marginTop: theme.spacing[6],
-              paddingTop: theme.spacing[6],
-              borderTop: `1px solid ${theme.colors.border.light}`,
-            }}
-          >
-            <h4
+        {/* 활성 이용권 */}
+        {activeUsehealths.length > 0 && (
+          <Card style={{ marginBottom: theme.spacing[6] }}>
+            <h3
               style={{
-                fontSize: theme.typography.fontSize.base,
+                fontSize: theme.typography.fontSize.lg,
                 fontWeight: theme.typography.fontWeight.semibold,
-                marginBottom: theme.spacing[3],
-                color: theme.colors.text.primary,
+                marginBottom: theme.spacing[4],
+                display: 'flex',
+                alignItems: 'center',
+                gap: theme.spacing[2],
               }}
             >
-              일시정지 이력
-            </h4>
+              사용중인 이용권
+              <Badge variant="success">{activeUsehealths.length}개</Badge>
+            </h3>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: theme.spacing[3],
+              }}
+            >
+              {activeUsehealths.map((uh) => renderUsehealthCard(uh, true))}
+            </div>
+          </Card>
+        )}
 
-            {loading ? (
+        {/* 만료된 이용권 */}
+        {expiredUsehealths.length > 0 && (
+          <Card style={{ marginBottom: theme.spacing[6] }}>
+            <h3
+              style={{
+                fontSize: theme.typography.fontSize.lg,
+                fontWeight: theme.typography.fontWeight.semibold,
+                marginBottom: theme.spacing[4],
+                display: 'flex',
+                alignItems: 'center',
+                gap: theme.spacing[2],
+              }}
+            >
+              만료된 이용권
+              <Badge variant="info">{expiredUsehealths.length}개</Badge>
+            </h3>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: theme.spacing[3],
+              }}
+            >
+              {expiredUsehealths.map((uh) => renderUsehealthCard(uh, false))}
+            </div>
+          </Card>
+        )}
+
+        {/* No usehealths */}
+        {usehealths.length === 0 && (
+          <Card>
             <div
               style={{
                 textAlign: 'center',
-                padding: theme.spacing[4],
+                padding: theme.spacing[8],
                 color: theme.colors.text.secondary,
               }}
             >
-              불러오는 중...
+              등록된 이용권이 없습니다.
             </div>
-          ) : stopHistory.length === 0 ? (
-            <div
-              style={{
-                textAlign: 'center',
-                padding: theme.spacing[4],
-                color: theme.colors.text.secondary,
-              }}
-            >
-              일시정지 이력이 없습니다.
-            </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing[3] }}>
-              {stopHistory.map((stop) => (
-                <div
-                  key={stop.id}
-                  style={{
-                    padding: theme.spacing[4],
-                    backgroundColor: theme.colors.background.secondary,
-                    borderRadius: theme.borderRadius.md,
-                    border: `1px solid ${theme.colors.border.light}`,
-                  }}
-                >
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      marginBottom: theme.spacing[2],
-                    }}
-                  >
-                    <Badge variant="warning">⏸️ 일시정지</Badge>
-                    <span
-                      style={{
-                        fontSize: theme.typography.fontSize.sm,
-                        color: theme.colors.text.secondary,
-                      }}
-                    >
-                      등록일: {formatDateTime(stop.date)}
-                    </span>
-                  </div>
-                  <div
-                    style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-                      gap: theme.spacing[3],
-                    }}
-                  >
-                    <div>
-                      <div
-                        style={{
-                          fontSize: theme.typography.fontSize.sm,
-                          color: theme.colors.text.secondary,
-                          marginBottom: theme.spacing[1],
-                        }}
-                      >
-                        시작일
-                      </div>
-                      <div style={{ fontWeight: theme.typography.fontWeight.medium }}>
-                        {formatDate(stop.startday)}
-                      </div>
-                    </div>
-                    <div>
-                      <div
-                        style={{
-                          fontSize: theme.typography.fontSize.sm,
-                          color: theme.colors.text.secondary,
-                          marginBottom: theme.spacing[1],
-                        }}
-                      >
-                        종료일
-                      </div>
-                      <div style={{ fontWeight: theme.typography.fontWeight.medium }}>
-                        {formatDate(stop.endday)}
-                      </div>
-                    </div>
-                    <div>
-                      <div
-                        style={{
-                          fontSize: theme.typography.fontSize.sm,
-                          color: theme.colors.text.secondary,
-                          marginBottom: theme.spacing[1],
-                        }}
-                      >
-                        일시정지 일수
-                      </div>
-                      <div
-                        style={{
-                          fontWeight: theme.typography.fontWeight.semibold,
-                          color: theme.colors.semantic.warning,
-                        }}
-                      >
-                        {stop.count}일
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-          </div>
-        </Card>
+          </Card>
+        )}
 
         {/* Footer */}
         <div

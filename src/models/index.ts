@@ -18,6 +18,7 @@ export { default as UseHealth } from './usehealth';
 // Membership
 export { default as MemberBody } from './memberbody';
 export { default as MemberQR } from './memberqr';
+export { default as Membership } from './membership';
 
 // Attendance
 export { default as Attendance } from './attendance';
