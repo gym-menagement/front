@@ -58,6 +58,13 @@ export default class GymtrainerModel {
     return res.data.content || [];
   }
 
+  static async findall(params?: GymtrainerSearchParams) {
+    params!.page = 0;
+    params!.pageSize = 9999;
+    const res = await get<ApiResponse<Gymtrainer>>('/gymtrainer', { params });
+    return res.data.content || [];
+  }
+
   static async count(params?: GymtrainerSearchParams) {
     const res = await get<{ count: number }>('/gymtrainer/count', { params });
     return res.data.count || 0;

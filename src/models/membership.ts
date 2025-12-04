@@ -43,6 +43,13 @@ export default class MembershipModel {
     return res.data.content || [];
   }
 
+  static async findall(params?: MembershipSearchParams) {
+    params!.page = 0;
+    params!.pageSize = 9999;
+    const res = await get<ApiResponse<Membership>>('/membership', { params });
+    return res.data.content || [];
+  }
+
   static async count(params?: MembershipSearchParams) {
     const res = await get<{ count: number }>('/membership/count', { params });
     return res.data.count || 0;

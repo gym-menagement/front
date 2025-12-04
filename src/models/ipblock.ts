@@ -88,6 +88,13 @@ export default class IpblockModel {
     return res.data.content || [];
   }
 
+  static async findall(params?: IpblockSearchParams) {
+    params!.page = 0;
+    params!.pageSize = 9999;
+    const res = await get<ApiResponse<Ipblock>>('/ipblock', { params });
+    return res.data.content || [];
+  }
+
   static async count(params?: IpblockSearchParams) {
     const res = await get<{ count: number }>('/ipblock/count', { params });
     return res.data.count || 0;

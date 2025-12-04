@@ -58,6 +58,13 @@ export default class RockerModel {
     return res.data.content || [];
   }
 
+  static async findall(params?: RockerSearchParams) {
+    params!.page = 0;
+    params!.pageSize = 9999;
+    const res = await get<ApiResponse<Rocker>>('/rocker', { params });
+    return res.data.content || [];
+  }
+
   static async count(params?: RockerSearchParams) {
     const res = await get<{ count: number }>('/rocker/count', { params });
     return res.data.count || 0;

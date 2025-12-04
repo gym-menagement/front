@@ -43,6 +43,13 @@ export default class DaytypeModel {
     return res.data.content || [];
   }
 
+  static async findall(params?: DaytypeSearchParams) {
+    params!.page = 0;
+    params!.pageSize = 9999;
+    const res = await get<ApiResponse<Daytype>>('/daytype', { params });
+    return res.data.content || [];
+  }
+
   static async count(params?: DaytypeSearchParams) {
     const res = await get<{ count: number }>('/daytype/count', { params });
     return res.data.count || 0;

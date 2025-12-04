@@ -43,6 +43,13 @@ export default class PaymenttypeModel {
     return res.data.content || [];
   }
 
+  static async findall(params?: PaymenttypeSearchParams) {
+    params!.page = 0;
+    params!.pageSize = 9999;
+    const res = await get<ApiResponse<Paymenttype>>('/paymenttype', { params });
+    return res.data.content || [];
+  }
+
   static async count(params?: PaymenttypeSearchParams) {
     const res = await get<{ count: number }>('/paymenttype/count', { params });
     return res.data.count || 0;

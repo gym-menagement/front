@@ -43,6 +43,13 @@ export default class StopModel {
     return res.data.content || [];
   }
 
+  static async findall(params?: StopSearchParams) {
+    params!.page = 0;
+    params!.pageSize = 9999;
+    const res = await get<ApiResponse<Stop>>('/stop', { params });
+    return res.data.content || [];
+  }
+
   static async count(params?: StopSearchParams) {
     const res = await get<{ count: number }>('/stop/count', { params });
     return res.data.count || 0;

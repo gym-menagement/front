@@ -79,6 +79,13 @@ export default class AlarmModel {
     return res.data.content || [];
   }
 
+  static async findall(params?: AlarmSearchParams) {
+    params!.page = 0;
+    params!.pageSize = 9999;
+    const res = await get<ApiResponse<Alarm>>('/alarm', { params });
+    return res.data.content || [];
+  }
+
   static async count(params?: AlarmSearchParams) {
     const res = await get<{ count: number }>('/alarm/count', { params });
     return res.data.count || 0;

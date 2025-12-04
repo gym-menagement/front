@@ -60,6 +60,13 @@ export default class SettingModel {
     return res.data.content || [];
   }
 
+  static async findall(params?: SettingSearchParams) {
+    params!.page = 0;
+    params!.pageSize = 9999;
+    const res = await get<ApiResponse<Setting>>('/setting', { params });
+    return res.data.content || [];
+  }
+
   static async count(params?: SettingSearchParams) {
     const res = await get<{ count: number }>('/setting/count', { params });
     return res.data.count || 0;

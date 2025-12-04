@@ -43,6 +43,13 @@ export default class LoginlogModel {
     return res.data.content || [];
   }
 
+  static async findall(params?: LoginlogSearchParams) {
+    params!.page = 0;
+    params!.pageSize = 9999;
+    const res = await get<ApiResponse<Loginlog>>('/loginlog', { params });
+    return res.data.content || [];
+  }
+
   static async count(params?: LoginlogSearchParams) {
     const res = await get<{ count: number }>('/loginlog/count', { params });
     return res.data.count || 0;

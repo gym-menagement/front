@@ -58,6 +58,13 @@ export default class PushtokenModel {
     return res.data.content || [];
   }
 
+  static async findall(params?: PushtokenSearchParams) {
+    params!.page = 0;
+    params!.pageSize = 9999;
+    const res = await get<ApiResponse<Pushtoken>>('/pushtoken', { params });
+    return res.data.content || [];
+  }
+
   static async count(params?: PushtokenSearchParams) {
     const res = await get<{ count: number }>('/pushtoken/count', { params });
     return res.data.count || 0;

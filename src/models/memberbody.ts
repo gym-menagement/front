@@ -43,6 +43,13 @@ export default class MemberbodyModel {
     return res.data.content || [];
   }
 
+  static async findall(params?: MemberbodySearchParams) {
+    params!.page = 0;
+    params!.pageSize = 9999;
+    const res = await get<ApiResponse<Memberbody>>('/memberbody', { params });
+    return res.data.content || [];
+  }
+
   static async count(params?: MemberbodySearchParams) {
     const res = await get<{ count: number }>('/memberbody/count', { params });
     return res.data.count || 0;

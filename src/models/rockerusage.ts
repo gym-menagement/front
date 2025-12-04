@@ -60,6 +60,13 @@ export default class RockerusageModel {
     return res.data.content || [];
   }
 
+  static async findall(params?: RockerusageSearchParams) {
+    params!.page = 0;
+    params!.pageSize = 9999;
+    const res = await get<ApiResponse<Rockerusage>>('/rockerusage', { params });
+    return res.data.content || [];
+  }
+
   static async count(params?: RockerusageSearchParams) {
     const res = await get<{ count: number }>('/rockerusage/count', { params });
     return res.data.count || 0;

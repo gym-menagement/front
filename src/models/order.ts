@@ -43,6 +43,13 @@ export default class OrderModel {
     return res.data.content || [];
   }
 
+  static async findall(params?: OrderSearchParams) {
+    params!.page = 0;
+    params!.pageSize = 9999;
+    const res = await get<ApiResponse<Order>>('/order', { params });
+    return res.data.content || [];
+  }
+
   static async count(params?: OrderSearchParams) {
     const res = await get<{ count: number }>('/order/count', { params });
     return res.data.count || 0;

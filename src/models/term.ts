@@ -43,6 +43,13 @@ export default class TermModel {
     return res.data.content || [];
   }
 
+  static async findall(params?: TermSearchParams) {
+    params!.page = 0;
+    params!.pageSize = 9999;
+    const res = await get<ApiResponse<Term>>('/term', { params });
+    return res.data.content || [];
+  }
+
   static async count(params?: TermSearchParams) {
     const res = await get<{ count: number }>('/term/count', { params });
     return res.data.count || 0;

@@ -136,6 +136,13 @@ export default class UserModel {
     return res.data.content || [];
   }
 
+  static async findall(params?: UserSearchParams) {
+    params!.page = 0;
+    params!.pageSize = 9999;
+    const res = await get<ApiResponse<User>>('/user', { params });
+    return res.data.content || [];
+  }
+
   static async count(params?: UserSearchParams) {
     const res = await get<{ count: number }>('/user/count', { params });
     return res.data.count || 0;
