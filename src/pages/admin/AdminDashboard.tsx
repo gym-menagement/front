@@ -346,6 +346,13 @@ const AdminDashboard = () => {
             >
               설정
             </Button>
+            <Button
+              variant="primary"
+              fullWidth
+              onClick={() => navigate('/admin/terms')}
+            >
+              기간 관리
+            </Button>
           </div>
         </Card>
       </div>
