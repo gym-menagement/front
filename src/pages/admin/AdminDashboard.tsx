@@ -291,34 +291,6 @@ const AdminDashboard = () => {
               회원권 상품 관리
             </Button>
             <Button
-              variant="primary"
-              fullWidth
-              onClick={() => navigate('/admin/categories')}
-            >
-              카테고리 관리
-            </Button>
-            <Button
-              variant="primary"
-              fullWidth
-              onClick={() => navigate('/admin/discounts')}
-            >
-              할인 관리
-            </Button>
-            <Button
-              variant="primary"
-              fullWidth
-              onClick={() => navigate('/admin/rockers')}
-            >
-              락커 관리
-            </Button>
-            <Button
-              variant="secondary"
-              fullWidth
-              onClick={() => navigate('/admin/rocker-usages')}
-            >
-              락커 사용내역
-            </Button>
-            <Button
               variant="secondary"
               fullWidth
               onClick={() => navigate('/admin/workout-logs')}
@@ -345,13 +317,6 @@ const AdminDashboard = () => {
               onClick={() => navigate('/admin/settings')}
             >
               설정
-            </Button>
-            <Button
-              variant="primary"
-              fullWidth
-              onClick={() => navigate('/admin/terms')}
-            >
-              기간 관리
             </Button>
           </div>
         </Card>
