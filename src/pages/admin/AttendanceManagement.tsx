@@ -6,6 +6,7 @@ import type { Attendance as AttendanceType } from '../../types/attendance';
 import AdminHeader from '../../components/AdminHeader';
 import { useAtomValue } from 'jotai';
 import { selectedGymIdAtom } from '../../store/gym';
+import { formatLocalDateTime, getDayRange } from '../../global/util';
 
 const AttendanceManagement = () => {
   const selectedGymId = useAtomValue(selectedGymIdAtom);
@@ -32,9 +33,12 @@ const AttendanceManagement = () => {
         return;
       }
 
+      const { startDate, endDate } = getDayRange(selectedDate);
+
       const data = await Attendance.findall({
         gym: selectedGymId,
-        date: selectedDate,
+        startcheckintime: formatLocalDateTime(startDate),
+        endcheckintime: formatLocalDateTime(endDate),
       });
 
       // 정렬: 최신 순

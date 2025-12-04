@@ -25,7 +25,8 @@ export interface IpblockSearchParams {
   policy?: number;
   use?: number;
   order?: number;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

@@ -382,3 +382,25 @@ export const formatLocalTime = (date: Date = new Date()): string => {
 
   return `${hours}:${minutes}:${seconds}`;
 };
+
+/**
+ * 특정 날짜의 시작(00:00:00)과 끝(다음 날 00:00:00)을 반환
+ * @param dateString - 날짜 문자열 (YYYY-MM-DD 형식)
+ * @returns 시작 날짜와 끝 날짜 객체
+ * @example
+ * const { startDate, endDate } = getDayRange('2025-12-04');
+ * // startDate: 2025-12-04 00:00:00
+ * // endDate: 2025-12-05 00:00:00
+ */
+export const getDayRange = (dateString: string): { startDate: Date; endDate: Date } => {
+  // 선택한 날짜의 00:00:00
+  const startDate = new Date(dateString);
+  startDate.setHours(0, 0, 0, 0);
+
+  // 다음 날 00:00:00
+  const endDate = new Date(dateString);
+  endDate.setDate(endDate.getDate() + 1);
+  endDate.setHours(0, 0, 0, 0);
+
+  return { startDate, endDate };
+};

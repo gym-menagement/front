@@ -35,9 +35,12 @@ export interface PushtokenSearchParams {
   deviceid?: string;
   appversion?: string;
   isactive?: number;
-  createddate?: string;
-  updateddate?: string;
-  date?: string;
+  startcreateddate?: string;
+  endcreateddate?: string;
+  startupdateddate?: string;
+  endupdateddate?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

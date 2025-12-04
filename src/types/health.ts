@@ -45,7 +45,8 @@ export interface HealthSearchParams {
   costdiscount?: number;
   content?: string;
   gym?: number;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

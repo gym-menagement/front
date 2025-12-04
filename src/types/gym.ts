@@ -23,7 +23,8 @@ export interface GymSearchParams {
   address?: string;
   tel?: string;
   user?: number;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

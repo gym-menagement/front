@@ -49,7 +49,8 @@ export interface WorkoutlogSearchParams {
   duration?: number;
   calories?: number;
   note?: string;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

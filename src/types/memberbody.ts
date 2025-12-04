@@ -56,9 +56,11 @@ export interface MemberbodySearchParams {
   arm?: number;
   thigh?: number;
   note?: string;
-  measureddate?: string;
+  startmeasureddate?: string;
+  endmeasureddate?: string;
   measuredby?: number;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

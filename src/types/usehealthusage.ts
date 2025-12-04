@@ -49,11 +49,14 @@ export interface UsehealthusageSearchParams {
   type?: number;
   usedcount?: number;
   remainingcount?: number;
-  checkintime?: string;
-  checkouttime?: string;
+  startcheckintime?: string;
+  endcheckintime?: string;
+  startcheckouttime?: string;
+  endcheckouttime?: string;
   duration?: number;
   note?: string;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

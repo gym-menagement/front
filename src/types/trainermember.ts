@@ -34,11 +34,14 @@ export interface TrainermemberSearchParams {
   trainer?: number;
   member?: number;
   gym?: number;
-  startdate?: string;
-  enddate?: string;
+  startstartdate?: string;
+  endstartdate?: string;
+  startenddate?: string;
+  endenddate?: string;
   status?: number;
   note?: string;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

@@ -31,7 +31,8 @@ export interface RockerSearchParams {
   group?: number;
   name?: string;
   available?: number;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

@@ -42,9 +42,12 @@ export interface InquirySearchParams {
   status?: number;
   answer?: string;
   answeredby?: number;
-  answereddate?: string;
-  createddate?: string;
-  date?: string;
+  startanswereddate?: string;
+  endanswereddate?: string;
+  startcreateddate?: string;
+  endcreateddate?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

@@ -27,7 +27,8 @@ export interface LoginlogSearchParams {
   ip?: string;
   ipvalue?: number;
   user?: number;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

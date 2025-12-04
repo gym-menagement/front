@@ -7,6 +7,7 @@ import { authService } from '../../services/auth.service';
 import GymSelector from '../../components/GymSelector';
 import { useAtomValue } from 'jotai';
 import { selectedGymIdAtom } from '../../store/gym';
+import { formatLocalDateTime, getDayRange } from '../../global/util';
 
 interface DashboardStats {
   activeMembers: number;
@@ -26,6 +27,10 @@ const AdminDashboard = () => {
 
   const currentUser = authService.getCurrentUser();
 
+  const { startDate, endDate } = getDayRange(
+    new Date().toISOString().split('T')[0]
+  );
+
   useEffect(() => {
     console.log('AdminDashboard - selectedGymId changed:', selectedGymId);
     if (selectedGymId) {
@@ -42,7 +47,6 @@ const AdminDashboard = () => {
       setLoading(true);
 
       const today = new Date();
-      const todayStr = today.toISOString().split('T')[0];
 
       // 활성 회원 수: startday <= 오늘 <= endday
       const allUseHealths = await UseHealth.findall({
@@ -58,7 +62,8 @@ const AdminDashboard = () => {
       // 오늘 출석 수
       const todayAttendance = await Attendance.count({
         gym: selectedGymId,
-        date: todayStr,
+        startcheckintime: formatLocalDateTime(startDate),
+        endcheckintime: formatLocalDateTime(endDate),
       });
 
       // 만료 예정 회원권 (30일 이내)

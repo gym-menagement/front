@@ -27,7 +27,8 @@ export interface MembershipSearchParams {
   id?: number;
   user?: number;
   gym?: number;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

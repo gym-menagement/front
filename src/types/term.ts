@@ -31,7 +31,8 @@ export interface TermSearchParams {
   daytype?: number;
   name?: string;
   term?: number;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

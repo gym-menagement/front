@@ -21,7 +21,8 @@ export interface SystemlogSearchParams {
   type?: number;
   content?: string;
   result?: number;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

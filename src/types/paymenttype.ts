@@ -25,7 +25,8 @@ export interface PaymenttypeSearchParams {
   id?: number;
   gym?: number;
   name?: string;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

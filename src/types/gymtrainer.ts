@@ -32,12 +32,15 @@ export interface GymtrainerSearchParams {
   id?: number;
   gym?: number;
   trainer?: number;
-  startdate?: string;
-  enddate?: string;
+  startstartdate?: string;
+  endstartdate?: string;
+  startenddate?: string;
+  endenddate?: string;
   status?: number;
   position?: string;
   note?: string;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

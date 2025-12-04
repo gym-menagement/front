@@ -31,9 +31,12 @@ export interface AppversionSearchParams {
   updatemessage?: string;
   downloadurl?: string;
   status?: number;
-  releasedate?: string;
-  createddate?: string;
-  date?: string;
+  startreleasedate?: string;
+  endreleasedate?: string;
+  startcreateddate?: string;
+  endcreateddate?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

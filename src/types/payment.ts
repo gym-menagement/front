@@ -33,7 +33,8 @@ export interface PaymentSearchParams {
   order?: number;
   user?: number;
   cost?: number;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

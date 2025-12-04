@@ -31,7 +31,8 @@ export interface OrderSearchParams {
   user?: number;
   gym?: number;
   health?: number;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

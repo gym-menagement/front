@@ -26,10 +26,13 @@ export type UpdateStopRequest = Partial<Omit<Stop, 'id'>>;
 export interface StopSearchParams {
   id?: number;
   usehealth?: number;
-  startday?: string;
-  endday?: string;
+  startstartday?: string;
+  endstartday?: string;
+  startendday?: string;
+  endendday?: string;
   count?: number;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

@@ -31,7 +31,8 @@ export interface AlarmSearchParams {
   type?: number;
   status?: number;
   user?: number;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;

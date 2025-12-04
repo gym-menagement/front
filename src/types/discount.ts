@@ -27,7 +27,8 @@ export interface DiscountSearchParams {
   gym?: number;
   name?: string;
   discount?: number;
-  date?: string;
+  startdate?: string;
+  enddate?: string;
   page?: number;
   pageSize?: number;
   limit?: number;
