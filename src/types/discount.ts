@@ -29,6 +29,7 @@ export interface DiscountSearchParams {
   discount?: number;
   date?: string;
   page?: number;
+  pageSize?: number;
   limit?: number;
   sort?: string;
   order?: 'asc' | 'desc';
@@ -39,6 +40,7 @@ export interface ApiResponse<T> {
   content: T[];
   total: number;
   page: number;
+  pageSize: number;
   limit: number;
 }
 
