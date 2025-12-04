@@ -35,7 +35,7 @@ const RockerForm = () => {
   const loadGroups = async () => {
     try {
       if (!selectedGymId) return;
-      const data = await Rockergroup.find({ gym: selectedGymId });
+      const data = await Rockergroup.findall({ gym: selectedGymId });
       setGroups(data);
     } catch (error) {
       console.error('Failed to load rocker groups:', error);

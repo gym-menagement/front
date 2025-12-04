@@ -32,7 +32,7 @@ const AttendanceManagement = () => {
         return;
       }
 
-      const data = await Attendance.find({
+      const data = await Attendance.findall({
         gym: selectedGymId,
         date: selectedDate,
       });
@@ -77,7 +77,9 @@ const AttendanceManagement = () => {
     return true;
   });
 
-  const getTypeColor = (type: number): 'success' | 'info' | 'warning' | 'error' => {
+  const getTypeColor = (
+    type: number
+  ): 'success' | 'info' | 'warning' | 'error' => {
     switch (type) {
       case Attendance.type.ENTRY:
         return 'success';
@@ -88,7 +90,9 @@ const AttendanceManagement = () => {
     }
   };
 
-  const getStatusColor = (status: number): 'success' | 'info' | 'warning' | 'error' => {
+  const getStatusColor = (
+    status: number
+  ): 'success' | 'info' | 'warning' | 'error' => {
     switch (status) {
       case Attendance.status.NORMAL:
         return 'success';
@@ -120,8 +124,10 @@ const AttendanceManagement = () => {
 
   const stats = {
     total: filteredAttendances.length,
-    entry: filteredAttendances.filter((a) => a.type === Attendance.type.ENTRY).length,
-    exit: filteredAttendances.filter((a) => a.type === Attendance.type.EXIT).length,
+    entry: filteredAttendances.filter((a) => a.type === Attendance.type.ENTRY)
+      .length,
+    exit: filteredAttendances.filter((a) => a.type === Attendance.type.EXIT)
+      .length,
   };
 
   return (
@@ -132,7 +138,13 @@ const AttendanceManagement = () => {
       }}
     >
       <AdminHeader title="출석 현황">
-        <div style={{ display: 'flex', gap: theme.spacing[2], alignItems: 'center' }}>
+        <div
+          style={{
+            display: 'flex',
+            gap: theme.spacing[2],
+            alignItems: 'center',
+          }}
+        >
           <Input
             type="date"
             value={selectedDate}
@@ -249,14 +261,18 @@ const AttendanceManagement = () => {
                 전체
               </Button>
               <Button
-                variant={filterType === Attendance.type.ENTRY ? 'primary' : 'secondary'}
+                variant={
+                  filterType === Attendance.type.ENTRY ? 'primary' : 'secondary'
+                }
                 size="sm"
                 onClick={() => setFilterType(Attendance.type.ENTRY)}
               >
                 입장
               </Button>
               <Button
-                variant={filterType === Attendance.type.EXIT ? 'primary' : 'secondary'}
+                variant={
+                  filterType === Attendance.type.EXIT ? 'primary' : 'secondary'
+                }
                 size="sm"
                 onClick={() => setFilterType(Attendance.type.EXIT)}
               >
@@ -313,7 +329,8 @@ const AttendanceManagement = () => {
                         marginBottom: theme.spacing[1],
                       }}
                     >
-                      {attendance.extra?.user?.name || `사용자 #${attendance.user}`}
+                      {attendance.extra?.user?.name ||
+                        `사용자 #${attendance.user}`}
                     </div>
                     <div
                       style={{
@@ -324,13 +341,9 @@ const AttendanceManagement = () => {
                         flexWrap: 'wrap',
                       }}
                     >
-                      <span>
-                        입장: {formatTime(attendance.checkintime)}
-                      </span>
+                      <span>입장: {formatTime(attendance.checkintime)}</span>
                       {attendance.checkouttime && (
-                        <span>
-                          퇴장: {formatTime(attendance.checkouttime)}
-                        </span>
+                        <span>퇴장: {formatTime(attendance.checkouttime)}</span>
                       )}
                       {attendance.duration > 0 && (
                         <span>

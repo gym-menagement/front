@@ -31,10 +31,12 @@ const HealthCategoryManager = () => {
         return;
       }
 
-      const data = await HealthCategory.find({ gym: selectedGymId });
+      const data = await HealthCategory.findall({ gym: selectedGymId });
 
       // 정렬: 최신순
-      data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      data.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
 
       setCategories(data);
     } catch (error) {
@@ -92,7 +94,11 @@ const HealthCategoryManager = () => {
   };
 
   const handleDelete = async (categoryId: number, categoryName: string) => {
-    if (!confirm(`"${categoryName}" 카테고리를 정말 삭제하시겠습니까?\n\n※ 이 카테고리를 사용하는 회원권이 있다면 삭제할 수 없습니다.`)) {
+    if (
+      !confirm(
+        `"${categoryName}" 카테고리를 정말 삭제하시겠습니까?\n\n※ 이 카테고리를 사용하는 회원권이 있다면 삭제할 수 없습니다.`
+      )
+    ) {
       return;
     }
 
@@ -102,7 +108,9 @@ const HealthCategoryManager = () => {
       alert('카테고리가 삭제되었습니다.');
     } catch (error) {
       console.error('Failed to delete category:', error);
-      alert('카테고리 삭제에 실패했습니다.\n이 카테고리를 사용하는 회원권이 있을 수 있습니다.');
+      alert(
+        '카테고리 삭제에 실패했습니다.\n이 카테고리를 사용하는 회원권이 있을 수 있습니다.'
+      );
     }
   };
 
@@ -288,7 +296,8 @@ const HealthCategoryManager = () => {
                           color: theme.colors.text.secondary,
                         }}
                       >
-                        등록일: {new Date(category.date).toLocaleDateString('ko-KR')}
+                        등록일:{' '}
+                        {new Date(category.date).toLocaleDateString('ko-KR')}
                       </div>
 
                       <div

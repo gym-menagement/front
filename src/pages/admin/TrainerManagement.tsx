@@ -32,7 +32,7 @@ const TrainerManagement = () => {
       }
 
       // 1. 선택된 헬스장의 트레이너 ID 조회 (gymtrainer_tb 사용)
-      const gymTrainers = await Gymtrainer.find({ gym: selectedGymId });
+      const gymTrainers = await Gymtrainer.findall({ gym: selectedGymId });
       const trainerUserIds = [...new Set(gymTrainers.map(gt => gt.trainer))];
 
       if (trainerUserIds.length === 0) {

@@ -45,7 +45,7 @@ const AdminDashboard = () => {
       const todayStr = today.toISOString().split('T')[0];
 
       // 활성 회원 수: startday <= 오늘 <= endday
-      const allUseHealths = await UseHealth.find({
+      const allUseHealths = await UseHealth.findall({
         gym: selectedGymId,
       });
 

@@ -33,7 +33,7 @@ const WorkoutLogManagement = () => {
         return;
       }
 
-      const data = await WorkoutLog.find({ gym: selectedGymId });
+      const data = await WorkoutLog.findall({ gym: selectedGymId });
       // 날짜순으로 정렬 (최신순)
       data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
       setWorkoutLogs(data);
@@ -46,7 +46,7 @@ const WorkoutLogManagement = () => {
 
   const loadUsers = async () => {
     try {
-      const data = await User.find({ role: User.role.MEMBER });
+      const data = await User.findall({ role: User.role.MEMBER });
       setUsers(data);
     } catch (error) {
       console.error('Failed to load users:', error);

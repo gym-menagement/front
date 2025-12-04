@@ -97,7 +97,7 @@ const HealthManagement = () => {
   const loadCategories = async () => {
     try {
       if (!selectedGymId) return;
-      const data = await HealthCategory.find({ gym: selectedGymId });
+      const data = await HealthCategory.findall({ gym: selectedGymId });
       data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
       setCategories(data);
     } catch (error) {
@@ -108,7 +108,7 @@ const HealthManagement = () => {
   const loadDiscounts = async () => {
     try {
       if (!selectedGymId) return;
-      const data = await Discount.find({ gym: selectedGymId });
+      const data = await Discount.findall({ gym: selectedGymId });
       data.sort((a, b) => b.discount - a.discount);
       setDiscounts(data);
     } catch (error) {
@@ -119,7 +119,7 @@ const HealthManagement = () => {
   const loadTerms = async () => {
     try {
       if (!selectedGymId) return;
-      const data = await Term.find({ gym: selectedGymId });
+      const data = await Term.findall({ gym: selectedGymId });
       data.sort((a, b) => b.term - a.term);
       setTerms(data);
     } catch (error) {
@@ -130,7 +130,7 @@ const HealthManagement = () => {
   const loadDaytypes = async () => {
     try {
       if (!selectedGymId) return;
-      const data = await DayType.find({ gym: selectedGymId });
+      const data = await DayType.findall({ gym: selectedGymId });
       setDaytypes(data);
     } catch (error) {
       console.error('Failed to load daytypes:', error);

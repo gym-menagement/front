@@ -85,7 +85,7 @@ const UsehealthManager = () => {
         params.status = filterStatus;
       }
 
-      const data = await UseHealth.find(params);
+      const data = await UseHealth.findall(params);
       console.log('Total usehealth records:', data.length);
       console.log('Filter params:', params);
 
@@ -187,7 +187,7 @@ const UsehealthManager = () => {
   // 현재 활성 일시정지 확인 (동적 계산)
   const getActivePause = async (usehealthId: number): Promise<StopType | null> => {
     try {
-      const stops = await Stop.find({ usehealth: usehealthId });
+      const stops = await Stop.findall({ usehealth: usehealthId });
       const today = new Date();
 
       // 현재 진행중인 일시정지 찾기

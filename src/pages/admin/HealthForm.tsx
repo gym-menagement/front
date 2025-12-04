@@ -45,7 +45,7 @@ const HealthForm = () => {
   const loadCategories = async () => {
     try {
       if (!selectedGymId) return;
-      const data = await HealthCategory.find({ gym: selectedGymId });
+      const data = await HealthCategory.findall({ gym: selectedGymId });
       setCategories(data);
     } catch (error) {
       console.error('Failed to load categories:', error);
@@ -55,7 +55,7 @@ const HealthForm = () => {
   const loadTerms = async () => {
     try {
       if (!selectedGymId) return;
-      const data = await Term.find({ gym: selectedGymId });
+      const data = await Term.findall({ gym: selectedGymId });
       setTerms(data);
     } catch (error) {
       console.error('Failed to load terms:', error);
@@ -65,7 +65,7 @@ const HealthForm = () => {
   const loadDiscounts = async () => {
     try {
       if (!selectedGymId) return;
-      const data = await Discount.find({ gym: selectedGymId });
+      const data = await Discount.findall({ gym: selectedGymId });
       setDiscounts(data);
     } catch (error) {
       console.error('Failed to load discounts:', error);

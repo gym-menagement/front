@@ -57,7 +57,7 @@ const RockerManagement = () => {
   const loadGroups = async () => {
     try {
       if (!selectedGymId) return;
-      const data = await RockerGroup.find({ gym: selectedGymId });
+      const data = await RockerGroup.findall({ gym: selectedGymId });
       setGroups(data);
     } catch (error) {
       console.error('Failed to load groups:', error);

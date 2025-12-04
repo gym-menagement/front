@@ -49,6 +49,14 @@ export class LockerModel {
     return res.data.items || [];
   }
 
+  static async findall(params?: any) {
+    params = params || {};
+    params.page = 0;
+    params.pageSize = 9999;
+    const res = await get<ApiResponse<Locker>>('/rocker', { params });
+    return res.data.items || [];
+  }
+
   static async count(params?: any) {
     const res = await get<{ count: number }>('/rocker/count', { params });
     return res.data.count || 0;

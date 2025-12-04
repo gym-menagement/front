@@ -38,6 +38,14 @@ export default class MemberqrModel {
     return res.data.content || [];
   }
 
+  static async findall(params?: MemberqrSearchParams) {
+    params = params || {};
+    params.page = 0;
+    params.pageSize = 9999;
+    const res = await get<ApiResponse<Memberqr>>('/memberqr', { params });
+    return res.data.content || [];
+  }
+
   static async count(params?: MemberqrSearchParams) {
     const res = await get<{ count: number }>('/memberqr/count', { params });
     return res.data.count || 0;

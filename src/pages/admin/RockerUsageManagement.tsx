@@ -43,7 +43,7 @@ const RockerUsageManagement = () => {
         params.status = filterStatus;
       }
 
-      const data = await RockerUsage.find(params);
+      const data = await RockerUsage.findall(params);
       setUsages(data);
     } catch (error) {
       console.error('Failed to load rocker usages:', error);
@@ -55,7 +55,7 @@ const RockerUsageManagement = () => {
   const loadRockers = async () => {
     try {
       if (!selectedGymId) return;
-      const data = await Rocker.find({ gym: selectedGymId });
+      const data = await Rocker.findall({ gym: selectedGymId });
       setRockers(data);
     } catch (error) {
       console.error('Failed to load rockers:', error);
@@ -64,7 +64,7 @@ const RockerUsageManagement = () => {
 
   const loadUsers = async () => {
     try {
-      const data = await User.find({ role: User.role.MEMBER });
+      const data = await User.findall({ role: User.role.MEMBER });
       setUsers(data);
     } catch (error) {
       console.error('Failed to load users:', error);

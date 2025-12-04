@@ -38,10 +38,8 @@ const MemberManagement = () => {
       }
 
       // Load memberships for this gym (all pages)
-      const membershipData = await Membership.find({
+      const membershipData = await Membership.findall({
         gym: selectedGymId,
-        page: 0,
-        pageSize: 9999,
       });
 
       // Sort by date (newest first)
@@ -52,10 +50,8 @@ const MemberManagement = () => {
       setMemberships(membershipData);
 
       // Load usehealth data for each membership (all pages)
-      const usehealthData = await UseHealth.find({
+      const usehealthData = await UseHealth.findall({
         gym: selectedGymId,
-        page: 0,
-        pageSize: 9999,
       });
       console.log('Total usehealths loaded:', usehealthData.length);
       console.log('Usehealths data:', usehealthData);

@@ -19,7 +19,7 @@ const GymSelector = () => {
       try {
         // 관리자가 소유한 헬스장 목록 조회
         console.log('Loading gyms for user:', user.id);
-        const gyms = await Gym.find({ user: user.id });
+        const gyms = await Gym.findall({ user: user.id });
         setMyGyms(gyms);
 
         // 첫 번째 헬스장을 기본으로 선택

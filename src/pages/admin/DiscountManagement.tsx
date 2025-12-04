@@ -36,7 +36,7 @@ const DiscountManagement = () => {
         return;
       }
 
-      const data = await Discount.find({ gym: selectedGymId });
+      const data = await Discount.findall({ gym: selectedGymId });
 
       // 정렬: 할인율 높은 순
       data.sort((a, b) => b.discount - a.discount);
@@ -200,7 +200,8 @@ const DiscountManagement = () => {
                         color: theme.colors.text.secondary,
                       }}
                     >
-                      등록일: {new Date(discount.date).toLocaleDateString('ko-KR')}
+                      등록일:{' '}
+                      {new Date(discount.date).toLocaleDateString('ko-KR')}
                     </div>
                   </div>
 
