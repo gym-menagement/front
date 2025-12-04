@@ -3,6 +3,7 @@
 
 import type { Order } from './order';
 import type { Health } from './health';
+import type { Membership } from './membership';
 import type { User } from './user';
 import type { Rocker } from './rocker';
 import type { Term } from './term';
@@ -14,6 +15,7 @@ export interface Usehealth {
   id: number;
   order: number;
   health: number;
+  membership: number;
   user: number;
   rocker: number;
   term: number;
@@ -31,6 +33,7 @@ export interface Usehealth {
   extra?: {
     order?: Order;
     health?: Health;
+    membership?: Membership;
     user?: User;
     rocker?: Rocker;
     term?: Term;
@@ -50,6 +53,7 @@ export interface UsehealthSearchParams {
   id?: number;
   order?: number;
   health?: number;
+  membership?: number;
   user?: number;
   rocker?: number;
   term?: number;

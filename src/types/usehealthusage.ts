@@ -3,6 +3,7 @@
 
 import type { Gym } from './gym';
 import type { Usehealth } from './usehealth';
+import type { Membership } from './membership';
 import type { User } from './user';
 import type { Attendance } from './attendance';
 
@@ -11,6 +12,7 @@ export interface Usehealthusage {
   id: number;
   gym: number;
   usehealth: number;
+  membership: number;
   user: number;
   attendance: number;
   type: number;
@@ -24,6 +26,7 @@ export interface Usehealthusage {
   extra?: {
     gym?: Gym;
     usehealth?: Usehealth;
+    membership?: Membership;
     user?: User;
     attendance?: Attendance;
   };
@@ -40,6 +43,7 @@ export interface UsehealthusageSearchParams {
   id?: number;
   gym?: number;
   usehealth?: number;
+  membership?: number;
   user?: number;
   attendance?: number;
   type?: number;
