@@ -25,18 +25,18 @@ export interface SystemlogSearchParams {
   enddate?: string;
   page?: number;
   pageSize?: number;
-  limit?: number;
-  sort?: string;
-  order?: 'asc' | 'desc';
 }
 
 // API response types
 export interface ApiResponse<T> {
   content: T[];
-  total: number;
   page: number;
   pageSize: number;
-  limit: number;
+  totalElements: number;
+  totalPages: number;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
 }
 
 export interface ApiSingleResponse<T> {
