@@ -9,7 +9,6 @@ import type {
 import type { User as UserType } from '../../types/user';
 import type { Health as HealthType } from '../../types/health';
 import type { Order as OrderType } from '../../types/order';
-import type { Rocker as RockerType } from '../../types/rocker';
 import type { Term as TermType } from '../../types/term';
 import type { Discount as DiscountType } from '../../types/discount';
 import type { Gym as GymType } from '../../types/gym';
@@ -27,7 +26,6 @@ interface UsehealthWithExtra extends UsehealthType {
     order?: OrderType;
     health?: HealthType;
     user?: UserType;
-    rocker?: RockerType;
     term?: TermType;
     discount?: DiscountType;
     gym?: GymType;

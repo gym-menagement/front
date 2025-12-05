@@ -27,12 +27,6 @@ export { default as Attendance } from './attendance';
 export { default as PTReservation } from './ptreservation';
 export { default as TrainerMember } from './trainermember';
 
-// Locker Management
-export { default as Locker, LockerModel, LockerUsageModel } from './locker';
-export { default as Rocker } from './rocker';
-export { default as RockerGroup } from './rockergroup';
-export { default as RockerUsage } from './rockerusage';
-
 // Payment
 export { default as Order } from './order';
 export { default as Payment } from './payment';

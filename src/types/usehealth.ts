@@ -5,7 +5,6 @@ import type { Order } from './order';
 import type { Health } from './health';
 import type { Membership } from './membership';
 import type { User } from './user';
-import type { Rocker } from './rocker';
 import type { Term } from './term';
 import type { Discount } from './discount';
 import type { Gym } from './gym';
@@ -34,7 +33,6 @@ export interface Usehealth {
     health?: Health;
     membership?: Membership;
     user?: User;
-    rocker?: Rocker;
     term?: Term;
     discount?: Discount;
     gym?: Gym;

@@ -28,9 +28,6 @@ import HealthForm from './pages/admin/HealthForm';
 import HealthCategoryManager from './pages/admin/HealthCategoryManager';
 import DiscountManagement from './pages/admin/DiscountManagement';
 import DiscountForm from './pages/admin/DiscountForm';
-import RockerManagement from './pages/admin/RockerManagement';
-import RockerForm from './pages/admin/RockerForm';
-import RockerUsageManagement from './pages/admin/RockerUsageManagement';
 import WorkoutLogManagement from './pages/admin/WorkoutLogManagement';
 import TermManagement from './pages/admin/TermManagement';
 import AttendanceManagement from './pages/admin/AttendanceManagement';
@@ -211,38 +208,6 @@ function App() {
           element={
             <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
               <DiscountForm />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/rockers"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <RockerManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/rockers/new"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <RockerForm />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/rockers/:id"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <RockerForm />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/rocker-usages"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <RockerUsageManagement />
             </ProtectedRoute>
           }
         />
