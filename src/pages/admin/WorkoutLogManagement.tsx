@@ -4,25 +4,24 @@ import { theme } from '../../theme';
 import { WorkoutLog, User } from '../../models';
 import type { WorkoutLog as WorkoutLogType } from '../../types/workoutlog';
 import type { User as UserType } from '../../types/user';
-import { useNavigate } from 'react-router-dom';
-import GymSelector from '../../components/GymSelector';
+import AdminHeader from '../../components/AdminHeader';
 import { useAtomValue } from 'jotai';
 import { selectedGymIdAtom } from '../../store/gym';
 
 const WorkoutLogManagement = () => {
-  const navigate = useNavigate();
   const selectedGymId = useAtomValue(selectedGymIdAtom);
   const [workoutLogs, setWorkoutLogs] = useState<WorkoutLogType[]>([]);
   const [users, setUsers] = useState<UserType[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedDate, setSelectedDate] = useState<string>('');
 
   useEffect(() => {
     if (selectedGymId) {
       loadWorkoutLogs();
       loadUsers();
     }
-  }, [selectedGymId]);
+  }, [selectedGymId, selectedDate]);
 
   const loadWorkoutLogs = async () => {
     try {
@@ -33,7 +32,15 @@ const WorkoutLogManagement = () => {
         return;
       }
 
-      const data = await WorkoutLog.findall({ gym: selectedGymId });
+      const params: any = { gym: selectedGymId };
+
+      // 날짜 필터가 있으면 추가
+      if (selectedDate) {
+        params.startdate = selectedDate;
+        params.enddate = selectedDate;
+      }
+
+      const data = await WorkoutLog.findall(params);
       // 날짜순으로 정렬 (최신순)
       data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
       setWorkoutLogs(data);
@@ -66,12 +73,16 @@ const WorkoutLogManagement = () => {
     );
   });
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('ko-KR');
-  };
-
   const formatDateTime = (dateString: string) => {
     return new Date(dateString).toLocaleString('ko-KR');
+  };
+
+  // 통계 계산
+  const stats = {
+    total: filteredLogs.length,
+    totalCalories: filteredLogs.reduce((sum, log) => sum + (log.calories || 0), 0),
+    totalDuration: filteredLogs.reduce((sum, log) => sum + (log.duration || 0), 0),
+    uniqueUsers: new Set(filteredLogs.map((log) => log.user)).size,
   };
 
   return (
@@ -81,58 +92,11 @@ const WorkoutLogManagement = () => {
         backgroundColor: theme.colors.background.secondary,
       }}
     >
-      {/* Header */}
-      <div
-        style={{
-          backgroundColor: theme.colors.background.primary,
-          borderBottom: `1px solid ${theme.colors.border.light}`,
-          padding: `${theme.spacing[4]} ${theme.spacing[8]}`,
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            maxWidth: '1400px',
-            margin: '0 auto',
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: theme.spacing[4],
-            }}
-          >
-            <Button
-              variant="ghost"
-              onClick={() => navigate('/admin/dashboard')}
-            >
-              ← 대시보드
-            </Button>
-            <h1
-              style={{
-                fontSize: theme.typography.fontSize['2xl'],
-                fontWeight: theme.typography.fontWeight.bold,
-                color: theme.colors.text.primary,
-                margin: 0,
-              }}
-            >
-              운동 기록 관리
-            </h1>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: theme.spacing[4],
-            }}
-          >
-            <GymSelector />
-          </div>
-        </div>
-      </div>
+      <AdminHeader title="운동 기록 관리">
+        <Button variant="secondary" onClick={loadWorkoutLogs}>
+          새로고침
+        </Button>
+      </AdminHeader>
 
       {/* Main Content */}
       <div
@@ -142,14 +106,131 @@ const WorkoutLogManagement = () => {
           padding: theme.spacing[8],
         }}
       >
-        {/* Search */}
+        {/* Stats */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: theme.spacing[4],
+            marginBottom: theme.spacing[6],
+          }}
+        >
+          <Card>
+            <div
+              style={{
+                fontSize: theme.typography.fontSize.sm,
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing[1],
+              }}
+            >
+              전체 기록
+            </div>
+            <div
+              style={{
+                fontSize: theme.typography.fontSize['2xl'],
+                fontWeight: theme.typography.fontWeight.bold,
+                color: theme.colors.brand.primary,
+              }}
+            >
+              {stats.total}
+            </div>
+          </Card>
+          <Card>
+            <div
+              style={{
+                fontSize: theme.typography.fontSize.sm,
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing[1],
+              }}
+            >
+              운동한 회원 수
+            </div>
+            <div
+              style={{
+                fontSize: theme.typography.fontSize['2xl'],
+                fontWeight: theme.typography.fontWeight.bold,
+                color: theme.colors.semantic.success,
+              }}
+            >
+              {stats.uniqueUsers}
+            </div>
+          </Card>
+          <Card>
+            <div
+              style={{
+                fontSize: theme.typography.fontSize.sm,
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing[1],
+              }}
+            >
+              총 소모 칼로리
+            </div>
+            <div
+              style={{
+                fontSize: theme.typography.fontSize['2xl'],
+                fontWeight: theme.typography.fontWeight.bold,
+                color: theme.colors.semantic.error,
+              }}
+            >
+              {stats.totalCalories.toLocaleString()} kcal
+            </div>
+          </Card>
+          <Card>
+            <div
+              style={{
+                fontSize: theme.typography.fontSize.sm,
+                color: theme.colors.text.secondary,
+                marginBottom: theme.spacing[1],
+              }}
+            >
+              총 운동 시간
+            </div>
+            <div
+              style={{
+                fontSize: theme.typography.fontSize['2xl'],
+                fontWeight: theme.typography.fontWeight.bold,
+                color: theme.colors.semantic.info,
+              }}
+            >
+              {stats.totalDuration.toLocaleString()} 분
+            </div>
+          </Card>
+        </div>
+
+        {/* Filters */}
         <Card style={{ marginBottom: theme.spacing[6] }}>
-          <Input
-            placeholder="회원명 또는 운동명으로 검색..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            fullWidth
-          />
+          <div
+            style={{
+              display: 'flex',
+              gap: theme.spacing[4],
+              flexWrap: 'wrap',
+            }}
+          >
+            <div style={{ flex: '1 1 300px' }}>
+              <Input
+                placeholder="회원명 또는 운동명으로 검색..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                fullWidth
+              />
+            </div>
+            <div style={{ flex: '0 1 200px' }}>
+              <Input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                fullWidth
+              />
+            </div>
+            {selectedDate && (
+              <Button
+                variant="ghost"
+                onClick={() => setSelectedDate('')}
+              >
+                날짜 필터 해제
+              </Button>
+            )}
+          </div>
         </Card>
 
         {/* Workout Logs List */}
@@ -162,7 +243,7 @@ const WorkoutLogManagement = () => {
         ) : filteredLogs.length === 0 ? (
           <Card>
             <div style={{ textAlign: 'center', padding: theme.spacing[8] }}>
-              {searchTerm ? '검색 결과가 없습니다.' : '운동 기록이 없습니다.'}
+              {searchTerm || selectedDate ? '검색 결과가 없습니다.' : '운동 기록이 없습니다.'}
             </div>
           </Card>
         ) : (
