@@ -17,7 +17,6 @@ export interface Usehealth {
   health: number;
   membership: number;
   user: number;
-  rocker: number;
   term: number;
   discount: number;
   startday: string;
@@ -55,7 +54,6 @@ export interface UsehealthSearchParams {
   health?: number;
   membership?: number;
   user?: number;
-  rocker?: number;
   term?: number;
   discount?: number;
   startstartday?: string;
