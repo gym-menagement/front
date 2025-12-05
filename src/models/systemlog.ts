@@ -80,6 +80,11 @@ export default class SystemlogModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: SystemlogSearchParams) {
+    const res = await get<ApiResponse<Systemlog>>('/systemlog', { params });
+    return res.data
+  }
+
   static async count(params?: SystemlogSearchParams) {
     const res = await get<{ count: number }>('/systemlog/count', { params });
     return res.data.count || 0;

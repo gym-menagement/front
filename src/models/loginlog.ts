@@ -50,6 +50,11 @@ export default class LoginlogModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: LoginlogSearchParams) {
+    const res = await get<ApiResponse<Loginlog>>('/loginlog', { params });
+    return res.data
+  }
+
   static async count(params?: LoginlogSearchParams) {
     const res = await get<{ count: number }>('/loginlog/count', { params });
     return res.data.count || 0;

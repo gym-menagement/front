@@ -99,6 +99,11 @@ export default class AttendanceModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: AttendanceSearchParams) {
+    const res = await get<ApiResponse<Attendance>>('/attendance', { params });
+    return res.data
+  }
+
   static async count(params?: AttendanceSearchParams) {
     const res = await get<{ count: number }>('/attendance/count', { params });
     return res.data.count || 0;

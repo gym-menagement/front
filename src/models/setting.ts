@@ -67,6 +67,11 @@ export default class SettingModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: SettingSearchParams) {
+    const res = await get<ApiResponse<Setting>>('/setting', { params });
+    return res.data
+  }
+
   static async count(params?: SettingSearchParams) {
     const res = await get<{ count: number }>('/setting/count', { params });
     return res.data.count || 0;

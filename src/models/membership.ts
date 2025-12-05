@@ -50,6 +50,11 @@ export default class MembershipModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: MembershipSearchParams) {
+    const res = await get<ApiResponse<Membership>>('/membership', { params });
+    return res.data
+  }
+
   static async count(params?: MembershipSearchParams) {
     const res = await get<{ count: number }>('/membership/count', { params });
     return res.data.count || 0;

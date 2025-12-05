@@ -80,6 +80,11 @@ export default class AppversionModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: AppversionSearchParams) {
+    const res = await get<ApiResponse<Appversion>>('/appversion', { params });
+    return res.data
+  }
+
   static async count(params?: AppversionSearchParams) {
     const res = await get<{ count: number }>('/appversion/count', { params });
     return res.data.count || 0;

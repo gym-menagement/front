@@ -143,6 +143,11 @@ export default class UserModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: UserSearchParams) {
+    const res = await get<ApiResponse<User>>('/user', { params });
+    return res.data
+  }
+
   static async count(params?: UserSearchParams) {
     const res = await get<{ count: number }>('/user/count', { params });
     return res.data.count || 0;

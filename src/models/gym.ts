@@ -50,6 +50,11 @@ export default class GymModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: GymSearchParams) {
+    const res = await get<ApiResponse<Gym>>('/gym', { params });
+    return res.data
+  }
+
   static async count(params?: GymSearchParams) {
     const res = await get<{ count: number }>('/gym/count', { params });
     return res.data.count || 0;

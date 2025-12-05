@@ -86,6 +86,11 @@ export default class InquiryModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: InquirySearchParams) {
+    const res = await get<ApiResponse<Inquiry>>('/inquiry', { params });
+    return res.data
+  }
+
   static async count(params?: InquirySearchParams) {
     const res = await get<{ count: number }>('/inquiry/count', { params });
     return res.data.count || 0;

@@ -50,6 +50,11 @@ export default class DiscountModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: DiscountSearchParams) {
+    const res = await get<ApiResponse<Discount>>('/discount', { params });
+    return res.data
+  }
+
   static async count(params?: DiscountSearchParams) {
     const res = await get<{ count: number }>('/discount/count', { params });
     return res.data.count || 0;

@@ -50,6 +50,11 @@ export default class PaymentformModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: PaymentformSearchParams) {
+    const res = await get<ApiResponse<Paymentform>>('/paymentform', { params });
+    return res.data
+  }
+
   static async count(params?: PaymentformSearchParams) {
     const res = await get<{ count: number }>('/paymentform/count', { params });
     return res.data.count || 0;

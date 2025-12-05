@@ -50,6 +50,11 @@ export default class TermModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: TermSearchParams) {
+    const res = await get<ApiResponse<Term>>('/term', { params });
+    return res.data
+  }
+
   static async count(params?: TermSearchParams) {
     const res = await get<{ count: number }>('/term/count', { params });
     return res.data.count || 0;

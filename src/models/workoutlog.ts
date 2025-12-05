@@ -52,7 +52,7 @@ export default class WorkoutlogModel {
 
   static async findpage(params?: WorkoutlogSearchParams) {
     const res = await get<ApiResponse<Workoutlog>>('/workoutlog', { params });
-    return res.data;
+    return res.data
   }
 
   static async count(params?: WorkoutlogSearchParams) {

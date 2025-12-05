@@ -129,6 +129,11 @@ export default class NoticeModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: NoticeSearchParams) {
+    const res = await get<ApiResponse<Notice>>('/notice', { params });
+    return res.data
+  }
+
   static async count(params?: NoticeSearchParams) {
     const res = await get<{ count: number }>('/notice/count', { params });
     return res.data.count || 0;

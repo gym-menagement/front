@@ -65,6 +65,11 @@ export default class QrcodeModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: QrcodeSearchParams) {
+    const res = await get<ApiResponse<Qrcode>>('/qrcode', { params });
+    return res.data
+  }
+
   static async count(params?: QrcodeSearchParams) {
     const res = await get<{ count: number }>('/qrcode/count', { params });
     return res.data.count || 0;

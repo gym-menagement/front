@@ -67,6 +67,11 @@ export default class TokenModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: TokenSearchParams) {
+    const res = await get<ApiResponse<Token>>('/token', { params });
+    return res.data
+  }
+
   static async count(params?: TokenSearchParams) {
     const res = await get<{ count: number }>('/token/count', { params });
     return res.data.count || 0;

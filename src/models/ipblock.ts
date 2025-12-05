@@ -95,6 +95,11 @@ export default class IpblockModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: IpblockSearchParams) {
+    const res = await get<ApiResponse<Ipblock>>('/ipblock', { params });
+    return res.data
+  }
+
   static async count(params?: IpblockSearchParams) {
     const res = await get<{ count: number }>('/ipblock/count', { params });
     return res.data.count || 0;

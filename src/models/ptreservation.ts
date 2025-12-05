@@ -69,6 +69,11 @@ export default class PtreservationModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: PtreservationSearchParams) {
+    const res = await get<ApiResponse<Ptreservation>>('/ptreservation', { params });
+    return res.data
+  }
+
   static async count(params?: PtreservationSearchParams) {
     const res = await get<{ count: number }>('/ptreservation/count', { params });
     return res.data.count || 0;

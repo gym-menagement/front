@@ -50,6 +50,11 @@ export default class HealthModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: HealthSearchParams) {
+    const res = await get<ApiResponse<Health>>('/health', { params });
+    return res.data
+  }
+
   static async count(params?: HealthSearchParams) {
     const res = await get<{ count: number }>('/health/count', { params });
     return res.data.count || 0;

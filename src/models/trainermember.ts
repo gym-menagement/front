@@ -65,6 +65,11 @@ export default class TrainermemberModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: TrainermemberSearchParams) {
+    const res = await get<ApiResponse<Trainermember>>('/trainermember', { params });
+    return res.data
+  }
+
   static async count(params?: TrainermemberSearchParams) {
     const res = await get<{ count: number }>('/trainermember/count', { params });
     return res.data.count || 0;

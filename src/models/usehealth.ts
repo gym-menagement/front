@@ -69,6 +69,11 @@ export default class UsehealthModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: UsehealthSearchParams) {
+    const res = await get<ApiResponse<Usehealth>>('/usehealth', { params });
+    return res.data
+  }
+
   static async count(params?: UsehealthSearchParams) {
     const res = await get<{ count: number }>('/usehealth/count', { params });
     return res.data.count || 0;
