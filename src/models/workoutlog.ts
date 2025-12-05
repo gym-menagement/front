@@ -50,6 +50,11 @@ export default class WorkoutlogModel {
     return res.data.content || [];
   }
 
+  static async findpage(params?: WorkoutlogSearchParams) {
+    const res = await get<ApiResponse<Workoutlog>>('/workoutlog', { params });
+    return res.data;
+  }
+
   static async count(params?: WorkoutlogSearchParams) {
     const res = await get<{ count: number }>('/workoutlog/count', { params });
     return res.data.count || 0;

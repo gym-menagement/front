@@ -1,27 +1,33 @@
 import { useEffect, useState } from 'react';
-import { Card, Badge, Button, Input } from '../../components/ui';
+import { Card, Button, Input, Pagination } from '../../components/ui';
 import { theme } from '../../theme';
-import { WorkoutLog, User } from '../../models';
-import type { WorkoutLog as WorkoutLogType } from '../../types/workoutlog';
-import type { User as UserType } from '../../types/user';
+import { WorkoutLog } from '../../models';
+import type {
+  WorkoutlogSearchParams,
+  WorkoutLog as WorkoutLogType,
+} from '../../types/workoutlog';
 import AdminHeader from '../../components/AdminHeader';
 import { useAtomValue } from 'jotai';
 import { selectedGymIdAtom } from '../../store/gym';
+import { formatLocalDateTime } from '../../global/util';
 
 const WorkoutLogManagement = () => {
   const selectedGymId = useAtomValue(selectedGymIdAtom);
   const [workoutLogs, setWorkoutLogs] = useState<WorkoutLogType[]>([]);
-  const [users, setUsers] = useState<UserType[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDate, setSelectedDate] = useState<string>('');
+  const [page, setPage] = useState(0);
+  const pageSize = 10;
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
 
   useEffect(() => {
     if (selectedGymId) {
       loadWorkoutLogs();
-      loadUsers();
     }
-  }, [selectedGymId, selectedDate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedGymId, selectedDate, page]);
 
   const loadWorkoutLogs = async () => {
     try {
@@ -32,17 +38,24 @@ const WorkoutLogManagement = () => {
         return;
       }
 
-      const params: any = { gym: selectedGymId };
+      const params: WorkoutlogSearchParams = {
+        gym: selectedGymId,
+        page,
+        pageSize,
+      };
 
       // 날짜 필터가 있으면 추가
       if (selectedDate) {
-        params.startdate = selectedDate;
-        params.enddate = selectedDate;
+        params.startdate = formatLocalDateTime(new Date(selectedDate));
+        const endDate = new Date(selectedDate);
+        endDate.setDate(endDate.getDate() + 1);
+        params.enddate = formatLocalDateTime(new Date(endDate));
       }
 
-      const data = await WorkoutLog.findall(params);
-      // 날짜순으로 정렬 (최신순)
-      data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      const res = await WorkoutLog.findpage(params);
+      const data = res.content;
+      setTotalPages(res.totalPages);
+      setTotalElements(res.totalElements);
       setWorkoutLogs(data);
     } catch (error) {
       console.error('Failed to load workout logs:', error);
@@ -51,38 +64,38 @@ const WorkoutLogManagement = () => {
     }
   };
 
-  const loadUsers = async () => {
-    try {
-      const data = await User.findall({ role: User.role.MEMBER });
-      setUsers(data);
-    } catch (error) {
-      console.error('Failed to load users:', error);
-    }
-  };
-
-  const getUserName = (userId: number) => {
-    const user = users.find((u) => u.id === userId);
-    return user ? user.name : '-';
-  };
-
+  // 클라이언트 사이드 필터링 (검색어)
   const filteredLogs = workoutLogs.filter((log) => {
-    const userName = getUserName(log.user);
+    if (!searchTerm) return true;
+    const userName = log.extra?.user?.name || '';
     return (
       userName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       log.exercisename.toLowerCase().includes(searchTerm.toLowerCase())
     );
   });
 
+  const handlePageChange = (newPage: number) => {
+    // Pagination 컴포넌트는 1-based, API는 0-based이므로 변환
+    setPage(newPage - 1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const formatDateTime = (dateString: string) => {
     return new Date(dateString).toLocaleString('ko-KR');
   };
 
-  // 통계 계산
+  // 통계 계산 (현재 페이지 데이터 기준)
   const stats = {
-    total: filteredLogs.length,
-    totalCalories: filteredLogs.reduce((sum, log) => sum + (log.calories || 0), 0),
-    totalDuration: filteredLogs.reduce((sum, log) => sum + (log.duration || 0), 0),
-    uniqueUsers: new Set(filteredLogs.map((log) => log.user)).size,
+    total: totalElements, // API에서 제공하는 전체 데이터 수
+    totalCalories: filteredLogs.reduce(
+      (sum, log) => sum + (log.calories || 0),
+      0
+    ),
+    totalDuration: filteredLogs.reduce(
+      (sum, log) => sum + (log.duration || 0),
+      0
+    ),
+    uniqueUsers: new Set(filteredLogs.map((log) => log.extra?.user?.id).filter(Boolean)).size,
   };
 
   return (
@@ -223,10 +236,7 @@ const WorkoutLogManagement = () => {
               />
             </div>
             {selectedDate && (
-              <Button
-                variant="ghost"
-                onClick={() => setSelectedDate('')}
-              >
+              <Button variant="ghost" onClick={() => setSelectedDate('')}>
                 날짜 필터 해제
               </Button>
             )}
@@ -243,7 +253,9 @@ const WorkoutLogManagement = () => {
         ) : filteredLogs.length === 0 ? (
           <Card>
             <div style={{ textAlign: 'center', padding: theme.spacing[8] }}>
-              {searchTerm || selectedDate ? '검색 결과가 없습니다.' : '운동 기록이 없습니다.'}
+              {searchTerm || selectedDate
+                ? '검색 결과가 없습니다.'
+                : '운동 기록이 없습니다.'}
             </div>
           </Card>
         ) : (
@@ -289,7 +301,7 @@ const WorkoutLogManagement = () => {
                           color: theme.colors.text.secondary,
                         }}
                       >
-                        {getUserName(log.user)}
+                        {log.extra?.user?.name || '알 수 없음'} 님
                       </div>
                     </div>
                     <div
@@ -306,7 +318,8 @@ const WorkoutLogManagement = () => {
                   <div
                     style={{
                       display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                      gridTemplateColumns:
+                        'repeat(auto-fit, minmax(150px, 1fr))',
                       gap: theme.spacing[4],
                     }}
                   >
@@ -429,6 +442,22 @@ const WorkoutLogManagement = () => {
                 </div>
               </Card>
             ))}
+          </div>
+        )}
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div
+            style={{
+              marginTop: theme.spacing[8],
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <Pagination
+              currentPage={page + 1} // API는 0-based, UI는 1-based
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
           </div>
         )}
       </div>
