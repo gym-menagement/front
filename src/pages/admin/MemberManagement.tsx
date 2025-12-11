@@ -53,8 +53,6 @@ const MemberManagement = () => {
       const usehealthData = await UseHealth.findall({
         gym: selectedGymId,
       });
-      console.log('Total usehealths loaded:', usehealthData.length);
-      console.log('Usehealths data:', usehealthData);
 
       // Group usehealth by membership
       const map = new Map<number, UsehealthType[]>();
@@ -64,9 +62,6 @@ const MemberManagement = () => {
         }
         map.get(uh.membership)!.push(uh);
       });
-
-      console.log('Usehealth map:', map);
-      console.log('Map entries:', Array.from(map.entries()));
 
       setUsehealthMap(map);
     } catch (error) {

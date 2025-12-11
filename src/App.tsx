@@ -9,6 +9,7 @@ import SignupPage from './pages/auth/SignupPage';
 
 // Member Pages
 import MemberDashboard from './pages/member/MemberDashboard';
+import PaymentHistory from './pages/member/PaymentHistory';
 
 // Gym Pages
 import GymList from './pages/gym/GymList';
@@ -29,6 +30,7 @@ import HealthCategoryManager from './pages/admin/HealthCategoryManager';
 import DiscountManagement from './pages/admin/DiscountManagement';
 import DiscountForm from './pages/admin/DiscountForm';
 import WorkoutLogManagement from './pages/admin/WorkoutLogManagement';
+import PaymentManagement from './pages/admin/PaymentManagement';
 import TermManagement from './pages/admin/TermManagement';
 import AttendanceManagement from './pages/admin/AttendanceManagement';
 
@@ -100,6 +102,14 @@ function App() {
           element={
             <ProtectedRoute requiredRole={UserModel.role.MEMBER}>
               <div>Gym Details (To be implemented)</div>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/member/payments"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.MEMBER}>
+              <PaymentHistory />
             </ProtectedRoute>
           }
         />
@@ -208,6 +218,14 @@ function App() {
           element={
             <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
               <DiscountForm />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/payments"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <PaymentManagement />
             </ProtectedRoute>
           }
         />
