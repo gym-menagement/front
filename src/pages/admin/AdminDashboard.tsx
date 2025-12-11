@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Card, Badge, Button } from '../../components/ui';
+import { Card, Button } from '../../components/ui';
 import { theme } from '../../theme';
 import { Attendance, UseHealth } from '../../models';
 import { useNavigate } from 'react-router-dom';
@@ -172,91 +172,627 @@ const AdminDashboard = () => {
           padding: theme.spacing[8],
         }}
       >
-        {/* Stats Grid */}
+        {/* Stats Overview Grid */}
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: theme.spacing[6],
+            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+            gap: theme.spacing[4],
             marginBottom: theme.spacing[8],
           }}
         >
+          {/* Active Members */}
           <Card hoverable>
-            <div style={{ marginBottom: theme.spacing[2] }}>
+            <div style={{ padding: theme.spacing[6] }}>
               <div
                 style={{
-                  fontSize: theme.typography.fontSize.sm,
-                  color: theme.colors.text.secondary,
-                  marginBottom: theme.spacing[1],
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: theme.spacing[3],
                 }}
               >
-                활성 회원
+                <div
+                  style={{
+                    fontSize: theme.typography.fontSize.sm,
+                    color: theme.colors.text.secondary,
+                  }}
+                >
+                  활성 회원
+                </div>
+                <div
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: theme.borderRadius.full,
+                    backgroundColor: `${theme.colors.brand.primary}15`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke={theme.colors.brand.primary}
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                </div>
               </div>
               <div
                 style={{
                   fontSize: theme.typography.fontSize['3xl'],
                   fontWeight: theme.typography.fontWeight.bold,
                   color: theme.colors.brand.primary,
+                  marginBottom: theme.spacing[1],
                 }}
               >
                 {stats.activeMembers}
               </div>
-            </div>
-            <Badge variant="success">이용 가능</Badge>
-          </Card>
-
-          <Card hoverable>
-            <div style={{ marginBottom: theme.spacing[2] }}>
               <div
                 style={{
-                  fontSize: theme.typography.fontSize.sm,
-                  color: theme.colors.text.secondary,
-                  marginBottom: theme.spacing[1],
+                  fontSize: theme.typography.fontSize.xs,
+                  color: theme.colors.text.tertiary,
                 }}
               >
-                오늘 출석
+                이용 가능한 회원권
+              </div>
+            </div>
+          </Card>
+
+          {/* Today Attendance */}
+          <Card hoverable>
+            <div style={{ padding: theme.spacing[6] }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: theme.spacing[3],
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: theme.typography.fontSize.sm,
+                    color: theme.colors.text.secondary,
+                  }}
+                >
+                  오늘 출석
+                </div>
+                <div
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: theme.borderRadius.full,
+                    backgroundColor: `${theme.colors.semantic.success}15`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke={theme.colors.semantic.success}
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
               </div>
               <div
                 style={{
                   fontSize: theme.typography.fontSize['3xl'],
                   fontWeight: theme.typography.fontWeight.bold,
-                  color: theme.colors.brand.primary,
+                  color: theme.colors.semantic.success,
+                  marginBottom: theme.spacing[1],
                 }}
               >
                 {stats.todayAttendance}
               </div>
-            </div>
-            <Badge variant="info">
-              {new Date().toLocaleDateString('ko-KR')}
-            </Badge>
-          </Card>
-
-          <Card hoverable>
-            <div style={{ marginBottom: theme.spacing[2] }}>
               <div
                 style={{
-                  fontSize: theme.typography.fontSize.sm,
-                  color: theme.colors.text.secondary,
-                  marginBottom: theme.spacing[1],
+                  fontSize: theme.typography.fontSize.xs,
+                  color: theme.colors.text.tertiary,
                 }}
               >
-                만료 예정
+                {new Date().toLocaleDateString('ko-KR', {
+                  month: 'long',
+                  day: 'numeric',
+                })}
+              </div>
+            </div>
+          </Card>
+
+          {/* Expiring Memberships */}
+          <Card hoverable>
+            <div style={{ padding: theme.spacing[6] }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: theme.spacing[3],
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: theme.typography.fontSize.sm,
+                    color: theme.colors.text.secondary,
+                  }}
+                >
+                  만료 예정
+                </div>
+                <div
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: theme.borderRadius.full,
+                    backgroundColor: `${theme.colors.semantic.warning}15`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke={theme.colors.semantic.warning}
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
               </div>
               <div
                 style={{
                   fontSize: theme.typography.fontSize['3xl'],
                   fontWeight: theme.typography.fontWeight.bold,
                   color: theme.colors.semantic.warning,
+                  marginBottom: theme.spacing[1],
                 }}
               >
                 {stats.expiringMemberships}
               </div>
+              <div
+                style={{
+                  fontSize: theme.typography.fontSize.xs,
+                  color: theme.colors.text.tertiary,
+                }}
+              >
+                30일 이내 만료
+              </div>
             </div>
-            <Badge variant="warning">30일 이내</Badge>
+          </Card>
+
+          {/* Quick Stats - Placeholder for future data */}
+          <Card
+            hoverable
+            clickable
+            onClick={() => navigate('/admin/attendance')}
+          >
+            <div style={{ padding: theme.spacing[6] }}>
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginBottom: theme.spacing[3],
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: theme.typography.fontSize.sm,
+                    color: theme.colors.text.secondary,
+                  }}
+                >
+                  전체 출석
+                </div>
+                <div
+                  style={{
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: theme.borderRadius.full,
+                    backgroundColor: `${theme.colors.brand.secondary}15`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke={theme.colors.brand.secondary}
+                    strokeWidth="2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div
+                style={{
+                  fontSize: theme.typography.fontSize['3xl'],
+                  fontWeight: theme.typography.fontWeight.bold,
+                  color: theme.colors.brand.secondary,
+                  marginBottom: theme.spacing[1],
+                }}
+              >
+                {stats.todayAttendance}
+              </div>
+              <div
+                style={{
+                  fontSize: theme.typography.fontSize.xs,
+                  color: theme.colors.text.tertiary,
+                }}
+              >
+                자세히 보기 →
+              </div>
+            </div>
           </Card>
         </div>
 
-        {/* Quick Actions */}
+        {/* Management Sections Grid */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(500px, 1fr))',
+            gap: theme.spacing[6],
+            marginBottom: theme.spacing[8],
+          }}
+        >
+          {/* Member Management Card */}
+          <Card>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: theme.spacing[6],
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: theme.typography.fontSize.xl,
+                  fontWeight: theme.typography.fontWeight.semibold,
+                  margin: 0,
+                }}
+              >
+                회원 관리
+              </h2>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => navigate('/admin/members')}
+              >
+                전체 보기 →
+              </Button>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: theme.spacing[3],
+              }}
+            >
+              <Button
+                variant="ghost"
+                fullWidth
+                onClick={() => navigate('/admin/members')}
+                style={{
+                  justifyContent: 'flex-start',
+                  padding: theme.spacing[4],
+                }}
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  style={{ marginRight: theme.spacing[3] }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+                <div style={{ textAlign: 'left', flex: 1 }}>
+                  <div
+                    style={{
+                      fontWeight: theme.typography.fontWeight.medium,
+                      marginBottom: theme.spacing[1],
+                    }}
+                  >
+                    회원 목록
+                  </div>
+                  <div
+                    style={{
+                      fontSize: theme.typography.fontSize.sm,
+                      color: theme.colors.text.secondary,
+                    }}
+                  >
+                    전체 회원 정보 조회 및 관리
+                  </div>
+                </div>
+              </Button>
+              <Button
+                variant="ghost"
+                fullWidth
+                onClick={() => navigate('/admin/trainers')}
+                style={{
+                  justifyContent: 'flex-start',
+                  padding: theme.spacing[4],
+                }}
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  style={{ marginRight: theme.spacing[3] }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+                <div style={{ textAlign: 'left', flex: 1 }}>
+                  <div
+                    style={{
+                      fontWeight: theme.typography.fontWeight.medium,
+                      marginBottom: theme.spacing[1],
+                    }}
+                  >
+                    트레이너 관리
+                  </div>
+                  <div
+                    style={{
+                      fontSize: theme.typography.fontSize.sm,
+                      color: theme.colors.text.secondary,
+                    }}
+                  >
+                    트레이너 등록 및 스케줄 관리
+                  </div>
+                </div>
+              </Button>
+              <Button
+                variant="ghost"
+                fullWidth
+                onClick={() => navigate('/admin/health')}
+                style={{
+                  justifyContent: 'flex-start',
+                  padding: theme.spacing[4],
+                }}
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  style={{ marginRight: theme.spacing[3] }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                  />
+                </svg>
+                <div style={{ textAlign: 'left', flex: 1 }}>
+                  <div
+                    style={{
+                      fontWeight: theme.typography.fontWeight.medium,
+                      marginBottom: theme.spacing[1],
+                    }}
+                  >
+                    회원권 상품
+                  </div>
+                  <div
+                    style={{
+                      fontSize: theme.typography.fontSize.sm,
+                      color: theme.colors.text.secondary,
+                    }}
+                  >
+                    회원권 등록, 수정, 가격 관리
+                  </div>
+                </div>
+              </Button>
+            </div>
+          </Card>
+
+          {/* Activity Monitoring Card */}
+          <Card>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                marginBottom: theme.spacing[6],
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: theme.typography.fontSize.xl,
+                  fontWeight: theme.typography.fontWeight.semibold,
+                  margin: 0,
+                }}
+              >
+                활동 모니터링
+              </h2>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: theme.spacing[3],
+              }}
+            >
+              <Button
+                variant="ghost"
+                fullWidth
+                onClick={() => navigate('/admin/attendance')}
+                style={{
+                  justifyContent: 'flex-start',
+                  padding: theme.spacing[4],
+                }}
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  style={{ marginRight: theme.spacing[3] }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                  />
+                </svg>
+                <div style={{ textAlign: 'left', flex: 1 }}>
+                  <div
+                    style={{
+                      fontWeight: theme.typography.fontWeight.medium,
+                      marginBottom: theme.spacing[1],
+                    }}
+                  >
+                    출석 현황
+                  </div>
+                  <div
+                    style={{
+                      fontSize: theme.typography.fontSize.sm,
+                      color: theme.colors.text.secondary,
+                    }}
+                  >
+                    일별/월별 출석 통계 확인
+                  </div>
+                </div>
+              </Button>
+              <Button
+                variant="ghost"
+                fullWidth
+                onClick={() => navigate('/admin/workout-logs')}
+                style={{
+                  justifyContent: 'flex-start',
+                  padding: theme.spacing[4],
+                }}
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  style={{ marginRight: theme.spacing[3] }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                  />
+                </svg>
+                <div style={{ textAlign: 'left', flex: 1 }}>
+                  <div
+                    style={{
+                      fontWeight: theme.typography.fontWeight.medium,
+                      marginBottom: theme.spacing[1],
+                    }}
+                  >
+                    운동 기록
+                  </div>
+                  <div
+                    style={{
+                      fontSize: theme.typography.fontSize.sm,
+                      color: theme.colors.text.secondary,
+                    }}
+                  >
+                    회원별 운동 기록 조회
+                  </div>
+                </div>
+              </Button>
+              <Button
+                variant="ghost"
+                fullWidth
+                onClick={() => navigate('/admin/payments')}
+                style={{
+                  justifyContent: 'flex-start',
+                  padding: theme.spacing[4],
+                }}
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  style={{ marginRight: theme.spacing[3] }}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                  />
+                </svg>
+                <div style={{ textAlign: 'left', flex: 1 }}>
+                  <div
+                    style={{
+                      fontWeight: theme.typography.fontWeight.medium,
+                      marginBottom: theme.spacing[1],
+                    }}
+                  >
+                    결제 내역
+                  </div>
+                  <div
+                    style={{
+                      fontSize: theme.typography.fontSize.sm,
+                      color: theme.colors.text.secondary,
+                    }}
+                  >
+                    전체 결제 기록 조회
+                  </div>
+                </div>
+              </Button>
+            </div>
+          </Card>
+        </div>
+
+        {/* Quick Actions Footer */}
         <Card>
           <h2
             style={{
@@ -265,62 +801,172 @@ const AdminDashboard = () => {
               marginBottom: theme.spacing[6],
             }}
           >
-            빠른 작업
+            빠른 바로가기
           </h2>
           <div
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-              gap: theme.spacing[4],
+              gap: theme.spacing[3],
             }}
           >
             <Button
-              variant="primary"
-              fullWidth
+              variant="ghost"
               onClick={() => navigate('/admin/members')}
+              style={{ justifyContent: 'flex-start' }}
             >
+              <svg
+                width="18"
+                height="18"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+                style={{ marginRight: theme.spacing[2] }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
               회원 관리
             </Button>
             <Button
-              variant="primary"
-              fullWidth
+              variant="ghost"
               onClick={() => navigate('/admin/trainers')}
+              style={{ justifyContent: 'flex-start' }}
             >
+              <svg
+                width="18"
+                height="18"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+                style={{ marginRight: theme.spacing[2] }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
               트레이너 관리
             </Button>
             <Button
-              variant="primary"
-              fullWidth
+              variant="ghost"
               onClick={() => navigate('/admin/health')}
+              style={{ justifyContent: 'flex-start' }}
             >
-              회원권 상품 관리
+              <svg
+                width="18"
+                height="18"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+                style={{ marginRight: theme.spacing[2] }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
+                />
+              </svg>
+              회원권 상품
             </Button>
             <Button
-              variant="secondary"
-              fullWidth
-              onClick={() => navigate('/admin/workout-logs')}
-            >
-              운동 기록
-            </Button>
-            <Button
-              variant="secondary"
-              fullWidth
+              variant="ghost"
               onClick={() => navigate('/admin/attendance')}
+              style={{ justifyContent: 'flex-start' }}
             >
+              <svg
+                width="18"
+                height="18"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+                style={{ marginRight: theme.spacing[2] }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
+                />
+              </svg>
               출석 현황
             </Button>
             <Button
-              variant="secondary"
-              fullWidth
-              onClick={() => navigate('/admin/payments')}
+              variant="ghost"
+              onClick={() => navigate('/admin/workout-logs')}
+              style={{ justifyContent: 'flex-start' }}
             >
+              <svg
+                width="18"
+                height="18"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+                style={{ marginRight: theme.spacing[2] }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+                />
+              </svg>
+              운동 기록
+            </Button>
+            <Button
+              variant="ghost"
+              onClick={() => navigate('/admin/payments')}
+              style={{ justifyContent: 'flex-start' }}
+            >
+              <svg
+                width="18"
+                height="18"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+                style={{ marginRight: theme.spacing[2] }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                />
+              </svg>
               결제 내역
             </Button>
             <Button
-              variant="secondary"
-              fullWidth
+              variant="ghost"
               onClick={() => navigate('/admin/settings')}
+              style={{ justifyContent: 'flex-start' }}
             >
+              <svg
+                width="18"
+                height="18"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+                style={{ marginRight: theme.spacing[2] }}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+              </svg>
               설정
             </Button>
           </div>
