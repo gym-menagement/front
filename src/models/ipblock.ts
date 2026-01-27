@@ -90,7 +90,7 @@ export default class IpblockModel {
 
   static async findall(params?: IpblockSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Ipblock>>('/ipblock', { params });
     return res.data.content || [];
   }

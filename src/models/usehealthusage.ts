@@ -11,7 +11,7 @@ export default class UsehealthusageModel {
   static readonly type = {
     ENTRY: 1,
     PT: 2,
-    CLASS: 3,
+    GROUPCLASS: 3,
   };
   static readonly types = [
     '',
@@ -62,7 +62,7 @@ export default class UsehealthusageModel {
 
   static async findall(params?: UsehealthusageSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Usehealthusage>>('/usehealthusage', { params });
     return res.data.content || [];
   }

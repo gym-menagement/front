@@ -66,7 +66,7 @@ export default class RoleModel {
 
   static async findall(params?: RoleSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Role>>('/role', { params });
     return res.data.content || [];
   }

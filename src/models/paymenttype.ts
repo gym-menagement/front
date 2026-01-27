@@ -45,7 +45,7 @@ export default class PaymenttypeModel {
 
   static async findall(params?: PaymenttypeSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Paymenttype>>('/paymenttype', { params });
     return res.data.content || [];
   }

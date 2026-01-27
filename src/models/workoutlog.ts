@@ -45,7 +45,7 @@ export default class WorkoutlogModel {
 
   static async findall(params?: WorkoutlogSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Workoutlog>>('/workoutlog', { params });
     return res.data.content || [];
   }

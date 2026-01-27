@@ -81,7 +81,7 @@ export default class AlarmModel {
 
   static async findall(params?: AlarmSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Alarm>>('/alarm', { params });
     return res.data.content || [];
   }

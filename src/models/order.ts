@@ -45,7 +45,7 @@ export default class OrderModel {
 
   static async findall(params?: OrderSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Order>>('/order', { params });
     return res.data.content || [];
   }

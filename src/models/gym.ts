@@ -45,7 +45,7 @@ export default class GymModel {
 
   static async findall(params?: GymSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Gym>>('/gym', { params });
     return res.data.content || [];
   }

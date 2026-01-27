@@ -64,7 +64,7 @@ export default class UsehealthModel {
 
   static async findall(params?: UsehealthSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Usehealth>>('/usehealth', { params });
     return res.data.content || [];
   }

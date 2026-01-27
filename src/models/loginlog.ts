@@ -45,7 +45,7 @@ export default class LoginlogModel {
 
   static async findall(params?: LoginlogSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Loginlog>>('/loginlog', { params });
     return res.data.content || [];
   }

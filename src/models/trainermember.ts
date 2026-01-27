@@ -60,7 +60,7 @@ export default class TrainermemberModel {
 
   static async findall(params?: TrainermemberSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Trainermember>>('/trainermember', { params });
     return res.data.content || [];
   }

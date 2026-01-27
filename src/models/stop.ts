@@ -45,7 +45,7 @@ export default class StopModel {
 
   static async findall(params?: StopSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Stop>>('/stop', { params });
     return res.data.content || [];
   }

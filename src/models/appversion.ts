@@ -75,7 +75,7 @@ export default class AppversionModel {
 
   static async findall(params?: AppversionSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Appversion>>('/appversion', { params });
     return res.data.content || [];
   }

@@ -62,7 +62,7 @@ export default class SettingModel {
 
   static async findall(params?: SettingSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Setting>>('/setting', { params });
     return res.data.content || [];
   }

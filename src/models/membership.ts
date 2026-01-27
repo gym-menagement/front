@@ -45,7 +45,7 @@ export default class MembershipModel {
 
   static async findall(params?: MembershipSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Membership>>('/membership', { params });
     return res.data.content || [];
   }

@@ -45,7 +45,7 @@ export default class MemberbodyModel {
 
   static async findall(params?: MemberbodySearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Memberbody>>('/memberbody', { params });
     return res.data.content || [];
   }

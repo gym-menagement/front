@@ -124,7 +124,7 @@ export default class NoticeModel {
 
   static async findall(params?: NoticeSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Notice>>('/notice', { params });
     return res.data.content || [];
   }

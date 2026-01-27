@@ -81,7 +81,7 @@ export default class InquiryModel {
 
   static async findall(params?: InquirySearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Inquiry>>('/inquiry', { params });
     return res.data.content || [];
   }

@@ -45,7 +45,7 @@ export default class PaymentformModel {
 
   static async findall(params?: PaymentformSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Paymentform>>('/paymentform', { params });
     return res.data.content || [];
   }

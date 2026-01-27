@@ -75,7 +75,7 @@ export default class SystemlogModel {
 
   static async findall(params?: SystemlogSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Systemlog>>('/systemlog', { params });
     return res.data.content || [];
   }

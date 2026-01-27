@@ -45,7 +45,7 @@ export default class DiscountModel {
 
   static async findall(params?: DiscountSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Discount>>('/discount', { params });
     return res.data.content || [];
   }

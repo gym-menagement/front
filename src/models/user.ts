@@ -138,7 +138,7 @@ export default class UserModel {
 
   static async findall(params?: UserSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<User>>('/user', { params });
     return res.data.content || [];
   }

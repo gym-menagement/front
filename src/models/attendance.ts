@@ -94,7 +94,7 @@ export default class AttendanceModel {
 
   static async findall(params?: AttendanceSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Attendance>>('/attendance', { params });
     return res.data.content || [];
   }

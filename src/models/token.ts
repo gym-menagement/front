@@ -62,7 +62,7 @@ export default class TokenModel {
 
   static async findall(params?: TokenSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Token>>('/token', { params });
     return res.data.content || [];
   }

@@ -60,7 +60,7 @@ export default class GymtrainerModel {
 
   static async findall(params?: GymtrainerSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Gymtrainer>>('/gymtrainer', { params });
     return res.data.content || [];
   }
