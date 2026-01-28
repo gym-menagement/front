@@ -33,6 +33,8 @@ import WorkoutLogManagement from './pages/admin/WorkoutLogManagement';
 import PaymentManagement from './pages/admin/PaymentManagement';
 import TermManagement from './pages/admin/TermManagement';
 import AttendanceManagement from './pages/admin/AttendanceManagement';
+import PTReservationManagement from './pages/admin/PTReservationManagement';
+import TrainerAssignmentManagement from './pages/admin/TrainerAssignmentManagement';
 
 // Demo Page (keep for component showcase)
 import ComponentsDemo from './pages/ComponentsDemo';
@@ -41,9 +43,11 @@ import ComponentsDemo from './pages/ComponentsDemo';
 const ProtectedRoute = ({
   children,
   requiredRole,
+  allowedRoles,
 }: {
   children: React.ReactNode;
   requiredRole?: number;
+  allowedRoles?: number[];
 }) => {
   const isAuthenticated = useAtomValue(isAuthenticatedAtom);
   const user = useAtomValue(userAtom);
@@ -62,8 +66,13 @@ const ProtectedRoute = ({
     );
   }
 
-  // Check if user has required role
+  // Check if user has required role (single role)
   if (requiredRole !== undefined && user.role !== requiredRole) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Check if user has one of allowed roles (multiple roles)
+  if (allowedRoles !== undefined && !allowedRoles.includes(user.role)) {
     return <Navigate to="/login" replace />;
   }
 
@@ -250,6 +259,24 @@ function App() {
           element={
             <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
               <AttendanceManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/pt-reservations"
+          element={
+            <ProtectedRoute
+              allowedRoles={[UserModel.role.GYM_ADMIN, UserModel.role.TRAINER]}
+            >
+              <PTReservationManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/trainer-assignments"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <TrainerAssignmentManagement />
             </ProtectedRoute>
           }
         />
