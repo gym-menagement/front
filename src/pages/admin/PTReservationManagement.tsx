@@ -8,6 +8,7 @@ import AdminHeader from '../../components/AdminHeader';
 import { useAtomValue } from 'jotai';
 import { selectedGymIdAtom } from '../../store/gym';
 import { userAtom } from '../../store/auth';
+import { formatLocalDateTime } from '../../global/util';
 
 const PTReservationManagement = () => {
   const selectedGymId = useAtomValue(selectedGymIdAtom);
@@ -16,7 +17,7 @@ const PTReservationManagement = () => {
   const [trainers, setTrainers] = useState<UserType[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState<string>(
-    new Date().toISOString().split('T')[0]
+    new Date().toISOString().split('T')[0],
   );
   const [filterStatus, setFilterStatus] = useState<number | null>(null);
   const [filterTrainer, setFilterTrainer] = useState<number | null>(null);
@@ -48,10 +49,16 @@ const PTReservationManagement = () => {
       }
 
       // 예약 목록 로드
+      const startDate = new Date(selectedDate);
+      startDate.setHours(0, 0, 0, 0);
+      const endDate = new Date(selectedDate);
+      endDate.setDate(endDate.getDate() + 1);
+      endDate.setHours(0, 0, 0, 0);
+
       const params: Record<string, unknown> = {
         gym: selectedGymId,
-        startreservationdate: selectedDate,
-        endreservationdate: selectedDate,
+        startreservationdate: formatLocalDateTime(startDate),
+        endreservationdate: formatLocalDateTime(endDate),
       };
 
       // 트레이너는 본인 예약만 조회
@@ -78,7 +85,7 @@ const PTReservationManagement = () => {
 
   const handleStatusChange = async (
     reservation: PTReservationType,
-    newStatus: number
+    newStatus: number,
   ) => {
     try {
       await PTReservation.patch(reservation.id, { status: newStatus });
@@ -100,7 +107,7 @@ const PTReservationManagement = () => {
   });
 
   const getStatusColor = (
-    status: number
+    status: number,
   ): 'success' | 'info' | 'warning' | 'error' | 'default' => {
     switch (status) {
       case PTReservation.status.RESERVED:
@@ -125,16 +132,16 @@ const PTReservationManagement = () => {
   const stats = {
     total: filteredReservations.length,
     reserved: filteredReservations.filter(
-      (r) => r.status === PTReservation.status.RESERVED
+      (r) => r.status === PTReservation.status.RESERVED,
     ).length,
     completed: filteredReservations.filter(
-      (r) => r.status === PTReservation.status.COMPLETED
+      (r) => r.status === PTReservation.status.COMPLETED,
     ).length,
     cancelled: filteredReservations.filter(
-      (r) => r.status === PTReservation.status.CANCELLED
+      (r) => r.status === PTReservation.status.CANCELLED,
     ).length,
     noShow: filteredReservations.filter(
-      (r) => r.status === PTReservation.status.NO_SHOW
+      (r) => r.status === PTReservation.status.NO_SHOW,
     ).length,
   };
 
@@ -370,7 +377,7 @@ const PTReservationManagement = () => {
                   value={filterTrainer || ''}
                   onChange={(e) =>
                     setFilterTrainer(
-                      e.target.value ? Number(e.target.value) : null
+                      e.target.value ? Number(e.target.value) : null,
                     )
                   }
                   style={{
@@ -505,7 +512,9 @@ const PTReservationManagement = () => {
                         {reservation.extra?.traineruser?.name ||
                           `#${reservation.trainer}`}
                       </span>
-                      {reservation.note && <span>메모: {reservation.note}</span>}
+                      {reservation.note && (
+                        <span>메모: {reservation.note}</span>
+                      )}
                     </div>
                     {reservation.cancelreason && (
                       <div
@@ -535,7 +544,7 @@ const PTReservationManagement = () => {
                         onClick={() =>
                           handleStatusChange(
                             reservation,
-                            PTReservation.status.COMPLETED
+                            PTReservation.status.COMPLETED,
                           )
                         }
                       >
@@ -548,7 +557,7 @@ const PTReservationManagement = () => {
                           onClick={() =>
                             handleStatusChange(
                               reservation,
-                              PTReservation.status.CANCELLED
+                              PTReservation.status.CANCELLED,
                             )
                           }
                         >
@@ -560,7 +569,7 @@ const PTReservationManagement = () => {
                           onClick={() =>
                             handleStatusChange(
                               reservation,
-                              PTReservation.status.NO_SHOW
+                              PTReservation.status.NO_SHOW,
                             )
                           }
                         >
