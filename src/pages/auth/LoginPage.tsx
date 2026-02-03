@@ -4,6 +4,7 @@ import { Button, Input, Card } from '../../components/ui';
 import { authService } from '../../services/auth.service';
 import { userAtom, isAuthenticatedAtom, tokenAtom } from '../../store/auth';
 import { theme } from '../../theme';
+import { Gym, User as UserModel } from '../../models';
 
 const LoginPage = () => {
   const setUser = useSetAtom(userAtom);
@@ -36,23 +37,31 @@ const LoginPage = () => {
 
       console.log('Login successful:', response.user.role);
 
-      // Redirect based on user role using window.location to ensure state is fresh
-      switch (response.user.role) {
-        case 1:
-        case 2:
+      // 역할별 리다이렉트
+      const role = response.user.role;
+
+      if (role === UserModel.role.MEMBER) {
+        window.location.href = '/member/dashboard';
+      } else if (role === UserModel.role.GYM_ADMIN) {
+        // 헬스장 관리자: 등록된 헬스장이 있는지 확인
+        try {
+          const gyms = await Gym.find({ user: response.user.id });
+          if (gyms.length === 0) {
+            window.location.href = '/gym/register';
+          } else {
+            window.location.href = '/admin/dashboard';
+          }
+        } catch {
+          // 헬스장 조회 실패 시에도 대시보드로 이동
           window.location.href = '/admin/dashboard';
-          break;
-        case 3:
-          window.location.href = '/admin/dashboard';
-          break;
-        case 4:
-          window.location.href = '/admin/dashboard';
-          break;
-        case 5:
-          window.location.href = '/admin/dashboard';
-          break;
-        default:
-        // window.location.href = '/';
+        }
+      } else if (
+        role === UserModel.role.TRAINER ||
+        role === UserModel.role.STAFF
+      ) {
+        window.location.href = '/admin/dashboard';
+      } else if (role === UserModel.role.PLATFORM_ADMIN) {
+        window.location.href = '/admin/dashboard';
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : '로그인에 실패했습니다.');
