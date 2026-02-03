@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAtomValue } from 'jotai';
 import { Button, Input, Card } from '../../components/ui';
 import { theme } from '../../theme';
 import { Gym } from '../../models';
+import { userAtom } from '../../store/auth';
 import type { CreateGymRequest } from '../../types/gym';
 
 const GymRegisterPage = () => {
   const navigate = useNavigate();
+  const user = useAtomValue(userAtom);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -73,9 +76,17 @@ const GymRegisterPage = () => {
     try {
       setLoading(true);
 
+      if (!user) {
+        navigate('/login');
+        return;
+      }
+
       // CreateGymRequest 생성
       const gymData: CreateGymRequest = {
         name: formData.name,
+        address: formData.address,
+        tel: formData.phone,
+        user: user.id,
         date: new Date().toISOString(),
       };
 
