@@ -86,7 +86,14 @@ function App() {
         {/* Public Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/gym/register" element={<GymRegisterPage />} />
+        <Route
+          path="/gym/register"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <GymRegisterPage />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/components" element={<ComponentsDemo />} />
 
         {/* Member Routes */}
