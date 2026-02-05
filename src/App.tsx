@@ -35,6 +35,15 @@ import TermManagement from './pages/admin/TermManagement';
 import AttendanceManagement from './pages/admin/AttendanceManagement';
 import PTReservationManagement from './pages/admin/PTReservationManagement';
 import TrainerAssignmentManagement from './pages/admin/TrainerAssignmentManagement';
+import NoticeManagement from './pages/admin/NoticeManagement';
+import InquiryManagement from './pages/admin/InquiryManagement';
+import SettingManagement from './pages/admin/SettingManagement';
+import OrderManagement from './pages/admin/OrderManagement';
+import QRCodeManagement from './pages/admin/QRCodeManagement';
+import GymtrainerManagement from './pages/admin/GymtrainerManagement';
+import MembershipManagement from './pages/admin/MembershipManagement';
+import DaytypeManagement from './pages/admin/DaytypeManagement';
+import UsehealthManager from './pages/admin/UsehealthManager';
 
 // Demo Page (keep for component showcase)
 import ComponentsDemo from './pages/ComponentsDemo';
@@ -284,6 +293,78 @@ function App() {
           element={
             <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
               <TrainerAssignmentManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/notices"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <NoticeManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/inquiries"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <InquiryManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/settings"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <SettingManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/orders"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <OrderManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/qrcodes"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <QRCodeManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/gymtrainers"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <GymtrainerManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/memberships"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <MembershipManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/daytypes"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <DaytypeManagement />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/usehealth"
+          element={
+            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
+              <UsehealthManager />
             </ProtectedRoute>
           }
         />
