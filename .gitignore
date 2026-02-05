@@ -28,3 +28,6 @@ dist-ssr
 /playwright-report/
 /playwright/.cache/
 /screenshots/
+
+# .claude/*
+# .env
