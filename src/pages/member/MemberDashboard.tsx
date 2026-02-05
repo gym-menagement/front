@@ -5,19 +5,21 @@ import { Card, Button, Badge } from '../../components/ui';
 import { theme } from '../../theme';
 import {
   Attendance as AttendanceModel,
-  MemberQR as MemberQRModel,
+  QRCode as QRCodeModel,
   PTReservation as PTReservationModel,
 } from '../../models';
 import MembershipModel from '../../models/membership';
-import type { Attendance, MemberQR, PTReservation } from '../../types';
+import type { Attendance } from '../../types/attendance';
+import type { Qrcode } from '../../types/qrcode';
+import type { Ptreservation } from '../../types/ptreservation';
 import { QRCodeSVG } from 'qrcode.react';
 
 const MemberDashboard = () => {
   const user = useAtomValue(userAtom);
   const [memberships, setMemberships] = useState<any[]>([]);
   const [recentAttendance, setRecentAttendance] = useState<Attendance[]>([]);
-  const [qrCode, setQrCode] = useState<MemberQR | null>(null);
-  const [upcomingPT, setUpcomingPT] = useState<PTReservation[]>([]);
+  const [qrCode, setQrCode] = useState<Qrcode | null>(null);
+  const [upcomingPT, setUpcomingPT] = useState<Ptreservation[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -46,9 +48,9 @@ const MemberDashboard = () => {
       setRecentAttendance(attendance);
 
       // Load QR code
-      const qrCodes = await MemberQRModel.searchByUserId(user.id, {
-        page: 0,
-        pageSize: 1,
+      const qrCodes = await QRCodeModel.find({
+        user: user.id,
+        isactive: QRCodeModel.isactive.ACTIVE,
       });
       if (qrCodes && qrCodes.length > 0) {
         setQrCode(qrCodes[0]);
@@ -613,7 +615,7 @@ const MemberDashboard = () => {
                         boxShadow: theme.boxShadow.md,
                       }}
                     >
-                      <QRCodeSVG value={qrCode.mq_qr_code} size={200} />
+                      <QRCodeSVG value={qrCode.code} size={200} />
                     </div>
                     <p
                       style={{
@@ -624,7 +626,7 @@ const MemberDashboard = () => {
                     >
                       입장 시 이 QR 코드를 스캔해주세요
                     </p>
-                    {qrCode.mq_expires_at && (
+                    {qrCode.expiredate && (
                       <p
                         style={{
                           fontSize: theme.typography.fontSize.xs,
@@ -632,7 +634,7 @@ const MemberDashboard = () => {
                           marginTop: theme.spacing[2],
                         }}
                       >
-                        만료: {formatDate(qrCode.mq_expires_at)}
+                        만료: {formatDate(qrCode.expiredate)}
                       </p>
                     )}
                   </div>
