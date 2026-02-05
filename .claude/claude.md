@@ -1,3 +1,90 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Development Commands
+
+```bash
+npm run dev              # Start dev server (port 9004)
+npm run build            # TypeScript check + Vite build
+npm run lint             # ESLint check
+npm run preview          # Preview production build
+
+# E2E Testing (Playwright)
+npm run test:e2e         # Run all tests
+npm run test:e2e:ui      # Interactive UI mode
+npm run test:e2e:headed  # Run with visible browser
+npm run test:e2e:debug   # Debug mode
+npm run test:e2e:codegen # Generate tests from browser actions
+npm run test:e2e:report  # View HTML report
+```
+
+## Architecture Overview
+
+Multi-tenant gym management platform (React 19 + TypeScript + Vite).
+
+### Tech Stack
+- **State**: Jotai atoms (`src/store/`) - `userAtom`, `selectedGymIdAtom`, etc.
+- **API**: Axios with JWT interceptors (`src/services/api.ts`)
+- **Styling**: Tailwind CSS + Linear Design System theme (`src/theme/`)
+- **Routing**: React Router with role-based protection (`App.tsx`)
+
+### Directory Structure
+```
+src/
+├── models/       # API layer - CRUD operations for all entities
+├── types/        # TypeScript interfaces (mirrors backend schema)
+├── store/        # Jotai atoms (auth.ts, gym.ts)
+├── services/     # api.ts (axios), auth.service.ts
+├── components/ui/# Design system components (Button, Card, Input, etc.)
+├── pages/        # Route pages by role (admin/, member/, auth/)
+└── theme/        # Theme tokens and CSS variables
+```
+
+### Model Pattern
+All models in `src/models/` follow this CRUD pattern:
+```typescript
+Model.insert(item)      // POST /endpoint
+Model.update(id, item)  // PUT /endpoint/:id
+Model.patch(id, item)   // PATCH /endpoint/:id
+Model.remove(id)        // DELETE /endpoint/:id
+Model.find(params)      // GET /endpoint (returns array)
+Model.findall(params)   // GET /endpoint (page=0, pagesize=9999)
+Model.findpage(params)  // GET /endpoint (returns paginated response)
+Model.get(id)           // GET /endpoint/:id
+```
+
+### API Response Types
+```typescript
+interface ApiResponse<T> {
+  content: T[];
+  page: number;
+  pageSize: number;
+  totalElements: number;
+  totalPages: number;
+}
+
+interface ApiSingleResponse<T> {
+  item: T;
+}
+```
+
+### User Roles
+```typescript
+UserModel.role.MEMBER         // 1 - 회원
+UserModel.role.TRAINER        // 2 - 트레이너
+UserModel.role.STAFF          // 3 - 직원
+UserModel.role.GYM_ADMIN      // 4 - 헬스장관리자
+UserModel.role.PLATFORM_ADMIN // 5 - 플랫폼관리자
+```
+
+### LocalStorage Keys
+- `gym_token` - JWT token
+- `gym_user` - Serialized User object
+- `theme-mode` - 'light' | 'dark'
+
+---
+
 # Linear Design System - 프로젝트 컴포넌트 가이드
 
 이 프로젝트는 **Linear Design System**을 기반으로 한 재사용 가능한 컴포넌트 라이브러리를 사용합니다.
