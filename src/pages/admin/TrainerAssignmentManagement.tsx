@@ -532,7 +532,7 @@ const TrainerAssignmentManagement = () => {
                     width: '100%',
                     padding: `${theme.spacing[3]} ${theme.spacing[4]}`,
                     borderRadius: theme.borderRadius.md,
-                    border: `1px solid ${theme.colors.border.primary}`,
+                    border: `1px solid ${theme.colors.border.medium}`,
                     backgroundColor: theme.colors.background.primary,
                     fontSize: theme.typography.fontSize.base,
                   }}
@@ -569,7 +569,7 @@ const TrainerAssignmentManagement = () => {
                     width: '100%',
                     padding: `${theme.spacing[3]} ${theme.spacing[4]}`,
                     borderRadius: theme.borderRadius.md,
-                    border: `1px solid ${theme.colors.border.primary}`,
+                    border: `1px solid ${theme.colors.border.medium}`,
                     backgroundColor: theme.colors.background.primary,
                     fontSize: theme.typography.fontSize.base,
                   }}

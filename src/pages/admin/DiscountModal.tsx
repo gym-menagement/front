@@ -14,7 +14,6 @@ interface DiscountModalProps {
 const DiscountModal: React.FC<DiscountModalProps> = ({
   show,
   discount,
-  gymId,
   onClose,
   onSave,
 }) => {

@@ -354,22 +354,6 @@ const HealthManagement = () => {
     }
   };
 
-  // Daytype handlers
-  const handleDeleteDaytype = async (daytypeId: number, daytypeName: string) => {
-    if (!confirm(`"${daytypeName}" 이용시간대를 정말 삭제하시겠습니까?`)) {
-      return;
-    }
-
-    try {
-      await DayType.remove(daytypeId);
-      loadDaytypes();
-      alert('이용시간대가 삭제되었습니다.');
-    } catch (error) {
-      console.error('Failed to delete daytype:', error);
-      alert('이용시간대 삭제에 실패했습니다.');
-    }
-  };
-
   const handleSaveDaytype = async (data: { name: string }) => {
     if (!selectedGymId) {
       alert('헬스장을 선택해주세요.');

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Card, Button, Input } from '../../components/ui';
 import { theme } from '../../theme';
 import { Health, HealthCategory, Term, Discount } from '../../models';
-import type { HealthCategory as HealthCategoryType } from '../../types/healthcategory';
+import type { Healthcategory as HealthCategoryType } from '../../types/healthcategory';
 import type { Term as TermType } from '../../types/term';
 import type { Discount as DiscountType } from '../../types/discount';
 import { useNavigate, useParams } from 'react-router-dom';

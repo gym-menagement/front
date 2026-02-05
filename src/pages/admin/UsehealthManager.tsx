@@ -17,7 +17,6 @@ import AdminHeader from '../../components/AdminHeader';
 import { useAtomValue } from 'jotai';
 import { selectedGymIdAtom } from '../../store/gym';
 import PauseModal from './PauseModal';
-import MemberDetailModal from './MemberDetailModal';
 import { formatLocalDateTime } from '../../global/util';
 
 // Extended type for usehealth with joined data
@@ -658,12 +657,68 @@ const UsehealthManager = () => {
         onConfirm={handlePauseMembership}
       />
 
-      {/* 상세 모달 */}
-      <MemberDetailModal
-        show={detailModal.show}
-        usehealth={detailModal.usehealthData}
-        onClose={closeDetailModal}
-      />
+      {/* 이용권 상세 모달 */}
+      {detailModal.show && detailModal.usehealthData && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000,
+        }}>
+          <div style={{
+            backgroundColor: theme.colors.background.primary, borderRadius: theme.borderRadius.lg,
+            padding: theme.spacing[8], width: '500px', maxHeight: '85vh', overflow: 'auto',
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: theme.spacing[6] }}>
+              <h2 style={{ fontSize: theme.typography.fontSize.xl, fontWeight: theme.typography.fontWeight.bold, margin: 0 }}>
+                이용권 상세
+              </h2>
+              <Button variant="ghost" size="sm" onClick={closeDetailModal}>닫기</Button>
+            </div>
+
+            <Card style={{ marginBottom: theme.spacing[4], backgroundColor: theme.colors.background.secondary }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing[3] }}>
+                <div>
+                  <div style={{ fontSize: theme.typography.fontSize.xs, color: theme.colors.text.tertiary }}>회원</div>
+                  <div style={{ fontSize: theme.typography.fontSize.sm, fontWeight: theme.typography.fontWeight.medium }}>
+                    {detailModal.usehealthData.extra?.user?.name || `회원 #${detailModal.usehealthData.user}`}
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontSize: theme.typography.fontSize.xs, color: theme.colors.text.tertiary }}>상품</div>
+                  <div style={{ fontSize: theme.typography.fontSize.sm }}>
+                    {detailModal.usehealthData.extra?.health?.name || `상품 #${detailModal.usehealthData.health}`}
+                  </div>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: theme.spacing[3] }}>
+                  <div>
+                    <div style={{ fontSize: theme.typography.fontSize.xs, color: theme.colors.text.tertiary }}>시작일</div>
+                    <div style={{ fontSize: theme.typography.fontSize.sm }}>{detailModal.usehealthData.startday?.split('T')[0]}</div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: theme.typography.fontSize.xs, color: theme.colors.text.tertiary }}>종료일</div>
+                    <div style={{ fontSize: theme.typography.fontSize.sm }}>{detailModal.usehealthData.endday?.split('T')[0]}</div>
+                  </div>
+                </div>
+                {detailModal.usehealthData.extra?.term && (
+                  <div>
+                    <div style={{ fontSize: theme.typography.fontSize.xs, color: theme.colors.text.tertiary }}>이용기간</div>
+                    <div style={{ fontSize: theme.typography.fontSize.sm }}>{detailModal.usehealthData.extra.term.name}</div>
+                  </div>
+                )}
+                {detailModal.usehealthData.extra?.discount && (
+                  <div>
+                    <div style={{ fontSize: theme.typography.fontSize.xs, color: theme.colors.text.tertiary }}>할인</div>
+                    <div style={{ fontSize: theme.typography.fontSize.sm }}>{detailModal.usehealthData.extra.discount.name}</div>
+                  </div>
+                )}
+              </div>
+            </Card>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Button variant="primary" onClick={closeDetailModal}>확인</Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -4,13 +4,11 @@ import { theme } from '../../theme';
 import { User } from '../../models';
 import { useNavigate, useParams } from 'react-router-dom';
 import GymSelector from '../../components/GymSelector';
-import { useAtomValue } from 'jotai';
-import { selectedGymIdAtom } from '../../store/gym';
 
 const MemberForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const selectedGymId = useAtomValue(selectedGymIdAtom);
+  const isEditMode = !!id;
 
   // 회원은 회원권 구매를 통해서만 가입되므로, 이 페이지는 수정 전용
   if (!id) {

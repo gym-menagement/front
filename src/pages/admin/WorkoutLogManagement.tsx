@@ -4,7 +4,7 @@ import { theme } from '../../theme';
 import { WorkoutLog } from '../../models';
 import type {
   WorkoutlogSearchParams,
-  WorkoutLog as WorkoutLogType,
+  Workoutlog as WorkoutLogType,
 } from '../../types/workoutlog';
 import AdminHeader from '../../components/AdminHeader';
 import { useAtomValue } from 'jotai';

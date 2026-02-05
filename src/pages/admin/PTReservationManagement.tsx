@@ -383,7 +383,7 @@ const PTReservationManagement = () => {
                   style={{
                     padding: `${theme.spacing[2]} ${theme.spacing[3]}`,
                     borderRadius: theme.borderRadius.md,
-                    border: `1px solid ${theme.colors.border.primary}`,
+                    border: `1px solid ${theme.colors.border.medium}`,
                     backgroundColor: theme.colors.background.primary,
                     fontSize: theme.typography.fontSize.sm,
                   }}

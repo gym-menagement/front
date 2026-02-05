@@ -4,13 +4,11 @@ import { theme } from '../../theme';
 import { User } from '../../models';
 import { useNavigate, useParams } from 'react-router-dom';
 import GymSelector from '../../components/GymSelector';
-import { useAtomValue } from 'jotai';
-import { selectedGymIdAtom } from '../../store/gym';
 
 const TrainerForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const selectedGymId = useAtomValue(selectedGymIdAtom);
+  const isEditMode = !!id;
 
   // 트레이너는 별도로 등록하지 않고 수정만 가능
   if (!id) {
