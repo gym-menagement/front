@@ -38,7 +38,7 @@ const PaymentManagement = () => {
       const response = await PaymentModel.findpage({
         gym: selectedGymId,
         page: currentPage - 1,
-        pageSize: pageSize,
+        pagesize: pageSize,
         // We can add sorting here if API supports it, usually default is by ID or Date
       });
 

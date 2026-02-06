@@ -49,7 +49,7 @@ const TrainerAssignmentManagement = () => {
       // 이 체육관에 소속된 트레이너 목록 (Gymtrainer 테이블 조회)
       const gymTrainerData = await Gymtrainer.findall({
         gym: selectedGymId,
-        status: Gymtrainer.status.TERMINATED,
+        status: Gymtrainer.status.IN_PROGRESS,
       });
       // extra.traineruser에서 User 정보 추출
       const trainerUsers = gymTrainerData

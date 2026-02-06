@@ -48,7 +48,11 @@ const TrainerManagement = () => {
   const loadAllTrainerUsers = async () => {
     try {
       const users = await User.findall({ role: User.role.TRAINER });
-      setAllTrainerUsers(users);
+      // 중복 제거
+      const uniqueUsers = users.filter((user, index, self) =>
+        index === self.findIndex(u => u.id === user.id)
+      );
+      setAllTrainerUsers(uniqueUsers);
     } catch (error) {
       console.error('Failed to load trainer users:', error);
     }
@@ -125,7 +129,11 @@ const TrainerManagement = () => {
         })
       );
 
-      setTrainers(trainersWithStats);
+      // 중복 제거
+      const uniqueTrainers = trainersWithStats.filter((trainer, index, self) =>
+        index === self.findIndex(t => t.id === trainer.id)
+      );
+      setTrainers(uniqueTrainers);
     } catch (error) {
       console.error('Failed to load trainers:', error);
     } finally {

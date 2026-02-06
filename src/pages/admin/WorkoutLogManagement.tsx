@@ -41,7 +41,7 @@ const WorkoutLogManagement = () => {
       const params: WorkoutlogSearchParams = {
         gym: selectedGymId,
         page,
-        pageSize,
+        pagesize: pageSize,
       };
 
       // 날짜 필터가 있으면 추가
