@@ -177,7 +177,7 @@ export default class UserModel {
       `/user/search/level?level=${level}`,
       { params }
     );
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async searchByEmail(email: string, params?: UserSearchParams) {
@@ -185,7 +185,7 @@ export default class UserModel {
       `/user/search/email?email=${email}`,
       { params }
     );
-    return res.data.items || [];
+    return res.data.content || [];
   }
 
   static async searchByTel(tel: string, params?: UserSearchParams) {
@@ -193,6 +193,6 @@ export default class UserModel {
       `/user/search/tel?tel=${tel}`,
       { params }
     );
-    return res.data.items || [];
+    return res.data.content || [];
   }
 }

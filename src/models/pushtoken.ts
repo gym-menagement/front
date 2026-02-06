@@ -60,7 +60,7 @@ export default class PushtokenModel {
 
   static async findall(params?: PushtokenSearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Pushtoken>>('/pushtoken', { params });
     return res.data.content || [];
   }

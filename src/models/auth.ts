@@ -68,10 +68,10 @@ export default class AuthModel {
   }
 
   // Check user role
-  // static hasRole(role: number): boolean {
-  //   const user = this.getCurrentUser();
-  //   return user?.role === role;
-  // }
+  static hasRole(role: number): boolean {
+    const user = this.getCurrentUser();
+    return user?.role === role;
+  }
 
   // Refresh token (if backend supports it)
   static async refreshToken(): Promise<string> {

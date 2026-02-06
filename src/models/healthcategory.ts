@@ -45,7 +45,7 @@ export default class HealthcategoryModel {
 
   static async findall(params?: HealthcategorySearchParams) {
     params!.page = 0;
-    params!.pageSize = 9999;
+    params!.pagesize = 9999;
     const res = await get<ApiResponse<Healthcategory>>('/healthcategory', { params });
     return res.data.content || [];
   }

@@ -9,14 +9,11 @@ import type {
 export default class TrainermemberModel {
   // Status constants (from backend: enums/status/Enums.kt)
   static readonly status = {
+    none: 0,
     TERMINATED: 1,
     IN_PROGRESS: 2,
   };
-  static readonly statuss = [
-    '',
-    '종료',
-    '진행중',
-  ];
+  static readonly statuss = ['', '종료', '진행중'];
 
   static getStatus(value: number): string {
     return this.statuss[value] || String(value);
@@ -54,29 +51,39 @@ export default class TrainermemberModel {
   }
 
   static async find(params?: TrainermemberSearchParams) {
-    const res = await get<ApiResponse<Trainermember>>('/trainermember', { params });
+    const res = await get<ApiResponse<Trainermember>>('/trainermember', {
+      params,
+    });
     return res.data.content || [];
   }
 
   static async findall(params?: TrainermemberSearchParams) {
     params!.page = 0;
     params!.pagesize = 9999;
-    const res = await get<ApiResponse<Trainermember>>('/trainermember', { params });
+    const res = await get<ApiResponse<Trainermember>>('/trainermember', {
+      params,
+    });
     return res.data.content || [];
   }
 
   static async findpage(params?: TrainermemberSearchParams) {
-    const res = await get<ApiResponse<Trainermember>>('/trainermember', { params });
-    return res.data
+    const res = await get<ApiResponse<Trainermember>>('/trainermember', {
+      params,
+    });
+    return res.data;
   }
 
   static async count(params?: TrainermemberSearchParams) {
-    const res = await get<{ count: number }>('/trainermember/count', { params });
+    const res = await get<{ count: number }>('/trainermember/count', {
+      params,
+    });
     return res.data.count || 0;
   }
 
   static async get(id: number) {
-    const res = await get<ApiSingleResponse<Trainermember>>(`/trainermember/${id}`);
+    const res = await get<ApiSingleResponse<Trainermember>>(
+      `/trainermember/${id}`,
+    );
     return res.data;
   }
 }
