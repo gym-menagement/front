@@ -1,4 +1,4 @@
-import { HTMLAttributes, forwardRef } from 'react';
+import { forwardRef, type HTMLAttributes } from 'react';
 import { theme } from '../../theme';
 
 export type BadgeVariant = 'default' | 'success' | 'warning' | 'error' | 'info';

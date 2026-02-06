@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, forwardRef } from 'react';
+import { forwardRef, type ButtonHTMLAttributes } from 'react';
 import { theme } from '../../theme';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';

@@ -1,4 +1,4 @@
-import { HTMLAttributes, ReactNode, useState } from 'react';
+import { useState, type HTMLAttributes, type ReactNode } from 'react';
 import { theme } from '../../theme';
 
 export interface NavbarProps extends HTMLAttributes<HTMLElement> {

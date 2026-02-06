@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, Children, ReactNode } from 'react';
+import { useState, useEffect, useCallback, Children, type ReactNode } from 'react';
 import { theme } from '../../theme';
 
 export interface CarouselProps {

@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, forwardRef, useState } from 'react';
+import { forwardRef, useState, type InputHTMLAttributes } from 'react';
 import { theme } from '../../theme';
 
 export type InputSize = 'sm' | 'md' | 'lg';

@@ -1,4 +1,4 @@
-import { HTMLAttributes, ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 import { theme } from '../../theme';
 
 export type HeroAlignment = 'left' | 'center';
