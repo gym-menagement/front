@@ -34,16 +34,18 @@ const MemberDashboard = () => {
       setLoading(true);
 
       // Load active memberships
-      const memberships = await MembershipModel.searchByUserId(user.id, {
+      const memberships = await MembershipModel.find({
+        user: user.id,
         page: 0,
-        pageSize: 10,
+        pagesize: 10,
       });
       setMemberships(memberships);
 
       // Load recent attendance (last 7 days)
-      const attendance = await AttendanceModel.searchByUserId(user.id, {
+      const attendance = await AttendanceModel.find({
+        user: user.id,
         page: 0,
-        pageSize: 7,
+        pagesize: 7,
       });
       setRecentAttendance(attendance);
 
@@ -57,9 +59,10 @@ const MemberDashboard = () => {
       }
 
       // Load upcoming PT reservations
-      const ptReservations = await PTReservationModel.searchByUserId(user.id, {
+      const ptReservations = await PTReservationModel.find({
+        member: user.id,
         page: 0,
-        pageSize: 5,
+        pagesize: 5,
       });
       setUpcomingPT(ptReservations);
     } catch (error) {
@@ -99,12 +102,12 @@ const MemberDashboard = () => {
     });
   };
 
-  // 통계 계산
+  // 통계 계산 (membership status: 1=사용중)
   const stats = {
     totalMemberships: memberships.length,
-    activeMemberships: memberships.filter((m) => m.m_status === 'ACTIVE').length,
+    activeMemberships: memberships.filter((m) => m.status === 1).length,
     attendanceThisWeek: recentAttendance.length,
-    upcomingPTCount: upcomingPT.filter((pt) => pt.pr_status === 1).length,
+    upcomingPTCount: upcomingPT.filter((pt) => pt.status === PTReservationModel.status.RESERVED).length,
   };
 
   if (loading) {
@@ -544,7 +547,7 @@ const MemberDashboard = () => {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing[2] }}>
                     {upcomingPT.map((pt) => (
                       <div
-                        key={pt.pr_id}
+                        key={pt.id}
                         style={{
                           display: 'flex',
                           alignItems: 'center',
@@ -560,7 +563,7 @@ const MemberDashboard = () => {
                               color: theme.colors.text.primary,
                             }}
                           >
-                            {formatDate(pt.pr_date)}
+                            {formatDate(pt.reservationdate)}
                           </div>
                           <div
                             style={{
@@ -568,16 +571,15 @@ const MemberDashboard = () => {
                               color: theme.colors.text.secondary,
                             }}
                           >
-                            {pt.pr_start_time} - {pt.pr_end_time}
-                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                            {(pt as any).trainer && <> · {(pt as any).trainer.name} 트레이너</>}
+                            {pt.starttime} - {pt.endtime}
+                            {pt.extra?.traineruser && <> · {pt.extra.traineruser.name} 트레이너</>}
                           </div>
                         </div>
-                        <Badge variant={pt.pr_status === 1 ? 'success' : 'warning'}>
-                          {pt.pr_status === 0 && '대기중'}
-                          {pt.pr_status === 1 && '확정'}
-                          {pt.pr_status === 2 && '취소'}
-                          {pt.pr_status === 3 && '노쇼'}
+                        <Badge variant={pt.status === PTReservationModel.status.RESERVED ? 'success' : 'warning'}>
+                          {pt.status === PTReservationModel.status.RESERVED && '예약'}
+                          {pt.status === PTReservationModel.status.COMPLETED && '완료'}
+                          {pt.status === PTReservationModel.status.CANCELLED && '취소'}
+                          {pt.status === PTReservationModel.status.NO_SHOW && '노쇼'}
                         </Badge>
                       </div>
                     ))}
@@ -682,7 +684,7 @@ const MemberDashboard = () => {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: theme.spacing[2] }}>
                     {recentAttendance.map((attendance) => (
                       <div
-                        key={attendance.a_id}
+                        key={attendance.id}
                         style={{
                           display: 'flex',
                           alignItems: 'center',
@@ -698,7 +700,7 @@ const MemberDashboard = () => {
                               color: theme.colors.text.primary,
                             }}
                           >
-                            {formatDate(attendance.a_check_in_time)}
+                            {formatDate(attendance.checkintime)}
                           </div>
                           <div
                             style={{
@@ -706,9 +708,9 @@ const MemberDashboard = () => {
                               color: theme.colors.text.secondary,
                             }}
                           >
-                            입실: {formatTime(attendance.a_check_in_time)}
-                            {attendance.a_check_out_time && (
-                              <> · 퇴실: {formatTime(attendance.a_check_out_time)}</>
+                            입실: {formatTime(attendance.checkintime)}
+                            {attendance.checkouttime && (
+                              <> · 퇴실: {formatTime(attendance.checkouttime)}</>
                             )}
                           </div>
                         </div>

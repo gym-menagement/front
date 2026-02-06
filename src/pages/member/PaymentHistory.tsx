@@ -33,7 +33,7 @@ const PaymentHistory = () => {
 
       const response = await PaymentformModel.findpage({
         page: currentPage,
-        pageSize: pageSize,
+        pagesize: pageSize,
       });
 
       if (response && response.content) {

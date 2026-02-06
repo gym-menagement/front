@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Card, Button, Input, Badge } from '../../components/ui';
+import { Card, Button, Input } from '../../components/ui';
 import { Gym as GymModel } from '../../models';
-import type { Gym, Status } from '../../types';
+import type { Gym } from '../../types/gym';
 
 const GymList = () => {
   const [gyms, setGyms] = useState<Gym[]>([]);
@@ -18,7 +18,7 @@ const GymList = () => {
   const loadGyms = async () => {
     try {
       setLoading(true);
-      const items = await GymModel.find({ page, pageSize });
+      const items = await GymModel.find({ page, pagesize: pageSize });
       setGyms(items);
 
       // Calculate total pages from total count
@@ -39,24 +39,13 @@ const GymList = () => {
 
     try {
       setLoading(true);
-      const items = await GymModel.searchByName(searchQuery, { page: 0, pageSize });
+      const items = await GymModel.find({ name: searchQuery, page: 0, pagesize: pageSize });
       setGyms(items);
       setPage(0);
     } catch (error) {
       console.error('Failed to search gyms:', error);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const getStatusColor = (status: Status) => {
-    switch (status) {
-      case 'ACTIVE':
-        return 'success';
-      case 'INACTIVE':
-        return 'error';
-      default:
-        return 'default';
     }
   };
 
@@ -161,43 +150,32 @@ const GymList = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
               {gyms.map((gym) => (
                 <Card
-                  key={gym.g_id}
+                  key={gym.id}
                   className="overflow-hidden hover:shadow-lg transition-shadow"
                 >
                   {/* Gym Image */}
-                  {gym.g_image ? (
-                    <img
-                      src={gym.g_image}
-                      alt={gym.g_name}
-                      className="w-full h-48 object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                      <svg
-                        className="w-16 h-16 text-white opacity-50"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                        />
-                      </svg>
-                    </div>
-                  )}
+                  <div className="w-full h-48 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+                    <svg
+                      className="w-16 h-16 text-white opacity-50"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+                      />
+                    </svg>
+                  </div>
 
                   {/* Gym Info */}
                   <div className="p-6">
                     <div className="flex items-start justify-between mb-2">
                       <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                        {gym.g_name}
+                        {gym.name}
                       </h3>
-                      <Badge variant={getStatusColor(gym.g_status)}>
-                        {GymModel.getStatus(gym.g_status)}
-                      </Badge>
                     </div>
 
                     {/* Address */}
@@ -222,12 +200,12 @@ const GymList = () => {
                         />
                       </svg>
                       <p className="text-sm text-gray-600 dark:text-gray-400">
-                        {gym.g_address}
+                        {gym.address}
                       </p>
                     </div>
 
                     {/* Phone */}
-                    {gym.g_phone && (
+                    {gym.tel && (
                       <div className="flex items-center gap-2 mb-3">
                         <svg
                           className="w-5 h-5 text-gray-400"
@@ -243,23 +221,8 @@ const GymList = () => {
                           />
                         </svg>
                         <p className="text-sm text-gray-600 dark:text-gray-400">
-                          {gym.g_phone}
+                          {gym.tel}
                         </p>
-                      </div>
-                    )}
-
-                    {/* Description */}
-                    {gym.g_description && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
-                        {gym.g_description}
-                      </p>
-                    )}
-
-                    {/* Coordinates */}
-                    {gym.g_latitude && gym.g_longitude && (
-                      <div className="text-xs text-gray-500 dark:text-gray-500 mb-4">
-                        위치: {gym.g_latitude.toFixed(6)},{' '}
-                        {gym.g_longitude.toFixed(6)}
                       </div>
                     )}
 
@@ -267,20 +230,18 @@ const GymList = () => {
                     <div className="flex gap-2">
                       <Button
                         className="flex-1"
-                        onClick={() => handleViewDetails(gym.g_id)}
+                        onClick={() => handleViewDetails(gym.id)}
                       >
                         상세보기
                       </Button>
-                      {gym.g_status === 'ACTIVE' && (
-                        <Button
-                          variant="secondary"
-                          onClick={() =>
-                            (window.location.href = `/gym/${gym.g_id}/purchase`)
-                          }
-                        >
-                          회원권 구매
-                        </Button>
-                      )}
+                      <Button
+                        variant="secondary"
+                        onClick={() =>
+                          (window.location.href = `/gym/${gym.id}/purchase`)
+                        }
+                      >
+                        회원권 구매
+                      </Button>
                     </div>
                   </div>
                 </Card>
