@@ -28,7 +28,7 @@ export interface IpblockSearchParams {
   startdate?: string;
   enddate?: string;
   page?: number;
-  pageSize?: number;
+  pagesize?: number;
 }
 
 // API response types

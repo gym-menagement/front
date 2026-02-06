@@ -53,7 +53,7 @@ export interface UserSearchParams {
   startdate?: string;
   enddate?: string;
   page?: number;
-  pageSize?: number;
+  pagesize?: number;
 }
 
 // API response types

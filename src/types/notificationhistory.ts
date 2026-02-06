@@ -1,36 +1,45 @@
-// Auto-generated TypeScript types for Order
-// Generated from table: order
+// Auto-generated TypeScript types for Notificationhistory
+// Generated from table: notificationhistory
 
 import type { User } from './user';
 import type { Gym } from './gym';
-import type { Health } from './health';
 
-
-export interface Order {
+export interface Notificationhistory {
   id: number;
   user: number;
   gym: number;
-  health: number;
+  type: number;
+  title: string;
+  content: string;
+  status: number;
+  sentdate: string;
+  readdate: string;
   date: string;
   extra?: {
     user?: User;
     gym?: Gym;
-    health?: Health;
   };
 }
 
 // Create request type (omit auto-generated fields)
-export type CreateOrderRequest = Omit<Order, 'id'>;
+export type CreateNotificationhistoryRequest = Omit<Notificationhistory, 'id'>;
 
 // Update request type (all fields optional except id)
-export type UpdateOrderRequest = Partial<Omit<Order, 'id'>>;
+export type UpdateNotificationhistoryRequest = Partial<Omit<Notificationhistory, 'id'>>;
 
 // Search params type
-export interface OrderSearchParams {
+export interface NotificationhistorySearchParams {
   id?: number;
   user?: number;
   gym?: number;
-  health?: number;
+  type?: number;
+  title?: string;
+  content?: string;
+  status?: number;
+  startsentdate?: string;
+  endsentdate?: string;
+  startreaddate?: string;
+  endreaddate?: string;
   startdate?: string;
   enddate?: string;
   page?: number;
