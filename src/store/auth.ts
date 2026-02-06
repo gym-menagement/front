@@ -1,5 +1,5 @@
 import { atom } from 'jotai';
-import type { User } from '../types';
+import type { User } from '../types/user';
 import { User as UserModel } from '../models';
 import { authService } from '../services/auth.service';
 
