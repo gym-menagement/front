@@ -36,12 +36,18 @@ const LoginPage = () => {
       setToken(response.token);
 
       console.log('Login successful:', response.user.role);
+      console.log('UserModel.role.TRAINER:', UserModel.role.TRAINER);
+      console.log('Is TRAINER?', response.user.role === UserModel.role.TRAINER);
 
       // 역할별 리다이렉트
       const role = response.user.role;
 
       if (role === UserModel.role.MEMBER) {
+        console.log('Redirecting to member dashboard');
         window.location.href = '/member/dashboard';
+      } else if (role === UserModel.role.TRAINER) {
+        console.log('Redirecting to trainer dashboard');
+        window.location.href = '/trainer/dashboard';
       } else if (role === UserModel.role.GYM_ADMIN) {
         // 헬스장 관리자: 등록된 헬스장이 있는지 확인
         try {
@@ -55,13 +61,14 @@ const LoginPage = () => {
           // 헬스장 조회 실패 시에도 대시보드로 이동
           window.location.href = '/admin/dashboard';
         }
-      } else if (
-        role === UserModel.role.TRAINER ||
-        role === UserModel.role.STAFF
-      ) {
+      } else if (role === UserModel.role.STAFF) {
+        console.log('Redirecting to admin dashboard (staff)');
         window.location.href = '/admin/dashboard';
       } else if (role === UserModel.role.PLATFORM_ADMIN) {
+        console.log('Redirecting to admin dashboard (platform admin)');
         window.location.href = '/admin/dashboard';
+      } else {
+        console.log('No matching role. Role:', role);
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : '로그인에 실패했습니다.');

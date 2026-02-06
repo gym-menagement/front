@@ -15,8 +15,8 @@ import PaymentHistory from './pages/member/PaymentHistory';
 import GymList from './pages/gym/GymList';
 import GymRegisterPage from './pages/gym/GymRegisterPage';
 
-// Trainer Pages (to be created)
-// import TrainerDashboard from './pages/trainer/Dashboard';
+// Trainer Pages
+import TrainerDashboard from './pages/trainer/TrainerDashboard';
 
 // Admin Pages
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -144,7 +144,7 @@ function App() {
           path="/trainer/dashboard"
           element={
             <ProtectedRoute requiredRole={UserModel.role.TRAINER}>
-              <div>Trainer Dashboard (To be implemented)</div>
+              <TrainerDashboard />
             </ProtectedRoute>
           }
         />
