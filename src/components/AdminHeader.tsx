@@ -1,8 +1,6 @@
 import React from 'react';
-import { Button } from './ui';
 import { theme } from '../theme';
-import ProfileSwitcher from './common/ProfileSwitcher';
-import { useNavigate } from 'react-router-dom';
+
 
 export interface AdminHeaderProps {
   title: string;
@@ -14,12 +12,8 @@ export interface AdminHeaderProps {
 
 const AdminHeader: React.FC<AdminHeaderProps> = ({
   title,
-  showGymSelector = true,
-  showBackButton = true,
-  backPath = '/admin/dashboard',
   children,
 }) => {
-  const navigate = useNavigate();
 
   return (
     <div
