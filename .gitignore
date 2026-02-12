@@ -30,4 +30,4 @@ dist-ssr
 /screenshots/
 
 # .claude/*
-# .env
+.env

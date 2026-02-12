@@ -1,0 +1,73 @@
+{
+  "colors": {
+    "background": {
+      "main": "#FFFFFF",
+      "secondary": "#FAFAFA",
+      "inverse": "#111111"
+    },
+    "text": {
+      "primary": "#111111",
+      "secondary": "#636363",
+      "inverse": "#FFFFFF",
+      "accent": "#2563EB"
+    },
+    "accent": {
+      "primary": "#2563EB",
+      "focusRing": "rgba(37, 99, 235, 0.5)"
+    }
+  },
+  "typography": {
+    "fontFamily": "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+    "fontSizes": {
+      "h1": "56px",
+      "h2": "36px",
+      "body": "16px",
+      "small": "14px"
+    },
+    "fontWeights": {
+      "normal": "400",
+      "bold": "700"
+    }
+  },
+  "layout": {
+    "maxWidth": "1280px",
+    "padding": {
+      "containerX": "32px",
+      "containerY": "64px"
+    },
+    "grid": {
+      "gap": "24px"
+    }
+  },
+  "components": {
+    "button": {
+      "primary": {
+        "backgroundColor": "#111111",
+        "textColor": "#FFFFFF",
+        "borderRadius": "9999px",
+        "padding": "0 24px",
+        "height": "44px"
+      },
+      "secondary": {
+        "backgroundColor": "transparent",
+        "textColor": "#111111",
+        "borderRadius": "9999px",
+        "border": "1px solid #E5E5E5",
+        "padding": "0 24px",
+        "height": "44px"
+      }
+    },
+    "card": {
+      "backgroundColor": "#FFFFFF",
+      "borderRadius": "12px",
+      "shadow": "0 1px 2px rgba(0, 0, 0, 0.05)",
+      "border": "1px solid #F0F0F0"
+    },
+    "navbar": {
+      "height": "72px",
+      "backgroundColor": "rgba(255, 255, 255, 0.8)",
+      "sticky": true,
+      "backdropFilter": "blur(8px)"
+    }
+  }
+}

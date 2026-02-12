@@ -2,6 +2,10 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { useAtomValue } from 'jotai';
 import { isAuthenticatedAtom, userAtom } from './store/auth';
 import { User as UserModel } from './models';
+import LandingPage from './pages/LandingPage';
+
+// Layouts
+import AdminLayout from './layouts/AdminLayout';
 
 // Auth Pages
 import LoginPage from './pages/auth/LoginPage';
@@ -44,6 +48,7 @@ import GymtrainerManagement from './pages/admin/GymtrainerManagement';
 import MembershipManagement from './pages/admin/MembershipManagement';
 import DaytypeManagement from './pages/admin/DaytypeManagement';
 import UsehealthManager from './pages/admin/UsehealthManager';
+import GymAdminManagement from './pages/admin/GymAdminManagement';
 
 // Demo Page (keep for component showcase)
 import ComponentsDemo from './pages/ComponentsDemo';
@@ -150,227 +155,49 @@ function App() {
         />
 
         {/* Admin Routes */}
+        {/* Admin Routes */}
         <Route
-          path="/admin/dashboard"
+          path="/admin"
           element={
             <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <AdminDashboard />
+              <AdminLayout />
             </ProtectedRoute>
           }
-        />
-        <Route
-          path="/admin/members"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <MemberManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/members/:id"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <MemberForm />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/trainers"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <TrainerManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/trainers/:id"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <TrainerForm />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/health"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <HealthManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/health/new"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <HealthForm />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/health/:id"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <HealthForm />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/categories"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <HealthCategoryManager />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/discounts"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <DiscountManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/discounts/new"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <DiscountForm />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/discounts/:id"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <DiscountForm />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/payments"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <PaymentManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/workout-logs"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <WorkoutLogManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/terms"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <TermManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/attendance"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <AttendanceManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/pt-reservations"
-          element={
-            <ProtectedRoute
-              allowedRoles={[UserModel.role.GYM_ADMIN, UserModel.role.TRAINER]}
-            >
-              <PTReservationManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/trainer-assignments"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <TrainerAssignmentManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/notices"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <NoticeManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/inquiries"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <InquiryManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/settings"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <SettingManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/orders"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <OrderManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/qrcodes"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <QRCodeManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/gymtrainers"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <GymtrainerManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/memberships"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <MembershipManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/daytypes"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <DaytypeManagement />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/admin/usehealth"
-          element={
-            <ProtectedRoute requiredRole={UserModel.role.GYM_ADMIN}>
-              <UsehealthManager />
-            </ProtectedRoute>
-          }
-        />
+        >
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="members" element={<MemberManagement />} />
+          <Route path="members/:id" element={<MemberForm />} />
+          <Route path="trainers" element={<TrainerManagement />} />
+          <Route path="trainers/:id" element={<TrainerForm />} />
+          <Route path="health" element={<HealthManagement />} />
+          <Route path="health/new" element={<HealthForm />} />
+          <Route path="health/:id" element={<HealthForm />} />
+          <Route path="categories" element={<HealthCategoryManager />} />
+          <Route path="discounts" element={<DiscountManagement />} />
+          <Route path="discounts/new" element={<DiscountForm />} />
+          <Route path="discounts/:id" element={<DiscountForm />} />
+          <Route path="payments" element={<PaymentManagement />} />
+          <Route path="workout-logs" element={<WorkoutLogManagement />} />
+          <Route path="terms" element={<TermManagement />} />
+          <Route path="attendance" element={<AttendanceManagement />} />
+          <Route path="pt-reservations" element={<PTReservationManagement />} />
+          <Route path="trainer-assignments" element={<TrainerAssignmentManagement />} />
+          <Route path="notices" element={<NoticeManagement />} />
+          <Route path="inquiries" element={<InquiryManagement />} />
+          <Route path="settings" element={<SettingManagement />} />
+          <Route path="orders" element={<OrderManagement />} />
+          <Route path="qrcodes" element={<QRCodeManagement />} />
+          <Route path="gymtrainers" element={<GymtrainerManagement />} />
+          <Route path="memberships" element={<MembershipManagement />} />
+          <Route path="daytypes" element={<DaytypeManagement />} />
+          <Route path="gym-admins" element={<GymAdminManagement />} />
+          <Route path="usehealth" element={<UsehealthManager />} />
+          {/* Catch-all redirect to dashboard */}
+          <Route path="" element={<Navigate to="dashboard" replace />} />
+        </Route>
 
         {/* Default Route */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<LandingPage />} />
       </Routes>
     </BrowserRouter>
   );
