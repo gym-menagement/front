@@ -3,6 +3,7 @@ import { useAtomValue } from 'jotai';
 import { userAtom } from '../../store/auth';
 import { Card, Button, Badge } from '../../components/ui';
 import { theme } from '../../theme';
+import ProfileSwitcher from '../../components/common/ProfileSwitcher';
 import {
   Attendance as AttendanceModel,
   QRCode as QRCodeModel,
@@ -136,20 +137,23 @@ const MemberDashboard = () => {
     >
       <div style={{ maxWidth: '1600px', margin: '0 auto' }}>
         {/* Header with Welcome */}
-        <div style={{ marginBottom: theme.spacing[8] }}>
-          <h1
-            style={{
-              fontSize: theme.typography.fontSize['3xl'],
-              fontWeight: theme.typography.fontWeight.bold,
-              color: theme.colors.text.primary,
-              marginBottom: theme.spacing[2],
-            }}
-          >
-            안녕하세요, {user?.name}님 👋
-          </h1>
-          <p style={{ fontSize: theme.typography.fontSize.base, color: theme.colors.text.secondary }}>
-            오늘도 건강한 하루 되세요!
-          </p>
+        <div style={{ marginBottom: theme.spacing[8], display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <h1
+              style={{
+                fontSize: theme.typography.fontSize['3xl'],
+                fontWeight: theme.typography.fontWeight.bold,
+                color: theme.colors.text.primary,
+                marginBottom: theme.spacing[2],
+              }}
+            >
+              안녕하세요, {user?.name}님 👋
+            </h1>
+            <p style={{ fontSize: theme.typography.fontSize.base, color: theme.colors.text.secondary }}>
+              오늘도 건강한 하루 되세요!
+            </p>
+          </div>
+          <ProfileSwitcher />
         </div>
 
         {/* Stats Grid */}

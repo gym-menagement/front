@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useAtomValue } from 'jotai';
 import { Card, Badge, Button, Input } from '../../components/ui';
 import { theme } from '../../theme';
-import { userAtom } from '../../store/auth';
+import { userAtom, currentProfileAtom } from '../../store/auth';
 import { Gymtrainer, TrainerMember, PTReservation } from '../../models';
 import type { Gymtrainer as GymtrainerType } from '../../types/gymtrainer';
 import type { Trainermember } from '../../types/trainermember';
@@ -10,9 +10,11 @@ import type { Ptreservation } from '../../types/ptreservation';
 import { formatLocalDateTime, getDayRange } from '../../global/util';
 import { useNavigate } from 'react-router-dom';
 import { authService } from '../../services/auth.service';
+import ProfileSwitcher from '../../components/common/ProfileSwitcher';
 
 const TrainerDashboard = () => {
   const user = useAtomValue(userAtom);
+  const currentProfile = useAtomValue(currentProfileAtom);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [gymInfo, setGymInfo] = useState<GymtrainerType | null>(null);
@@ -33,7 +35,7 @@ const TrainerDashboard = () => {
     if (user) {
       loadData();
     }
-  }, [user]);
+  }, [user, currentProfile]);
 
   const loadData = async () => {
     if (!user) return;
@@ -41,15 +43,25 @@ const TrainerDashboard = () => {
     try {
       setLoading(true);
 
+      // Use current profile gym if available, otherwise fetch first
+      let gymId = currentProfile?.gymId;
+      
       // 트레이너가 소속된 헬스장 정보 조회
-      const gymtrainers = await Gymtrainer.findall({
+      // If we have a specific gym context, use it
+      const query: any = {
         trainer: user.id,
         status: Gymtrainer.status.IN_PROGRESS,
-      });
+      };
+      
+      if (gymId) {
+        query.gym = gymId;
+      }
+
+      const gymtrainers = await Gymtrainer.findall(query);
 
       if (gymtrainers.length > 0) {
         setGymInfo(gymtrainers[0]);
-        const gymId = gymtrainers[0].gym;
+        gymId = gymtrainers[0].gym;
 
         // 담당 회원 조회
         const memberList = await TrainerMember.findall({
@@ -88,6 +100,12 @@ const TrainerDashboard = () => {
           new Date(a.reservationdate).getTime() - new Date(b.reservationdate).getTime()
         );
         setWeekReservations(weekRes);
+      } else {
+        // No gym found for this profile or at all
+        setGymInfo(null);
+        setMembers([]);
+        setTodayReservations([]);
+        setWeekReservations([]);
       }
     } catch (error) {
       console.error('Failed to load trainer data:', error);
@@ -242,7 +260,8 @@ const TrainerDashboard = () => {
               {gymInfo.extra?.gym?.name || '헬스장'} · {gymInfo.position || '트레이너'}
             </p>
           </div>
-          <div style={{ display: 'flex', gap: theme.spacing[2] }}>
+          <div style={{ display: 'flex', gap: theme.spacing[2], alignItems: 'center' }}>
+            <ProfileSwitcher />
             <Button variant="primary" onClick={() => setShowNewReservationModal(true)}>
               새 예약
             </Button>
