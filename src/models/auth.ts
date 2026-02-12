@@ -1,9 +1,10 @@
 import { get, post } from '../services/api';
 import type { LoginRequest, LoginResponse, JwtResponse } from '../types/auth';
-import type { User } from '../types/user';
+import type { User, UserProfile } from '../types/user';
 
 const AUTH_TOKEN_KEY = 'gym_token';
 const AUTH_USER_KEY = 'gym_user';
+const AUTH_PROFILE_KEY = 'gym_current_profile';
 
 export default class AuthModel {
   // Login with JWT (GET method)
@@ -16,8 +17,7 @@ export default class AuthModel {
     const user = res.data.user;
 
     // Store token and user info
-    localStorage.setItem(AUTH_TOKEN_KEY, token);
-    localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
+    this.saveSession(token, user);
 
     return { token, user };
   }
@@ -33,16 +33,32 @@ export default class AuthModel {
     const user = res.data.user;
 
     // Store token and user info
-    localStorage.setItem(AUTH_TOKEN_KEY, token);
-    localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
+    this.saveSession(token, user);
 
     return { token, user };
+  }
+
+  // Helper to save session and initialize profile
+  private static saveSession(token: string, user: User): void {
+    localStorage.setItem(AUTH_TOKEN_KEY, token);
+    
+    // Set initial profile
+    if (user.profiles && user.profiles.length > 0) {
+      // Try to find profile matching current role
+      const currentProfile = user.profiles.find(p => p.role === user.role) || user.profiles[0];
+      localStorage.setItem(AUTH_PROFILE_KEY, JSON.stringify(currentProfile));
+    } else {
+        localStorage.removeItem(AUTH_PROFILE_KEY);
+    }
+    
+    localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
   }
 
   // Logout
   static logout(): void {
     localStorage.removeItem(AUTH_TOKEN_KEY);
     localStorage.removeItem(AUTH_USER_KEY);
+    localStorage.removeItem(AUTH_PROFILE_KEY);
   }
 
   // Get current user
@@ -92,4 +108,38 @@ export default class AuthModel {
       return false;
     }
   }
+  
+  // Get current profile
+  static getCurrentProfile(): UserProfile | null {
+    const profileStr = localStorage.getItem(AUTH_PROFILE_KEY);
+    if (profileStr) {
+        try {
+            return JSON.parse(profileStr);
+        } catch {
+            return null;
+        }
+    }
+    
+    // Fallback if not explicitly set but user exists
+    const user = this.getCurrentUser();
+    if (user && user.profiles && user.profiles.length > 0) {
+        return user.profiles.find(p => p.role === user.role) || user.profiles[0];
+    }
+    
+    return null;
+  }
+  
+  // Switch profile
+  static switchProfile(profile: UserProfile): void {
+      const user = this.getCurrentUser();
+      if (!user) return;
+      
+      // Update current profile
+      localStorage.setItem(AUTH_PROFILE_KEY, JSON.stringify(profile));
+      
+      // Update user role to match profile for compatibility
+      const updatedUser = { ...user, role: profile.role };
+      localStorage.setItem(AUTH_USER_KEY, JSON.stringify(updatedUser));
+  }
 }
+

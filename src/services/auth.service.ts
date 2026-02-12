@@ -1,6 +1,6 @@
 import { Auth as AuthModel } from '../models';
 import type { LoginRequest, LoginResponse } from '../types/auth';
-import type { User } from '../types/user';
+import type { User, UserProfile } from '../types/user';
 
 export const authService = {
   // Login with JWT
@@ -60,4 +60,14 @@ export const authService = {
   async verifyToken(): Promise<boolean> {
     return await AuthModel.verifyToken();
   },
+  
+  // Get current profile
+  getCurrentProfile(): UserProfile | null {
+    return AuthModel.getCurrentProfile();
+  },
+  
+  // Switch profile
+  switchProfile(profile: UserProfile): void {
+    AuthModel.switchProfile(profile);
+  }
 };

@@ -1,6 +1,13 @@
 // Auto-generated TypeScript types for User
 // Generated from table: user
 
+export interface UserProfile {
+  role: number;
+  gymId?: number;
+  gymName?: string;
+  contextId?: number;
+}
+
 export interface User {
   id: number;
   loginid: string;
@@ -20,6 +27,7 @@ export interface User {
   logindate: string;
   lastchangepasswddate: string;
   date: string;
+  profiles?: UserProfile[];
 }
 
 // Create request type (omit auto-generated fields)

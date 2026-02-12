@@ -71,7 +71,7 @@ const GymSelector = () => {
     <div
       style={{ display: 'flex', alignItems: 'center', gap: theme.spacing[2] }}
     >
-      <label
+      {/* <label
         htmlFor="gym-selector"
         style={{
           fontSize: theme.typography.fontSize.sm,
@@ -81,7 +81,7 @@ const GymSelector = () => {
         }}
       >
         헬스장 선택:
-      </label>
+      </label> */}
       <select
         id="gym-selector"
         value={selectedGymId || ''}

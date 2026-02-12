@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from './ui';
 import { theme } from '../theme';
-import GymSelector from './GymSelector';
+import ProfileSwitcher from './common/ProfileSwitcher';
 import { useNavigate } from 'react-router-dom';
 
 export interface AdminHeaderProps {
@@ -55,15 +55,15 @@ const AdminHeader: React.FC<AdminHeaderProps> = ({
           >
             {title}
           </h1>
-          {showGymSelector && <GymSelector />}
+          {/* {showGymSelector && <ProfileSwitcher />} */}
         </div>
         <div style={{ display: 'flex', gap: theme.spacing[2], alignItems: 'center' }}>
           {children}
-          {showBackButton && (
+          {/* {showBackButton && (
             <Button variant="ghost" onClick={() => navigate(backPath)}>
               뒤로 가기
             </Button>
-          )}
+          )} */}
         </div>
       </div>
     </div>

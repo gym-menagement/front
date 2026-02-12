@@ -6,6 +6,7 @@ export { default as User } from './user';
 export { default as Role } from './role';
 
 // Gym Management
+export { default as Gymadmin } from './Gymadmin';
 export { default as Gym } from './gym';
 export { default as Gymtrainer } from './gymtrainer';
 
