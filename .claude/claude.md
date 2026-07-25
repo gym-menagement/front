@@ -9,15 +9,11 @@ npm run dev              # Start dev server (port 9004)
 npm run build            # TypeScript check + Vite build
 npm run lint             # ESLint check
 npm run preview          # Preview production build
-
-# E2E Testing (Playwright)
-npm run test:e2e         # Run all tests
-npm run test:e2e:ui      # Interactive UI mode
-npm run test:e2e:headed  # Run with visible browser
-npm run test:e2e:debug   # Debug mode
-npm run test:e2e:codegen # Generate tests from browser actions
-npm run test:e2e:report  # View HTML report
 ```
+
+E2E 테스트는 없다. Playwright 설정과 테스트는 이전에 삭제됐고, 남아 있던
+스크립트·의존성·빈 워크플로우 파일도 정리했다. 다시 도입하려면 설정부터
+새로 만들어야 한다.
 
 ## Architecture Overview
 
