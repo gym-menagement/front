@@ -2,7 +2,7 @@ import { get, post } from '../services/api';
 import type { LoginRequest, LoginResponse, JwtResponse } from '../types/auth';
 import type { User, UserProfile } from '../types/user';
 
-const AUTH_TOKEN_KEY = 'gym_token';
+const AUTH_TOKEN_KEY = 'gym_token'; // secret-scan: ok 값이 아니라 localStorage 키 이름
 const AUTH_USER_KEY = 'gym_user';
 const AUTH_PROFILE_KEY = 'gym_current_profile';
 
