@@ -27,14 +27,17 @@ const Sidebar = () => {
 
   const menuItems = [
     { label: '대시보드', path: '/admin/dashboard' },
+    { label: 'CEO 리포트', path: '/admin/report' },
     { label: '회원 관리', path: '/admin/members' },
     { label: '트레이너 관리', path: '/admin/trainers' },
     { label: '상품(회원권) 관리', path: '/admin/health' },
     { label: '출석 관리', path: '/admin/attendance' },
     { label: '운동 기록', path: '/admin/workout-logs' },
     { label: '결제 관리', path: '/admin/payments' },
+    { label: '구독 관리', path: '/admin/subscriptions' },
     { label: 'PT 예약 관리', path: '/admin/pt-reservations' },
     { label: '트레이너 배정', path: '/admin/trainer-assignments' },
+    { label: '근무 스케줄', path: '/admin/trainer-schedules' },
     { label: '공지사항', path: '/admin/notices' },
     { label: '문의 관리', path: '/admin/inquiries' },
     { label: '주문 관리', path: '/admin/orders' },

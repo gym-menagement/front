@@ -49,6 +49,9 @@ import MembershipManagement from './pages/admin/MembershipManagement';
 import DaytypeManagement from './pages/admin/DaytypeManagement';
 import UsehealthManager from './pages/admin/UsehealthManager';
 import GymAdminManagement from './pages/admin/GymAdminManagement';
+import SubscriptionManagement from './pages/admin/SubscriptionManagement';
+import ReportDashboard from './pages/admin/ReportDashboard';
+import TrainerScheduleManagement from './pages/admin/TrainerScheduleManagement';
 
 // Demo Page (keep for component showcase)
 import ComponentsDemo from './pages/ComponentsDemo';
@@ -192,6 +195,9 @@ function App() {
           <Route path="daytypes" element={<DaytypeManagement />} />
           <Route path="gym-admins" element={<GymAdminManagement />} />
           <Route path="usehealth" element={<UsehealthManager />} />
+          <Route path="subscriptions" element={<SubscriptionManagement />} />
+          <Route path="report" element={<ReportDashboard />} />
+          <Route path="trainer-schedules" element={<TrainerScheduleManagement />} />
           {/* Catch-all redirect to dashboard */}
           <Route path="" element={<Navigate to="dashboard" replace />} />
         </Route>
