@@ -279,7 +279,11 @@ const ReportDashboard = () => {
           ))}
         </div>
 
-        {loading ? (
+        {!selectedGymId ? (
+          <div style={{ padding: theme.spacing[8], textAlign: 'center', color: theme.colors.text.tertiary }}>
+            등록된 헬스장이 없습니다. 먼저 헬스장을 등록하세요.
+          </div>
+        ) : loading ? (
           <div style={{ padding: theme.spacing[8], textAlign: 'center', color: theme.colors.text.tertiary }}>
             불러오는 중...
           </div>
