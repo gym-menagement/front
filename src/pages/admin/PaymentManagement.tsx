@@ -7,12 +7,14 @@ import { selectedGymIdAtom } from '../../store/gym';
 import PaymentModel from '../../models/payment';
 import type { Payment } from '../../types/payment';
 import PaymentReceiptModal from '../../components/PaymentReceiptModal';
+import ManualPaymentModal from '../../components/admin/ManualPaymentModal';
 
 const PaymentManagement = () => {
   const selectedGymId = useAtomValue(selectedGymIdAtom);
   const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
+  const [showManualModal, setShowManualModal] = useState(false);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -94,10 +96,21 @@ const PaymentManagement = () => {
       }}
     >
       <AdminHeader title="결제 관리">
+        <Button variant="primary" onClick={() => setShowManualModal(true)}>
+          + 결제 등록
+        </Button>
         <Button variant="secondary" onClick={loadPayments}>
           새로고침
         </Button>
       </AdminHeader>
+
+      {showManualModal && selectedGymId > 0 && (
+        <ManualPaymentModal
+          gymId={selectedGymId}
+          onClose={() => setShowManualModal(false)}
+          onSaved={loadPayments}
+        />
+      )}
 
       <div
         style={{
