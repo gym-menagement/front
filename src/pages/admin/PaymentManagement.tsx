@@ -4,7 +4,15 @@ import { Card, Badge, Button, Pagination } from '../../components/ui';
 import { theme } from '../../theme';
 import AdminHeader from '../../components/AdminHeader';
 import { selectedGymIdAtom } from '../../store/gym';
-import PaymentModel from '../../models/payment';
+import PaymentModel, {
+  PaymentMethodLabels,
+  PaymentStatus,
+  PaymentStatusLabels,
+  cancelPayment,
+  fetchPaymentStatusMeta,
+  refundPayment,
+} from '../../models/payment';
+import type { PaymentStatusMeta } from '../../models/payment';
 import type { Payment } from '../../types/payment';
 import PaymentReceiptModal from '../../components/PaymentReceiptModal';
 import ManualPaymentModal from '../../components/admin/ManualPaymentModal';
@@ -15,6 +23,7 @@ const PaymentManagement = () => {
   const [loading, setLoading] = useState(true);
   const [selectedPayment, setSelectedPayment] = useState<Payment | null>(null);
   const [showManualModal, setShowManualModal] = useState(false);
+  const [statusMeta, setStatusMeta] = useState<Map<number, PaymentStatusMeta>>(new Map());
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -47,6 +56,14 @@ const PaymentManagement = () => {
       if (response && response.content) {
         setPayments(response.content);
         setTotalPages(response.totalPages);
+        // 상태·수단은 생성 모델에 없어서 따로 조회 (실패해도 목록은 그대로 둔다)
+        try {
+          setStatusMeta(
+            await fetchPaymentStatusMeta(selectedGymId, response.content.map((p) => p.id))
+          );
+        } catch {
+          setStatusMeta(new Map());
+        }
       } else {
         setPayments([]);
         setTotalPages(0);
@@ -78,6 +95,40 @@ const PaymentManagement = () => {
 
   const handlePaymentClick = (payment: Payment) => {
     setSelectedPayment(payment);
+  };
+
+  const handleRefund = async (e: React.MouseEvent, payment: Payment) => {
+    e.stopPropagation();
+    if (!confirm('이 결제를 환불 처리하시겠습니까?\n같은 주문의 회원권도 함께 종료됩니다.')) return;
+    try {
+      await refundPayment(payment.id);
+      await loadPayments();
+    } catch (error) {
+      console.error('Failed to refund payment:', error);
+      alert('환불 처리에 실패했습니다.');
+    }
+  };
+
+  const handleCancel = async (e: React.MouseEvent, payment: Payment) => {
+    e.stopPropagation();
+    if (!confirm('오기입 취소 처리하시겠습니까?\n기록은 삭제되지 않고 취소 상태로 남습니다.')) return;
+    try {
+      await cancelPayment(payment.id);
+      await loadPayments();
+    } catch (error) {
+      console.error('Failed to cancel payment:', error);
+      alert('취소 처리에 실패했습니다.');
+    }
+  };
+
+  const statusBadgeVariant = (status: number) => {
+    switch (status) {
+      case PaymentStatus.SUCCESS: return 'success' as const;
+      case PaymentStatus.PENDING: return 'warning' as const;
+      case PaymentStatus.FAIL: return 'error' as const;
+      case PaymentStatus.REFUNDED: return 'info' as const;
+      default: return 'default' as const; // 취소 등
+    }
   };
 
   const closeDetail = () => {
@@ -190,9 +241,53 @@ const PaymentManagement = () => {
                     >
                       {formatCurrency(payment.cost)}
                     </div>
-                    <Badge variant="success" style={{ marginTop: theme.spacing[1] }}>
-                      결제완료
-                    </Badge>
+                    {(() => {
+                      const meta = statusMeta.get(payment.id);
+                      const status = meta?.status ?? PaymentStatus.SUCCESS;
+                      return (
+                        <div
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'flex-end',
+                            gap: theme.spacing[2],
+                            marginTop: theme.spacing[1],
+                          }}
+                        >
+                          {meta && PaymentMethodLabels[meta.method] && (
+                            <span
+                              style={{
+                                color: theme.colors.text.tertiary,
+                                fontSize: theme.typography.fontSize.sm,
+                              }}
+                            >
+                              {PaymentMethodLabels[meta.method]}
+                            </span>
+                          )}
+                          <Badge variant={statusBadgeVariant(status)}>
+                            {PaymentStatusLabels[status] || '성공'}
+                          </Badge>
+                          {meta && status === PaymentStatus.SUCCESS && (
+                            <>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={(e) => handleCancel(e, payment)}
+                              >
+                                취소
+                              </Button>
+                              <Button
+                                variant="danger"
+                                size="sm"
+                                onClick={(e) => handleRefund(e, payment)}
+                              >
+                                환불
+                              </Button>
+                            </>
+                          )}
+                        </div>
+                      );
+                    })()}
                   </div>
                 </div>
               </Card>
