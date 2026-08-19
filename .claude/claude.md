@@ -9,7 +9,12 @@ npm run dev              # Start dev server (port 9004)
 npm run build            # TypeScript check + Vite build
 npm run lint             # ESLint check
 npm run preview          # Preview production build
+npm test                 # vitest (src/**/*.test.ts 단위 테스트)
 ```
+
+**패키지 매니저는 npm 단일.** 정본 lockfile 은 `package-lock.json` 이고
+`yarn.lock` 은 제거·gitignore 처리됐다(둘이 어긋나 드리프트를 유발했다).
+yarn 을 쓰지 말 것 — `npm install`/`npm ci` 로 통일.
 
 E2E 테스트는 없다. Playwright 설정과 테스트는 이전에 삭제됐고, 남아 있던
 스크립트·의존성·빈 워크플로우 파일도 정리했다. 다시 도입하려면 설정부터
