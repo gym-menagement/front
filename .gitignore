@@ -27,3 +27,6 @@ dist-ssr
 
 # .claude/*
 .env
+
+# 락파일은 npm(package-lock.json)으로 단일화 — yarn.lock 재생성 방지
+yarn.lock
