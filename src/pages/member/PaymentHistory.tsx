@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
 import { useAtomValue } from 'jotai';
 import { userAtom } from '../../store/auth';
-import PaymentformModel from '../../models/paymentform';
+import { findMyPaymentforms } from '../../models/paymentform';
+import type { MyPaymentform } from '../../models/paymentform';
 import type { Paymentform } from '../../types/paymentform';
+import { PaymentStatus, PaymentStatusLabels, PaymentMethodLabels } from '../../models/payment';
 import { Card, Badge, Pagination, Button } from '../../components/ui';
 import { theme } from '../../theme';
 import PaymentReceiptModal from '../../components/PaymentReceiptModal';
 
 const PaymentHistory = () => {
   const user = useAtomValue(userAtom);
-  const [payments, setPayments] = useState<Paymentform[]>([]);
+  const [payments, setPayments] = useState<MyPaymentform[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedPayment, setSelectedPayment] = useState<Paymentform | null>(null);
@@ -31,8 +33,9 @@ const PaymentHistory = () => {
       setLoading(true);
       setError(null);
 
-      const response = await PaymentformModel.findpage({
-        page: currentPage,
+      // 본인 결제만 — 생성 목록 라우트는 관리자 전용으로 잠겨 있다.
+      const response = await findMyPaymentforms({
+        page: currentPage + 1, // /my 는 1-based
         pagesize: pageSize,
       });
 
@@ -81,8 +84,17 @@ const PaymentHistory = () => {
     setSelectedPayment(null);
   };
 
-  const getPaymentStatusVariant = (): 'success' | 'warning' | 'error' => {
-    return 'success'; // 기본값
+  const getPaymentStatusVariant = (
+    status: number
+  ): 'success' | 'warning' | 'error' | 'info' | 'default' => {
+    switch (status) {
+      case PaymentStatus.SUCCESS: return 'success';
+      case PaymentStatus.PENDING: return 'warning';
+      case PaymentStatus.FAIL: return 'error';
+      case PaymentStatus.REFUNDED: return 'info';
+      case PaymentStatus.CANCELLED: return 'default';
+      default: return 'success'; // 구버전 데이터(status=0)는 성공으로 간주
+    }
   };
 
   if (loading && payments.length === 0) {
@@ -210,9 +222,22 @@ const PaymentHistory = () => {
                           marginBottom: theme.spacing[2],
                         }}
                       >
-                        <Badge variant={getPaymentStatusVariant()}>
+                        <Badge variant="default">
                           {paymentForm.extra?.paymenttype?.name || '결제'}
                         </Badge>
+                        <Badge variant={getPaymentStatusVariant(paymentForm.status)}>
+                          {PaymentStatusLabels[paymentForm.status] || '성공'}
+                        </Badge>
+                        {PaymentMethodLabels[paymentForm.method] && (
+                          <span
+                            style={{
+                              fontSize: theme.typography.fontSize.sm,
+                              color: theme.colors.text.tertiary,
+                            }}
+                          >
+                            {PaymentMethodLabels[paymentForm.method]}
+                          </span>
+                        )}
                         <span
                           style={{
                             fontSize: theme.typography.fontSize.sm,

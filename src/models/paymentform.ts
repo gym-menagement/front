@@ -65,3 +65,17 @@ export default class PaymentformModel {
     return res.data;
   }
 }
+
+/** 본인 결제 이력 항목 — 생성 모델에 없는 결제 상태·수단이 얹혀 온다. */
+export type MyPaymentform = Paymentform & { status: number; method: number };
+
+/**
+ * 본인 결제 이력 조회 (GET /paymentform/my).
+ *
+ * 생성 목록 라우트(GET /paymentform)는 사용자 필터가 없어 백엔드가 관리자
+ * 전용으로 잠갔다 — 회원 화면은 반드시 이걸 쓴다 (back/router/payment.go).
+ */
+export async function findMyPaymentforms(params: { page: number; pagesize: number }) {
+  const res = await get<ApiResponse<MyPaymentform>>('/paymentform/my', { params });
+  return res.data;
+}
