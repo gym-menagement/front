@@ -183,8 +183,8 @@ const LandingPage = () => {
       <footer style={{ borderTop: '1px solid #E5E5E5', padding: '80px 0 20px 0', backgroundColor: '#fff' }}>
         <div style={{ ...containerStyle, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '24px' }}>
            <div style={{ display: 'flex', gap: '24px', fontSize: '14px', fontWeight: 500, color: '#4b5563' }}>
-              <a href="#" style={{ color: 'inherit', textDecoration: 'none' }} className="hover:text-black">개인정보 처리방침</a>
-              <a href="#" style={{ color: 'inherit', textDecoration: 'none' }} className="hover:text-black">서비스 이용약관</a>
+              <a href="https://gowoobro.com/ko/app/3/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }} className="hover:text-black">개인정보 처리방침</a>
+              <a href="https://gowoobro.com/ko/app/3/terms" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'none' }} className="hover:text-black">서비스 이용약관</a>
               <a href="#" style={{ color: 'inherit', textDecoration: 'none' }} className="hover:text-black">고객센터</a>
            </div>
            <div style={{ fontSize: '14px', color: '#6b7280' }}>
