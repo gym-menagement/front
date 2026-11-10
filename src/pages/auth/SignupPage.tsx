@@ -582,6 +582,26 @@ const SignupPage = () => {
               회원가입
             </Button>
 
+            {/* 약관 동의 안내 */}
+            <p
+              style={{
+                margin: 0,
+                textAlign: 'center',
+                fontSize: theme.typography.fontSize.xs,
+                color: theme.colors.text.secondary,
+              }}
+            >
+              회원가입 시{' '}
+              <a href="https://gowoobro.com/ko/app/3/terms" target="_blank" rel="noopener noreferrer" style={{ color: theme.colors.brand.primary, textDecoration: 'underline' }}>
+                이용약관
+              </a>
+              {' '}및{' '}
+              <a href="https://gowoobro.com/ko/app/3/privacy" target="_blank" rel="noopener noreferrer" style={{ color: theme.colors.brand.primary, textDecoration: 'underline' }}>
+                개인정보 처리방침
+              </a>
+              에 동의하는 것으로 간주됩니다.
+            </p>
+
             {/* 로그인 링크 */}
             <div style={{ textAlign: 'center', marginTop: theme.spacing[2] }}>
               <span
